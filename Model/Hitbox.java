@@ -1,16 +1,20 @@
 package Model;
 
 /**
- * Model.Hitbox class
+ * Hitbox class
  * <p>
  * This class represents gameobjects hitbox. It is the gameobjects position and size and is used for the collisionhandling.
  */
 public class Hitbox {
 
+    /*--------------------Fields--------------------*/
+
     private double xCoordinate;
     private double yCoordinate;
     private double height;
     private double width;
+
+    /*--------------------Constructor--------------------*/
 
     /**
      * Constructor for the Hitbox class
@@ -27,13 +31,15 @@ public class Hitbox {
         setHeight(height);
     }
 
+    /*--------------------Getters--------------------*/
+
     /**
-     * Sets the Hitbox's x coordinate
+     * Getter for y coordinate of the Hitbox
      *
-     * @param newX The new x coordinate of the Hitbox
+     * @return The y coordinate of the Hitbox
      */
-    public void setX(double newX){
-        this.xCoordinate = newX;
+    public double getY(){
+        return yCoordinate;
     }
 
     /**
@@ -46,22 +52,24 @@ public class Hitbox {
     }
 
     /**
-     * Sets the Hitbox's y coordinate
+     * Getter for height of the Hitbox
      *
-     * @param newY The new y coordinate of the Hitbox
+     * @return The height of the Hitbox
      */
-    public void setY(double newY){
-        this.yCoordinate = newY;
+    public double getHeight(){
+        return height;
     }
 
     /**
-     * Getter for y coordinate of the Hitbox
+     * Getter for width of the Hitbox
      *
-     * @return The y coordinate of the Hitbox
+     * @return The width of the Hitbox
      */
-    public double getY(){
-        return yCoordinate;
+    public double getWidth(){
+        return width;
     }
+
+    /*--------------------Setters--------------------*/
 
     /**
      * Sets the Hitbox's width
@@ -76,12 +84,12 @@ public class Hitbox {
     }
 
     /**
-     * Getter for width of the Hitbox
+     * Sets the Hitbox's y coordinate
      *
-     * @return The width of the Hitbox
+     * @param newY The new y coordinate of the Hitbox
      */
-    public double getWidth(){
-        return width;
+    public void setY(double newY){
+        this.yCoordinate = newY;
     }
 
     /**
@@ -96,12 +104,11 @@ public class Hitbox {
     }
 
     /**
-     * Getter for height of the Hitbox
+     * Sets the Hitbox's x coordinate
      *
-     * @return The height of the Hitbox
+     * @param newX The new x coordinate of the Hitbox
      */
-    public double getHeight(){
-        return height;
+    public void setX(double newX){
+        this.xCoordinate = newX;
     }
-
 }
