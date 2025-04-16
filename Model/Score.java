@@ -3,6 +3,16 @@ package Model;
 import Model.Trash.Trash;
 import Model.Trashcan.Trashcan;
 
+/**
+ * Score class
+ * <p>
+ * This class is responsible for managing the player's score in the game.
+ * It keeps track of the current score, updates it when trash is sorted, 
+ * and provides methods to reset or retrieve the score.
+ * Points are added when trash is correctly sorted and subtracted when 
+ * incorrectly sorted, ensuring that the score does not go below zero.
+ */
+
 public class Score {
 
     /*--------------------Fields--------------------*/
