@@ -57,9 +57,9 @@ public class MainMenuView extends BaseView{
         topPanel = new JPanel(new BorderLayout());
         logoBorder = new EmptyBorder(80, 425,0,0);
 
-        logo = new ImageIcon(getClass().getResource(null));
-        Image image = logo.getImage();
-        Image resizedLogo = image.getScaledInstance(150,150, Image.SCALE_SMOOTH);
+        logo = new ImageIcon(getClass().getResource("/Resources/default_trash_image.png"));
+        Image rawimage = logo.getImage();
+        Image resizedLogo = rawimage.getScaledInstance(150,150, Image.SCALE_SMOOTH);
         logo = new ImageIcon(resizedLogo);
         iconLabel.setIcon(logo);
         topPanel.setBorder(logoBorder);
