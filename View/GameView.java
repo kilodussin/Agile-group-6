@@ -30,6 +30,10 @@ public class GameView extends BaseView{
      * Constructs the GameView and sets up all UI components.
      * <p>
      * This includes initializing buttons and calling methods to create each panel.
+     * <p>
+     * A different background is being used for the GameView:
+     * - To separate the gameplay from the rest of the application
+     * - To visually increase space for components top be placed
      */
     public GameView(){
         // super("Game View", "/Resources/Background1.png");
