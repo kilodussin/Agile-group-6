@@ -1,8 +1,14 @@
 package View;
+
 import javax.swing.*;
 import java.awt.*;
 import Model.CountdownTimer;
 import Model.HighscoreIO;
+import Model.Hitbox;
+import Model.Trashcan.PlasticTrashcan;
+import Model.Trashcan.SpawnTrashcans;
+import Model.Trashcan.Trashcan;
+
 
 /**
  * View displayed during the actual gameplay
@@ -75,6 +81,7 @@ public class GameView extends BaseView{
         headerPanel.add(timerPanel, BorderLayout.EAST);
 
         frame.add(headerPanel, BorderLayout.NORTH);
+
     }
 
     /**
@@ -85,15 +92,44 @@ public class GameView extends BaseView{
      * This panel is added to the center panel of the frame.
      */
     private void createGameViewCenterPanel(){
-        centerPanel = new JPanel(new BorderLayout());
+        centerPanel = new JPanel(null);
         centerPanel.setBackground(Color.GRAY);
 
-        centerPanel.add(gameOverViewPlaceholder, BorderLayout.SOUTH);
+        centerPanel.add(gameOverViewPlaceholder);
 
         frame.add(centerPanel, BorderLayout.CENTER);
+
+        /**
+        Iterates through the cans and sends them through the renderer.
+         */
+
+        SpawnTrashcans spawnThem = new SpawnTrashcans();
+        for (Trashcan thisCan : spawnThem.createTrashcans()) {
+            renderTrashcans(thisCan);
+        }
+
+
     }
 
 
+    /**
+    Renders the trashcan in view, it NEEDS int for the bounds.
+    (That's why it's converted)
+     */
+
+    public void renderTrashcans(Trashcan trashcan) {
+        ImageIcon imageIcon = new ImageIcon(trashcan.generateImagePath());
+        JLabel jLabel = new JLabel(imageIcon);
+
+        double y = trashcan.getY();
+        double x = trashcan.getX();
+        double width = trashcan.getWidth();
+        double height = trashcan.getHeight();
+
+        jLabel.setBounds((int) x, (int) y, (int) width, (int) height);
+        centerPanel.add(jLabel);
+
+    }
 }
 
     /**
