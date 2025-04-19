@@ -28,7 +28,7 @@ public class HighscoreBoardView extends BaseView{
      * This includes initializing buttons and calling methods to create each panel.
      */
     public HighscoreBoardView(){
-        super("Highscore Board", null);
+        super("Highscore Board", "/Resources/Background1.png");
 
         escapeButton = new JButton("ESCAPE");
 
@@ -45,12 +45,14 @@ public class HighscoreBoardView extends BaseView{
      * <p>
      * Padding is applied using EmptyBorder to create space around the header content.
      * <p>
+     * This panel is made transparent by setting opaque to false, allowing the background image to show through.
+     * <p>
      * This panel is added to the center container of the frame.
      */
     private void createHighscoreHeader(){
 
         headerPanel = new JPanel(new BorderLayout(-100, 0));
-        headerBorder = new EmptyBorder(10,20,10,10);
+        headerBorder = new EmptyBorder(20,20,10,10);
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
@@ -58,6 +60,8 @@ public class HighscoreBoardView extends BaseView{
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         headerPanel.add(titleLabel, BorderLayout.CENTER);
         headerPanel.setBorder(headerBorder);
+
+        headerPanel.setOpaque(false);
 
 
         frame.add(headerPanel, BorderLayout.NORTH);

@@ -28,7 +28,7 @@ public class TutorialView extends BaseView{
      * This includes initializing buttons and calling methods to create each panel.
      */
     public TutorialView(){
-        super("Tutorial", null);
+        super("Tutorial", "/Resources/Background1.png");
 
         escapeButton = new JButton("ESCAPE");
 
@@ -46,12 +46,14 @@ public class TutorialView extends BaseView{
      * <p>
      * Padding is applied using EmptyBorder to create space around the header content
      * <p>
+     * This panel is made transparent by setting opaque to false, allowing the background image to show through.
+     * <p>
      * This panel is added to the north container of the frame.
      */
     private void createTutorialHeader(){
 
         headerPanel = new JPanel(new BorderLayout(-90, 0));
-        headerPadding = new EmptyBorder(10,20,10,0);
+        headerPadding = new EmptyBorder(20,20,10,0);
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
@@ -59,6 +61,8 @@ public class TutorialView extends BaseView{
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         headerPanel.add(titleLabel, BorderLayout.CENTER);
         headerPanel.setBorder(headerPadding);
+
+        headerPanel.setOpaque(false);
 
         frame.add(headerPanel, BorderLayout.NORTH);
     }

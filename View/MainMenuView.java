@@ -30,7 +30,7 @@ public class MainMenuView extends BaseView{
      * This includes initializing buttons and calling methods to create each panel.
      */
     public MainMenuView() {
-        super("Start Menu", null);
+        super("Start Menu", "/Resources/Background1.png");
 
         startButton = new JButton("START");
         tutorialButton = new JButton("TUTORIAL");
@@ -55,11 +55,11 @@ public class MainMenuView extends BaseView{
 
     private void createStartMenuTopPanel(){
         topPanel = new JPanel(new BorderLayout());
-        logoBorder = new EmptyBorder(80, 425,0,0);
+        logoBorder = new EmptyBorder(130, 355,20,0);
 
-        logo = new ImageIcon(getClass().getResource("/Resources/default_trash_image.png"));
+        logo = new ImageIcon(getClass().getResource("/Resources/Logo.png"));
         Image rawimage = logo.getImage();
-        Image resizedLogo = rawimage.getScaledInstance(150,150, Image.SCALE_SMOOTH);
+        Image resizedLogo = rawimage.getScaledInstance(310,230, Image.SCALE_SMOOTH);
         logo = new ImageIcon(resizedLogo);
         iconLabel.setIcon(logo);
         topPanel.setBorder(logoBorder);
@@ -88,8 +88,12 @@ public class MainMenuView extends BaseView{
     private void createStartMenuCenterPanel(){
 
         centerPanel = new JPanel(new GridLayout(4, 1, 0, 20));
-        buttonsBorder = new EmptyBorder(80, 300, 50, 300);
+        buttonsBorder = new EmptyBorder(0, 300, 50, 300);
 
+
+        /*Dimension buttonSize = new Dimension(200, 50);
+        playAgainButton.setPreferredSize(buttonSize);
+        mainMenuButton.setPreferredSize(buttonSize); */
         centerPanel.add(startButton);
         centerPanel.add(tutorialButton);
         centerPanel.add(highscoreButton);

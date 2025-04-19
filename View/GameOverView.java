@@ -33,7 +33,7 @@ public class GameOverView extends BaseView{
      * This includes initializing buttons and calling methods to create each panel.
      */
     public GameOverView(){
-        super("Game Over", null);
+        super("Game Over", "/Resources/Background1.png");
 
         playAgainButton = new JButton("PLAY AGAIN");
         mainMenuButton = new JButton("MAIN MENU");

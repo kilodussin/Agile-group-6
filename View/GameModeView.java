@@ -28,7 +28,7 @@ public class GameModeView extends BaseView{
      * This includes initializing buttons and calling methods to create each panel.
      */
     public GameModeView(){
-        super("Game Mode", null);
+        super("Game Mode", "/Resources/Background1.png");
 
         escapeButton = new JButton("ESCAPE");
 
@@ -57,7 +57,7 @@ public class GameModeView extends BaseView{
     private void createGameModeHeader(){
 
         headerPanel = new JPanel(new BorderLayout(-90,0));
-        headerBorder = new EmptyBorder(10,20,10,0);
+        headerBorder = new EmptyBorder(20,20,10,0);
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 

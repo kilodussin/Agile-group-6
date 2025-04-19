@@ -32,7 +32,8 @@ public class GameView extends BaseView{
      * This includes initializing buttons and calling methods to create each panel.
      */
     public GameView(){
-        super("Game View", null);
+        // super("Game View", "/Resources/Background1.png");
+        super("Game View", "/Resources/Background2.png");
 
         escapeButton = new JButton("ESCAPE");
         gameOverViewPlaceholder = new JButton("Game Over View (Placeholder for navigation)");
@@ -58,7 +59,7 @@ public class GameView extends BaseView{
     private void createGameViewHeader(){
 
         headerPanel = new JPanel(new BorderLayout());
-        headerBorder = new EmptyBorder(10,20,0,20);
+        headerBorder = new EmptyBorder(20,20,0,20);
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 

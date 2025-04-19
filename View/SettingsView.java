@@ -42,7 +42,7 @@ public class SettingsView extends BaseView{
      * This includes initializing button, labels, sliders and calling methods to create each panel.
      */
     public SettingsView(){
-        super("Settings", null);
+        super("Settings", "/Resources/Background1.png");
 
         escapeButton = new JButton("ESCAPE");
 
@@ -71,12 +71,14 @@ public class SettingsView extends BaseView{
      * <p>
      * Padding is applied using EmptyBorder to create space around the header content
      * <p>
+     * This panel is made transparent by setting opaque to false, allowing the background image to show through.
+     * <p>
      * This panel is added to the north container of the frame.
      */
     private void createSettingsHeader(){
 
         headerPanel = new JPanel(new BorderLayout(-90, 0));
-        headerBorder = new EmptyBorder(10,20,10,10);
+        headerBorder = new EmptyBorder(20,20,10,10);
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
@@ -84,6 +86,8 @@ public class SettingsView extends BaseView{
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         headerPanel.add(titleLabel, BorderLayout.CENTER);
         headerPanel.setBorder(headerBorder);
+
+        headerPanel.setOpaque(false);
 
         frame.add(headerPanel, BorderLayout.NORTH);
     }
