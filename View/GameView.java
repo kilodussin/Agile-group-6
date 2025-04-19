@@ -1,5 +1,8 @@
+package View;
 import javax.swing.*;
 import java.awt.*;
+import Model.CountdownTimer;
+import Model.HighscoreIO;
 
 /**
  * View displayed during the actual gameplay
@@ -16,7 +19,7 @@ public class GameView extends BaseView{
     protected JButton escapeButton;
 
     private JLabel scorePlaceholder;
-    private JLabel timerPlaceholder;
+    private CountdownTimer countdownTimer;
 
     private JPanel centerPanel;
     protected JButton gameOverViewPlaceholder;
@@ -46,19 +49,30 @@ public class GameView extends BaseView{
      * <p>
      * This panel is added to the north container of the frame.
      */
+
+    public double getFinalScore() {
+        double finalScore = Double.parseDouble(scorePlaceholder.getText());
+        return finalScore;
+    }
     private void createGameViewHeader(){
+        HighscoreIO highscoreIO = new HighscoreIO();
 
         headerPanel = new JPanel(new BorderLayout());
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
-        scorePlaceholder = new JLabel("SCORE: 12345", SwingConstants.CENTER);
+        scorePlaceholder = new JLabel("12345", SwingConstants.CENTER);
         scorePlaceholder.setFont(new Font("Arial", Font.BOLD, 30));
         headerPanel.add(scorePlaceholder, BorderLayout.CENTER);
 
-        timerPlaceholder = new JLabel("00:00", SwingConstants.CENTER);
-        timerPlaceholder.setFont(new Font("Arial", Font.BOLD, 30));
-        headerPanel.add(timerPlaceholder, BorderLayout.EAST);
+        countdownTimer = new CountdownTimer(this, highscoreIO);
+
+
+        JPanel timerPanel = new JPanel(new BorderLayout());
+        timerPanel.setBorder(BorderFactory.createEmptyBorder(0,0,0,40));
+        timerPanel.add(countdownTimer.getComponent(), BorderLayout.CENTER);
+
+        headerPanel.add(timerPanel, BorderLayout.EAST);
 
         frame.add(headerPanel, BorderLayout.NORTH);
     }
@@ -79,6 +93,9 @@ public class GameView extends BaseView{
         frame.add(centerPanel, BorderLayout.CENTER);
     }
 
+
+}
+
     /**
      * Temporary placeholder to test the view independently when working on it.
      * <p>
@@ -93,4 +110,4 @@ public class GameView extends BaseView{
         });
 
     } */
-}
+
