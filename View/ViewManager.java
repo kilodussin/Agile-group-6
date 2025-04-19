@@ -122,13 +122,15 @@ public class ViewManager {
      * Shows the game over view and sets up its actions to buttons that navigate to other views.
      */
     public void showGameOverView(){
-        GameOverView gameOverView = new GameOverView();
+        GameOverView gameOverView = new GameOverView(1213, 5611, null);
 
         gameOverView.playAgainButton.addActionListener(e -> showGameView());
         gameOverView.mainMenuButton.addActionListener(e -> showStartMenuView());
 
         showView(gameOverView);
     }
+
+
 
     /**
      * Main method to launch the application.
@@ -144,6 +146,7 @@ public class ViewManager {
         SwingUtilities.invokeLater(() -> {
             ViewManager viewManager = ViewManager.getInstance();
             viewManager.showStartMenuView();
+            viewManager.showGameOverView();
         });
 
     }

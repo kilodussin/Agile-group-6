@@ -1,7 +1,10 @@
 package View;
+import Model.Trash.Trash;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.List;
 
 /**
  * View displayed when player loses the game.
@@ -15,7 +18,6 @@ public class GameOverView extends BaseView{
     private JLabel titleLabel;
 
     private JPanel outerCenterPanel;
-    private JPanel innerCenterPanel;
 
     private JPanel bottomPanel;
 
@@ -24,20 +26,36 @@ public class GameOverView extends BaseView{
 
     private EmptyBorder bottomButtonsBorder;
 
-    /**
-     * Constructs the GameOverView and sets up all UI components.
+    private JLabel scoreLabel;
+    private int finalScore;
+    private int highscore;
+    private List<Trash> trashList;
+    private int currentTrashIndex = 0;
+    private JLabel trashImageLabel;
+    private JTextArea trashDescriptionArea;
+
+    /***
+     * Constructor for the GameOverView class.
      * <p>
-     * This includes initializing buttons and calling methods to create each panel.
+     * This constructor initializes the view with a title, score, highscore, and a list of trash objects.
+     *
+     * @param score The final score of the game.
+     * @param highscore The highest score achieved in the game.
+     * @param trashList The list of trash objects to be displayed.
      */
-    public GameOverView(){
+    public GameOverView(int score, int highscore, List<Trash> trashList) {
         super("Game Over");
 
+        this.highscore = highscore;
+        this.finalScore = score;
+        this.trashList = trashList;
         playAgainButton = new JButton("PLAY AGAIN");
         mainMenuButton = new JButton("MAIN MENU");
 
         createGameOverHeader();
         createGameOverCenterPanel();
         createGameOverBottomPanel();
+
     }
 
     /**
@@ -57,24 +75,50 @@ public class GameOverView extends BaseView{
         frame.add(headerPanel, BorderLayout.NORTH);
     }
 
-    /**
-     * Creates a center panel - Currently works as a visual placeholder
+    /***
+     * Creates a center panel that displays the score and trash images.
      * <p>
-     * This layout currently uses two nested panels: A gray outer panel and a white inner panel,
-     * to give a clearer visual idea of where future components can be placed.
-     * This is purely for layout visualization and can easily be removed or replaced later.
-     * This panel is added to the center panel of the frame.
+     * This panel uses BorderLayout to arrange its components.
+     * It is added to the center container of the frame.
      */
-    private void createGameOverCenterPanel(){
+    private void createGameOverCenterPanel() {
         outerCenterPanel = new JPanel(new BorderLayout());
         outerCenterPanel.setBackground(Color.GRAY);
-        outerCenterPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+        outerCenterPanel.setBorder(BorderFactory.createEmptyBorder(130, 130, 130, 130));
 
-        innerCenterPanel = new JPanel(new BorderLayout());
-        innerCenterPanel.setBackground(Color.WHITE);
+        // Create a container for score and highscore labels with space between them
+        JPanel scorePanel = new JPanel(new BorderLayout());
+        scorePanel.setBackground(Color.GRAY);
 
-        outerCenterPanel.add(innerCenterPanel, BorderLayout.CENTER);
+        // Create the score label
 
+        JLabel scoreDisplayLabel;
+        if (finalScore > highscore) {
+            scoreDisplayLabel = new JLabel("NEW HIGHSCORE!: " + finalScore);
+        } else {
+            scoreDisplayLabel = new JLabel("Score: " + finalScore);
+        }
+        scoreDisplayLabel.setFont(new Font("Arial", Font.BOLD, 20));
+
+        // Create highscore label
+        JLabel highscoreLabel = new JLabel("Highscore: " + highscore);
+        highscoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        highscoreLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+        // Create the mistakes label
+        int mistakesCount = (trashList != null) ? trashList.size() : 0;
+        JLabel mistakesLabel = new JLabel("You made " + mistakesCount + " mistakes!", SwingConstants.CENTER);
+        mistakesLabel.setFont(new Font("Arial", Font.BOLD, 20));
+
+        // Add labels to the score panel
+        scorePanel.add(scoreDisplayLabel, BorderLayout.WEST);
+        scorePanel.add(highscoreLabel, BorderLayout.EAST);
+        scorePanel.add(mistakesLabel, BorderLayout.CENTER);
+
+        outerCenterPanel.add(scorePanel, BorderLayout.NORTH);
+
+        JPanel trashDisplayPanel = createTrashDisplayPanel();
+        outerCenterPanel.add(trashDisplayPanel, BorderLayout.CENTER);
 
         frame.add(outerCenterPanel, BorderLayout.CENTER);
     }
@@ -96,18 +140,185 @@ public class GameOverView extends BaseView{
         frame.add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    /**
-     * Temporary placeholder to test the view independently when working on it.
-     * <p>
-     * This main method allows the GameOverView to run standalone, which is useful during development, for UI testing.
-     * Uncomment to run the view standalone.
-     */
 
-    /* public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            GameOverView gameOverView = new GameOverView();
-            gameOverView.show();
+    /***
+     * Creates a panel to display the trash images.
+     * <p>
+     * This panel includes navigation buttons to cycle through the trash images.
+     * It is added to the center of the outer center panel.
+     *
+     * @return The JPanel containing the trash image display and navigation buttons.
+     */
+    private JPanel createTrashDisplayPanel() {
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBackground(Color.WHITE);
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Create the image display in the center
+        trashImageLabel = new JLabel("", SwingConstants.CENTER);
+        trashImageLabel.setPreferredSize(new Dimension(300, 200));
+
+        // Create text description panel
+        JPanel descriptionPanel = new JPanel(new BorderLayout());
+        trashDescriptionArea = new JTextArea(3, 20);
+        trashDescriptionArea.setEditable(false);
+        trashDescriptionArea.setLineWrap(true);
+        trashDescriptionArea.setWrapStyleWord(true);
+        trashDescriptionArea.setFont(new Font("Arial", Font.PLAIN, 20));
+
+        // Create scroll pane
+        JScrollPane scrollPane = new JScrollPane(trashDescriptionArea);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        descriptionPanel.add(scrollPane, BorderLayout.CENTER);
+
+        // Create central content panel to hold image and description, makes it easier to manage layout
+        JPanel centralContent = new JPanel(new BorderLayout(10, 10));
+        centralContent.setBackground(Color.WHITE);
+        centralContent.add(trashImageLabel, BorderLayout.CENTER);
+        centralContent.add(descriptionPanel, BorderLayout.SOUTH);
+
+        // Create navigation panel with buttons
+        JPanel navigationPanel = createNavigationPanel();
+
+        // Set up layout
+        panel.add(centralContent, BorderLayout.CENTER);
+        panel.add(navigationPanel, BorderLayout.SOUTH);
+
+        // Initialize image and description
+        updateTrashImage();
+        updateTrashDescription();
+
+        return panel;
+    }
+
+    /**
+     * Creates a panel with navigation buttons for trash browsing
+     *
+     *
+     * @return JPanel containing the navigation buttons
+     */
+    /**
+     * Creates a panel with navigation buttons for trash browsing using images
+     *
+     * @return JPanel containing the image-based navigation buttons
+     */
+    private JPanel createNavigationPanel() {
+        JPanel navigationPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
+        navigationPanel.setBackground(Color.WHITE);
+
+        // Create previous button with image
+        ImageIcon prevIcon = new ImageIcon("resources/prev_normal.png");
+        Image prevImg = prevIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+        JLabel prevButton = new JLabel(new ImageIcon(prevImg));
+        prevButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Create next button with image
+        ImageIcon nextIcon = new ImageIcon("resources/next_normal.png");
+        Image nextImg = nextIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+        JLabel nextButton = new JLabel(new ImageIcon(nextImg));
+        nextButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Add click functionality
+        prevButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (trashList != null && !trashList.isEmpty()) {
+                    currentTrashIndex = (currentTrashIndex - 1 + trashList.size()) % trashList.size();
+                    updateTrashImage();
+                    updateTrashDescription();
+                }
+            }
         });
 
-    } */
+        nextButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (trashList != null && !trashList.isEmpty()) {
+                    currentTrashIndex = (currentTrashIndex + 1) % trashList.size();
+                    updateTrashImage();
+                    updateTrashDescription();
+                }
+            }
+        });
+
+        navigationPanel.add(prevButton);
+        navigationPanel.add(nextButton);
+
+        return navigationPanel;
+    }
+    /***
+     * Updates the trash image displayed in the view.
+     * <p>
+     * This method retrieves the current trash object from the list and updates the JLabel with its corresponding image.
+     * If no trash is available, it sets a default message indicating that there is no trash to display.
+     */
+    private void updateTrashImage() {
+        if (trashList == null || trashList.isEmpty()) {
+            trashImageLabel.setIcon(null);
+            trashImageLabel.setText("No trash to display");
+            return;
+        }
+
+        Trash currentTrash = trashList.get(currentTrashIndex);
+        // Get image based on trash type
+        ImageIcon trashIcon = getTrashImage(currentTrash);
+
+        if (trashIcon != null) {
+            trashImageLabel.setIcon(trashIcon);
+            trashImageLabel.setText("");
+        } else {
+            trashImageLabel.setIcon(null);
+            trashImageLabel.setText("Image not available for: " + currentTrash.getClass().getSimpleName());
+        }
+    }
+
+    /**
+     * Updates the trash description text area with a description for the current trash item.
+     *
+     *
+     */
+    private void updateTrashDescription() {
+        if (trashList == null || trashList.isEmpty()) {
+            trashDescriptionArea.setText("No trash information available.");
+            return;
+        }
+
+        Trash currentTrash = trashList.get(currentTrashIndex);
+
+        // Get description? from the trash object
+        String description = currentTrash.getDescription();
+
+        if (description == null || description.isEmpty()) {
+            description = "No description available for this item.";
+        }
+
+        trashDescriptionArea.setText(description);
+    }
+
+
+    /***
+     * Loads the image for the given trash type.
+     * <p>
+     * This method uses the class name of the trash type to determine the image file to load.
+     * The image is expected to be in the resources/images/trash directory.
+     *
+     * @param trash The trash object whose image is to be loaded.
+     * @return The ImageIcon for the trash type, or null if not found.
+     */
+    private ImageIcon getTrashImage(Trash trash) {
+
+        try {
+            ImageIcon icon = new ImageIcon(trash.getImagePath());
+
+            // Resize the image to fit the display area if needed
+            if (icon.getIconWidth() > 400 || icon.getIconHeight() > 300) {
+                Image img = icon.getImage();
+                Image resizedImg = img.getScaledInstance(400, 300, Image.SCALE_SMOOTH);
+                return new ImageIcon(resizedImg);
+            }
+            return icon;
+        } catch (Exception e) {
+            System.err.println("Error loading image for trash type: " + trash.getClass().getSimpleName());
+            return null;
+        }
+    }
+
 }

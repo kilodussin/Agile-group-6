@@ -15,6 +15,7 @@ public abstract class Trash {
     private Hitbox hitbox;
     private String imagePath;
     private int points;
+    private String description;
 
     /*--------------------Constructor--------------------*/
 
@@ -93,6 +94,16 @@ public abstract class Trash {
      */
     public String getImagePath(){
         return this.imagePath;
+    }
+
+
+    /**
+     * Getter for the description
+     *
+     * @return The description of the Trash
+     */
+    public String getDescription() {
+        return this.description;
     }
 
     /*--------------------Setters--------------------*/
