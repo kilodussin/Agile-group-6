@@ -28,6 +28,6 @@ public class NonRecyclableTrashcan extends Trashcan{
 
     @Override
     public String generateImagePath() {
-        return "Resources/default_trashcan_image.png";
+        return "Resources/crocdundee.jpg";
     }
 }

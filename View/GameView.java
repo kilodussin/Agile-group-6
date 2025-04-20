@@ -3,6 +3,13 @@ package View;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import Model.CountdownTimer;
+import Model.HighscoreIO;
+import Model.Hitbox;
+import Model.Trashcan.PlasticTrashcan;
+import Model.Trashcan.SpawnTrashcans;
+import Model.Trashcan.Trashcan;
+
 
 /**
  * View displayed during the actual gameplay
@@ -21,7 +28,7 @@ public class GameView extends BaseView{
     protected JButton escapeButton;
 
     private JLabel scorePlaceholder;
-    private JLabel timerPlaceholder;
+    private CountdownTimer countdownTimer;
 
     private JPanel centerPanel;
     protected JButton gameOverViewPlaceholder;
@@ -60,25 +67,36 @@ public class GameView extends BaseView{
      * <p>
      * This panel is added to the north container of the frame.
      */
+
+    public double getFinalScore() {
+        double finalScore = Double.parseDouble(scorePlaceholder.getText());
+        return finalScore;
+    }
     private void createGameViewHeader(){
+        HighscoreIO highscoreIO = new HighscoreIO();
 
         headerPanel = new JPanel(new BorderLayout());
         headerBorder = new EmptyBorder(20,20,0,20);
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
-        scorePlaceholder = new JLabel("SCORE: 12345", SwingConstants.CENTER);
+        scorePlaceholder = new JLabel("12345", SwingConstants.CENTER);
         scorePlaceholder.setFont(new Font("Arial", Font.BOLD, 30));
         headerPanel.add(scorePlaceholder, BorderLayout.CENTER);
 
-        timerPlaceholder = new JLabel("00:00", SwingConstants.CENTER);
-        timerPlaceholder.setFont(new Font("Arial", Font.BOLD, 30));
-        headerPanel.add(timerPlaceholder, BorderLayout.EAST);
-        headerPanel.setBorder(headerBorder);
+        countdownTimer = new CountdownTimer(this, highscoreIO);
+
+
+        JPanel timerPanel = new JPanel(new BorderLayout());
+        timerPanel.setBorder(BorderFactory.createEmptyBorder(0,0,0,40));
+        timerPanel.add(countdownTimer.getComponent(), BorderLayout.CENTER);
+
+        headerPanel.add(timerPanel, BorderLayout.EAST);
 
         headerPanel.setOpaque(false);
 
         frame.add(headerPanel, BorderLayout.NORTH);
+
     }
 
     /**
@@ -95,13 +113,46 @@ public class GameView extends BaseView{
      * This panel is added to the center panel of the frame.
      */
     private void createGameViewCenterPanel(){
+
         centerPanel = new JPanel(new BorderLayout());
 
         centerPanel.add(gameOverViewPlaceholder, BorderLayout.SOUTH);
         centerPanel.setOpaque(false);
 
         frame.add(centerPanel, BorderLayout.CENTER);
+
+        /**
+        Iterates through the cans and sends them through the renderer.
+         */
+
+        SpawnTrashcans spawnThem = new SpawnTrashcans();
+        for (Trashcan thisCan : spawnThem.createTrashcans()) {
+            renderTrashcans(thisCan);
+        }
+
+
     }
+
+
+    /**
+    Renders the trashcan in view, it NEEDS int for the bounds.
+    (That's why it's converted)
+     */
+
+    public void renderTrashcans(Trashcan trashcan) {
+        ImageIcon imageIcon = new ImageIcon(trashcan.generateImagePath());
+        JLabel jLabel = new JLabel(imageIcon);
+
+        double y = trashcan.getY();
+        double x = trashcan.getX();
+        double width = trashcan.getWidth();
+        double height = trashcan.getHeight();
+
+        jLabel.setBounds((int) x, (int) y, (int) width, (int) height);
+        centerPanel.add(jLabel);
+
+    }
+}
 
     /**
      * Temporary placeholder to test the view independently when working on it.
@@ -117,4 +168,4 @@ public class GameView extends BaseView{
         });
 
     } */
-}
+
