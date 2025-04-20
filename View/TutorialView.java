@@ -16,6 +16,7 @@ public class TutorialView extends BaseView{
 
     private JPanel outerCenterPanel;
     private JPanel innerCenterPanel;
+    private CardLayout cardLayout;
 
     /**
      * Constructs the GameOverView and sets up all UI components.
@@ -68,14 +69,83 @@ public class TutorialView extends BaseView{
         outerCenterPanel.setBackground(Color.GRAY);
         outerCenterPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
-        innerCenterPanel = new JPanel(new BorderLayout());
+        cardLayout = new CardLayout();
+        innerCenterPanel = new JPanel(cardLayout);
         innerCenterPanel.setBackground(Color.WHITE);
+
+
+        JPanel page1 = new JPanel();
+        page1.setLayout(new BoxLayout(page1, BoxLayout.Y_AXIS));
+        page1.setBackground(Color.WHITE);
+
+        // Övre del (text)
+        JPanel topPanel = new JPanel();
+        topPanel.setBackground(Color.WHITE);
+        topPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
+        topPanel.setPreferredSize(new Dimension(0, 150));
+
+        JTextField topText = new JTextField("Recycle the different objects by dragging them to the correct recycling bin");
+        topText.setFont(new Font("SansSerif", Font.BOLD, 22));
+        topText.setHorizontalAlignment(JTextField.CENTER);
+        topText.setEditable(false);
+        topText.setBorder(null);
+        topText.setBackground(Color.WHITE);
+        topPanel.setLayout(new BorderLayout());
+        topPanel.add(topText, BorderLayout.CENTER);
+
+        page1.add(topPanel);
+
+        // Undre del (bild)
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setBackground(Color.LIGHT_GRAY);
+        bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        bottomPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 400));
+        bottomPanel.setPreferredSize(new Dimension(0, 400));
+
+        ImageIcon icon = new ImageIcon("Resources/tutorial1.png");
+        Image image = icon.getImage();
+        Image scaledImage = image.getScaledInstance(400, 300, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+
+        JLabel imageLabel = new JLabel(scaledIcon);
+        bottomPanel.add(imageLabel);
+
+        page1.add(bottomPanel);
+
+
+        JButton nextButton = new JButton("→");
+        nextButton.addActionListener(e -> showCard("Page 2"));
+        JPanel rightPanel = new JPanel(new GridBagLayout());
+        rightPanel.setOpaque(true);
+        rightPanel.add(nextButton);
+        rightPanel.setBackground(Color.WHITE);
+        outerCenterPanel.add(rightPanel, BorderLayout.EAST);
+
+
+        JPanel page2 = new JPanel(new BorderLayout());
+        JLabel titleLabel2 = new JLabel("Page 2", SwingConstants.CENTER);
+        titleLabel2.setFont(new Font("Arial", Font.BOLD, 24));
+        page2.add(titleLabel2, BorderLayout.NORTH);
+
+        JButton backButton = new JButton("←");
+        backButton.addActionListener(e -> showCard("Page 1"));
+        JPanel leftPanel = new JPanel(new GridBagLayout());
+        leftPanel.setOpaque(true);
+        leftPanel.add(backButton);
+        page2.add(leftPanel, BorderLayout.WEST);
+
+
+        innerCenterPanel.add(page1, "Page 1");
+        innerCenterPanel.add(page2, "Page 2");
 
         outerCenterPanel.add(innerCenterPanel, BorderLayout.CENTER);
 
         frame.add(outerCenterPanel, BorderLayout.CENTER);
     }
 
+    public void showCard(String name) {
+        cardLayout.show(innerCenterPanel, name);
+    }
     /**
      * Temporary placeholder to test the view independently when working on it.
      * <p>
