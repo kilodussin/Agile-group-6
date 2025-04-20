@@ -1,5 +1,7 @@
 package View;
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
@@ -12,6 +14,8 @@ import java.awt.*;
  */
 public class SettingsView extends BaseView{
     private JPanel headerPanel;
+
+    private EmptyBorder headerBorder;
     private JLabel titleLabel;
     protected JButton escapeButton;
 
@@ -38,7 +42,7 @@ public class SettingsView extends BaseView{
      * This includes initializing button, labels, sliders and calling methods to create each panel.
      */
     public SettingsView(){
-        super("Settings");
+        super("Settings", "/Resources/Background1.png");
 
         escapeButton = new JButton("ESCAPE");
 
@@ -65,17 +69,25 @@ public class SettingsView extends BaseView{
      * - The escape button is placed to the left
      * - The title label is centered
      * <p>
+     * Padding is applied using EmptyBorder to create space around the header content
+     * <p>
+     * This panel is made transparent by setting opaque to false, allowing the background image to show through.
+     * <p>
      * This panel is added to the north container of the frame.
      */
     private void createSettingsHeader(){
 
         headerPanel = new JPanel(new BorderLayout(-90, 0));
+        headerBorder = new EmptyBorder(20,20,10,10);
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
         titleLabel = new JLabel("SETTINGS", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         headerPanel.add(titleLabel, BorderLayout.CENTER);
+        headerPanel.setBorder(headerBorder);
+
+        headerPanel.setOpaque(false);
 
         frame.add(headerPanel, BorderLayout.NORTH);
     }
@@ -83,7 +95,7 @@ public class SettingsView extends BaseView{
     /**
      * Creates a center panel containing setting controls for music and SFX.
      * <p>
-     * The layout uses gridbaglayout to properly align components such as labels, toggle buttons and sliders.
+     * The layout uses GridBagLayout to properly align components such as labels, toggle buttons and sliders.
      * The components are arranged in two rows: One for music and one for SFX.
      * The music and SFX controls are placeholders for future logic.
      * <p>
@@ -136,6 +148,7 @@ public class SettingsView extends BaseView{
         innerCenterPanel.add(sfxHighLabel, settingComponentsLayout);
 
         outerCenterPanel.add(innerCenterPanel, BorderLayout.CENTER);
+        outerCenterPanel.setOpaque(false);
 
         frame.add(outerCenterPanel, BorderLayout.CENTER);
     }

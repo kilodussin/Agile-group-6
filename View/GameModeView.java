@@ -1,4 +1,5 @@
 package View;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -12,6 +13,7 @@ import java.awt.*;
 
 public class GameModeView extends BaseView{
     private JPanel headerPanel;
+    private EmptyBorder headerBorder;
     private JLabel titleLabel;
     protected JButton escapeButton;
     protected JButton easyButton;
@@ -26,7 +28,7 @@ public class GameModeView extends BaseView{
      * This includes initializing buttons and calling methods to create each panel.
      */
     public GameModeView(){
-        super("Game Mode");
+        super("Game Mode", "/Resources/Background1.png");
 
         escapeButton = new JButton("ESCAPE");
 
@@ -43,20 +45,28 @@ public class GameModeView extends BaseView{
      * Creates a header panel containing the view title and an escape button.
      * <p>
      * This header panel uses BorderLayout to position its components:
-     * - The escape button is placed to the left
-     * - The title label is centered
+     * - The escape button is placed to the left (WEST)
+     * - The title label is centered (CENTER)
+     * <p>
+     * Padding is applied using EmptyBorder to create space around the header content
+     * <p>
+     * The panel is made transparent by setting opaque to false, allowing the background image to show through.
      * <p>
      * This panel is added to the north container of the frame.
      */
     private void createGameModeHeader(){
 
         headerPanel = new JPanel(new BorderLayout(-90,0));
+        headerBorder = new EmptyBorder(20,20,10,0);
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
         titleLabel = new JLabel("GAME MODE", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         headerPanel.add(titleLabel, BorderLayout.CENTER);
+        headerPanel.setBorder(headerBorder);
+
+        headerPanel.setOpaque(false);
 
 
         frame.add(headerPanel, BorderLayout.NORTH);
@@ -65,11 +75,15 @@ public class GameModeView extends BaseView{
     /**
      * Creates a center panel containing all difficulty buttons (Easy, Normal, Hard).
      * <p>
-     * This panel uses Gridlayout to properly arrange the difficulty buttons vertically:
+     * This panel uses GridLayout to properly arrange the difficulty buttons vertically:
      * - The easy button is placed on top
      * - The normal button is placed in the middle
-     * - The hard button is placed in the bottom
+     * - The hard button is placed at the bottom
+     * <p>
      * An EmptyBorder is applied to visually center the buttons vertically and horizontally within the panel.
+     * <p>
+     * This panel is made transparent by setting opaque to false, allowing the background image to show through.
+     * <p>
      * This panel is added to the center container of the frame.
      */
     private void createGameModeCenterPanel(){
@@ -80,6 +94,7 @@ public class GameModeView extends BaseView{
         difficultyButtons.add(normalButton);
         difficultyButtons.add(hardButton);
         difficultyButtons.setBorder(difficultyButtonsBorder);
+        difficultyButtons.setOpaque(false);
 
         frame.add(difficultyButtons, BorderLayout.CENTER);
     }
@@ -93,10 +108,11 @@ public class GameModeView extends BaseView{
 
     /* public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            GameModesView gameModeView = new GameModeView();
-            gameModesView.show();
+            GameModeView gameModeView = new GameModeView();
+            gameModeView.show();
         });
 
     } */
 
 }
+

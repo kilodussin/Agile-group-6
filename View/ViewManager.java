@@ -1,4 +1,5 @@
 package View;
+
 import javax.swing.*;
 
 /**
@@ -48,15 +49,15 @@ public class ViewManager {
     /**
      * Shows the start menu view and sets up its actions to buttons that navigate to other views.
      */
-    public void showStartMenuView(){
-        MainMenuView startMenuView = new MainMenuView();
+    public void showMainMenuView(){
+        MainMenuView MainMenuView = new MainMenuView();
 
-        startMenuView.startButton.addActionListener( e -> showGameModesView());
-        startMenuView.tutorialButton.addActionListener(e -> showTutorialView());
-        startMenuView.highscoreButton.addActionListener(e -> showHighscoreBoardView());
-        startMenuView.settingsButton.addActionListener(e -> showSettingsView());
+        MainMenuView.startButton.addActionListener( e -> showGameModesView());
+        MainMenuView.tutorialButton.addActionListener(e -> showTutorialView());
+        MainMenuView.highscoreButton.addActionListener(e -> showHighscoreBoardView());
+        MainMenuView.settingsButton.addActionListener(e -> showSettingsView());
 
-        showView(startMenuView);
+        showView(MainMenuView);
     }
 
     /**
@@ -65,7 +66,7 @@ public class ViewManager {
     public void showTutorialView(){
         TutorialView tutorialView = new TutorialView();
 
-        tutorialView.escapeButton.addActionListener(e -> showStartMenuView());
+        tutorialView.escapeButton.addActionListener(e -> showMainMenuView());
 
         showView(tutorialView);
     }
@@ -76,7 +77,7 @@ public class ViewManager {
     public void showHighscoreBoardView(){
         HighscoreBoardView highscoreBoardView = new HighscoreBoardView();
 
-        highscoreBoardView.escapeButton.addActionListener(e -> showStartMenuView());
+        highscoreBoardView.escapeButton.addActionListener(e -> showMainMenuView());
 
         showView(highscoreBoardView);
     }
@@ -87,7 +88,7 @@ public class ViewManager {
     public void showSettingsView(){
         SettingsView settingsView = new SettingsView();
 
-        settingsView.escapeButton.addActionListener(e -> showStartMenuView());
+        settingsView.escapeButton.addActionListener(e -> showMainMenuView());
 
         showView(settingsView);
     }
@@ -98,7 +99,7 @@ public class ViewManager {
     public void showGameModesView(){
         GameModeView gameModesView = new GameModeView();
 
-        gameModesView.escapeButton.addActionListener(e -> showStartMenuView());
+        gameModesView.escapeButton.addActionListener(e -> showMainMenuView());
         gameModesView.easyButton.addActionListener(e -> showGameView());
         gameModesView.normalButton.addActionListener(e -> showGameView());
         gameModesView.hardButton.addActionListener(e -> showGameView());
@@ -125,7 +126,7 @@ public class ViewManager {
         GameOverView gameOverView = new GameOverView();
 
         gameOverView.playAgainButton.addActionListener(e -> showGameView());
-        gameOverView.mainMenuButton.addActionListener(e -> showStartMenuView());
+        gameOverView.mainMenuButton.addActionListener(e -> showMainMenuView());
 
         showView(gameOverView);
     }
@@ -143,7 +144,7 @@ public class ViewManager {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             ViewManager viewManager = ViewManager.getInstance();
-            viewManager.showStartMenuView();
+            viewManager.showMainMenuView();
         });
 
     }
