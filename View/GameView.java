@@ -114,7 +114,7 @@ public class GameView extends BaseView{
      */
     private void createGameViewCenterPanel(){
 
-        centerPanel = new JPanel(new BorderLayout());
+        centerPanel = new JPanel(null);
 
         centerPanel.add(gameOverViewPlaceholder, BorderLayout.SOUTH);
         centerPanel.setOpaque(false);
