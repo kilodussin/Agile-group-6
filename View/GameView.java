@@ -1,4 +1,7 @@
+package View;
+
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
 /**
@@ -13,6 +16,8 @@ import java.awt.*;
 public class GameView extends BaseView{
 
     private JPanel headerPanel;
+
+    private EmptyBorder headerBorder;
     protected JButton escapeButton;
 
     private JLabel scorePlaceholder;
@@ -25,9 +30,14 @@ public class GameView extends BaseView{
      * Constructs the GameView and sets up all UI components.
      * <p>
      * This includes initializing buttons and calling methods to create each panel.
+     * <p>
+     * A different background is being used for the GameView:
+     * - To separate the gameplay from the rest of the application
+     * - To visually increase space for components top be placed
      */
     public GameView(){
-        super("Game View");
+        // super("Game View", "/Resources/Background1.png");
+        super("Game View", "/Resources/Background2.png");
 
         escapeButton = new JButton("ESCAPE");
         gameOverViewPlaceholder = new JButton("Game Over View (Placeholder for navigation)");
@@ -44,11 +54,16 @@ public class GameView extends BaseView{
      * - The score placeholder is centered
      * - The timer placeholder is placed to the right
      * <p>
+     *  Padding is applied using EmptyBorder to create space around the header content
+     * <p>
+     * This panel is made transparent by setting opaque to false, allowing the background image to show through.
+     * <p>
      * This panel is added to the north container of the frame.
      */
     private void createGameViewHeader(){
 
         headerPanel = new JPanel(new BorderLayout());
+        headerBorder = new EmptyBorder(20,20,0,20);
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
@@ -59,22 +74,31 @@ public class GameView extends BaseView{
         timerPlaceholder = new JLabel("00:00", SwingConstants.CENTER);
         timerPlaceholder.setFont(new Font("Arial", Font.BOLD, 30));
         headerPanel.add(timerPlaceholder, BorderLayout.EAST);
+        headerPanel.setBorder(headerBorder);
+
+        headerPanel.setOpaque(false);
 
         frame.add(headerPanel, BorderLayout.NORTH);
     }
 
     /**
-     * Creates a center panel - Currently works as a visual placeholder
+     * Creates a center panel
      * <p>
-     * This layout consists of a gray-colored panel that holds a placeholder button,
+     * This layout consists of a panel that is made transparent by setting opaque to false,
+     * allowing the background image to show through.
+     * <p>
+     * This panel currently holds a placeholder button,
      * which should simulate navigation to the Game Over screen during the development progress.
+     * <p>
+     * This panel is made transparent by setting opaque to false, allowing the background image to show through.
+     * <p>
      * This panel is added to the center panel of the frame.
      */
     private void createGameViewCenterPanel(){
         centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setBackground(Color.GRAY);
 
         centerPanel.add(gameOverViewPlaceholder, BorderLayout.SOUTH);
+        centerPanel.setOpaque(false);
 
         frame.add(centerPanel, BorderLayout.CENTER);
     }
