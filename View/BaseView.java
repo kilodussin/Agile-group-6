@@ -24,7 +24,7 @@ public abstract class BaseView {
         frame = new JFrame(title);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.setSize(1420, 1080);
+        frame.setSize(1000, 700);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);
     }

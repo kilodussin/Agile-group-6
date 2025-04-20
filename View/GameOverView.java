@@ -84,7 +84,7 @@ public class GameOverView extends BaseView{
     private void createGameOverCenterPanel() {
         outerCenterPanel = new JPanel(new BorderLayout());
         outerCenterPanel.setBackground(Color.GRAY);
-        outerCenterPanel.setBorder(BorderFactory.createEmptyBorder(130, 130, 130, 130));
+        outerCenterPanel.setBorder(BorderFactory.createEmptyBorder(60, 60, 60, 60));
 
         // Create a container for score and highscore labels with space between them
         JPanel scorePanel = new JPanel(new BorderLayout());
