@@ -46,10 +46,15 @@ public class CountdownTimer {
     public int returnGameTime() {
         return timerInSeconds;
     }
+
+    public int getTimeLeft() {
+        return timeLeft;
+    }
     private void buildTimerVisuals() {
 
         timeLabel = new JLabel(timerInSeconds + " s left!");
         timeLabel.setFont(new Font("Helvetica", Font.BOLD, 30));
+        timeLabel.setOpaque(false);
     }
 
     /**

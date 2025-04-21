@@ -25,7 +25,7 @@ public class NonRecyclableTrash extends Trash{
 
     @Override
     public String generateImagePath() {
-        return "Resources/default_trash_image.png";
+        return "Resources/100x100trash.png";
     }
 
 }

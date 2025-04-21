@@ -7,5 +7,9 @@ package Model.Trash;
  */
 public enum TrashTypes {
     FOOD,
-    NONRECYCLABLE;
+    NONRECYCLABLE,
+    PLASTIC,
+    COMBUSTIBLE,
+    GLASS;
+
 }
