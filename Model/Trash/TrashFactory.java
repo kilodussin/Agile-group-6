@@ -19,11 +19,11 @@ public class TrashFactory {
      */
     public Trash createTrash(TrashTypes type, double Xpos, double Ypos, double width, double height, int points){
         return switch (type) {
-            case FOOD -> new FoodTrash(new Hitbox(Xpos, Ypos, width, height), 2);
-            case NONRECYCLABLE -> new NonRecyclableTrash(new Hitbox(Xpos, Ypos, width, height), 7);
-            case GLASS -> new GlassTrash(new Hitbox(Xpos, Ypos, width, height), 3);
-            case COMBUSTIBLE -> new CombustibleTrash(new Hitbox(Xpos, Ypos, width, height), 5);
-            case PLASTIC -> new PlasticTrash(new Hitbox(Xpos, Ypos, width, height), 1);
+            case FOOD -> new FoodTrash(new Hitbox(Xpos, Ypos, width, height), points);
+            case NONRECYCLABLE -> new NonRecyclableTrash(new Hitbox(Xpos, Ypos, width, height), points);
+            case GLASS -> new GlassTrash(new Hitbox(Xpos, Ypos, width, height), points);
+            case COMBUSTIBLE -> new CombustibleTrash(new Hitbox(Xpos, Ypos, width, height), points);
+            case PLASTIC -> new PlasticTrash(new Hitbox(Xpos, Ypos, width, height), points);
 
             default -> throw new IllegalArgumentException("Unvalid trash type");
         };
