@@ -53,14 +53,18 @@ public class CountdownTimer {
     }
 
     /**
-     Two functions for returning starting game time and current game timer value
-     timerInSeconds = start time for timer
-     timeLeft = time left at the exact moment of calling
+     * Returns the starting time in seconds (the timer value on game start).
+     * @return start time for timer
      */
 
     public int returnGameTime() {
         return timerInSeconds;
     }
+
+    /**
+     * Returns time left on the timer at the exact moment of calling this function.
+     * @return time left at the exact moment of calling
+     */
 
     public int getTimeLeft() {
         return timeLeft;
