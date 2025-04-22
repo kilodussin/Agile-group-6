@@ -21,6 +21,10 @@ public class TrashFactory {
         return switch (type) {
             case FOOD -> new FoodTrash(new Hitbox(Xpos, Ypos, width, height), points);
             case NONRECYCLABLE -> new NonRecyclableTrash(new Hitbox(Xpos, Ypos, width, height), points);
+            case GLASS -> new GlassTrash(new Hitbox(Xpos, Ypos, width, height), points);
+            case COMBUSTIBLE -> new CombustibleTrash(new Hitbox(Xpos, Ypos, width, height), points);
+            case PLASTIC -> new PlasticTrash(new Hitbox(Xpos, Ypos, width, height), points);
+
             default -> throw new IllegalArgumentException("Unvalid trash type");
         };
     }

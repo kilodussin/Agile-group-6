@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-/*
+/**
 maxEntries decides how many rows of highscores should be displayed
 filePath is path to highscores .txt document
  */
@@ -12,7 +12,7 @@ public class HighscoreIO {
     private final int maxEntries = 10;
     private final String filePath = "Resources/highscores.txt";
 
-    /*
+    /**
     readFile reads the local .txt file and appends it to a list of object type
     'Highscores'. Splits on ',', trims unwanted things and then appends to the ArrayList
 
@@ -57,7 +57,7 @@ public class HighscoreIO {
     }
 
 
-    /*
+    /**
     Writes the .txt file with highscores, updates every time a game is over.
 
      */
@@ -79,7 +79,7 @@ public class HighscoreIO {
         }
     }
 
-    /*
+    /**
 
     This could be useful later
 
@@ -109,7 +109,7 @@ public class HighscoreIO {
 
      */
 
-    /*
+    /**
     Because we're using a simple .txt setup we cannot insert rows in the middle of
     the file. We therefore need to completely wipe and rewrite it in a correct order.
 

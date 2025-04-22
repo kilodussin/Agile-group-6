@@ -9,6 +9,6 @@ public enum TrashcanTypes {
     FOOD,
     NONRECYCLABLE,
     PLASTIC,
-    PAPER,
+    COMBUSTIBLE,
     GLASS;
 }

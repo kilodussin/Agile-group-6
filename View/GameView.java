@@ -53,6 +53,7 @@ public class GameView extends BaseView{
         createGameViewCenterPanel();
     }
 
+
     /**
      * Creates a header panel containing an escape button, and placeholders for a score system and a timer.
      * <p>
@@ -90,12 +91,14 @@ public class GameView extends BaseView{
         JPanel timerPanel = new JPanel(new BorderLayout());
         timerPanel.setBorder(BorderFactory.createEmptyBorder(0,0,0,40));
         timerPanel.add(countdownTimer.getComponent(), BorderLayout.CENTER);
+        timerPanel.setOpaque(false);
 
         headerPanel.add(timerPanel, BorderLayout.EAST);
 
         headerPanel.setOpaque(false);
 
         frame.add(headerPanel, BorderLayout.NORTH);
+
 
     }
 
@@ -112,6 +115,7 @@ public class GameView extends BaseView{
      * <p>
      * This panel is added to the center panel of the frame.
      */
+
     private void createGameViewCenterPanel(){
 
         centerPanel = new JPanel(null);

@@ -23,7 +23,7 @@ public class TrashcanFactory {
             case NONRECYCLABLE -> new NonRecyclableTrashcan(new Hitbox(Xpos, Ypos, width, height));
             case PLASTIC -> new PlasticTrashcan(new Hitbox(Xpos, Ypos, width, height));
             case GLASS -> new GlassTrashcan(new Hitbox(Xpos, Ypos, width, height));
-            case PAPER -> new PaperTrashcan(new Hitbox(Xpos, Ypos, width, height));
+            case COMBUSTIBLE -> new CombustibleTrashcan(new Hitbox(Xpos, Ypos, width, height));
 
             default -> throw new IllegalArgumentException("Unvalid trashcan type");
         };
