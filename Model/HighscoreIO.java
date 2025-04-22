@@ -109,7 +109,7 @@ public class HighscoreIO {
 
      */
 
-    /*
+    /**
     Because we're using a simple .txt setup we cannot insert rows in the middle of
     the file. We therefore need to completely wipe and rewrite it in a correct order.
 
