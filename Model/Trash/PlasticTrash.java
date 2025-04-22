@@ -2,6 +2,13 @@ package Model.Trash;
 
 import Model.Hitbox;
 
+/**
+ * Plastic trash class
+ * <p>
+ * This class represents the glass trash that is to be sorted in the general game.
+ * Trash has points which are added or removed from the score depending on if the trash was correctly sorted.
+ */
+
 public class PlasticTrash extends Trash{
 
     /**

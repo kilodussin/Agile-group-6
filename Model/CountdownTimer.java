@@ -9,6 +9,12 @@ import java.io.FileNotFoundException;
 import View.GameView;
 import Model.HighscoreIO;
 
+/**
+ CountdownTimer is responsible for the in-game timer.
+ * We adjust the time with the final int timer
+ * timeLabel is the label for displaying the time in view
+ */
+
 
 public class CountdownTimer {
 
@@ -24,7 +30,10 @@ public class CountdownTimer {
     private final int timerInSeconds = 10;
     private int timeLeft;
 
-    /** _____________________________________________________________
+    /**
+     Constructs a CountdownTimer, takes gameview and highscores parameters.
+     uses buildTimerVisuals() to build the visuals
+     starts the actual timer with startTimer();
      */
 
     public CountdownTimer(GameView gameView, HighscoreIO highscoreIO) {
@@ -35,12 +44,18 @@ public class CountdownTimer {
         startTimer();
     }
 
+    /**
+     getComponent is used to get the value (text for time left) of the timeLabel properly
+     */
+
     public JComponent getComponent() {
         return timeLabel;
     }
 
-    /** Necessary code for basic timer UI (Java Swing)
-     * Should be moved to view for perfect MVC (can be done later)
+    /**
+     Two functions for returning starting game time and current game timer value
+     timerInSeconds = start time for timer
+     timeLeft = time left at the exact moment of calling
      */
 
     public int returnGameTime() {
@@ -50,6 +65,10 @@ public class CountdownTimer {
     public int getTimeLeft() {
         return timeLeft;
     }
+
+    /** Necessary code for basic timer UI (Java Swing)
+     * Should be moved to view for perfect MVC (can be done later)
+     */
     private void buildTimerVisuals() {
 
         timeLabel = new JLabel(timerInSeconds + " s left!");
@@ -77,6 +96,10 @@ public class CountdownTimer {
                 mainTimer.stop();
                 timeLabel.setText("Time is up! ");
 
+                // Functionality for grabbing final score when game is over
+                // Send the new Highscores object through the sortAndWrite to sort entries and write it to file
+                // Could be broken out into a standalone function
+
                 double score = gameView.getFinalScore();
                 int time = returnGameTime();
                 String player = "player 1";
@@ -88,8 +111,6 @@ public class CountdownTimer {
                     throw new RuntimeException(e);
                 }
 
-
-                // Fire up the game over screen...
             }
 
         });
