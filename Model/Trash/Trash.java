@@ -2,6 +2,8 @@ package Model.Trash;
 
 import Model.Hitbox;
 
+import java.util.ArrayList;
+
 /**
  * Trash class
  * <p>
@@ -15,6 +17,7 @@ public abstract class Trash {
     private Hitbox hitbox;
     private String imagePath;
     private int points;
+    private ArrayList<String> incorrectDescriptions;
 
     /*--------------------Constructor--------------------*/
 
@@ -28,6 +31,7 @@ public abstract class Trash {
     public Trash(Hitbox hitbox, int points) {
         this.hitbox = hitbox;
         this.points = points;
+        this.incorrectDescriptions = new ArrayList<String>();
     }
 
     /*--------------------Getters--------------------*/
@@ -95,6 +99,10 @@ public abstract class Trash {
         return this.imagePath;
     }
 
+    public ArrayList<String> getIncorrectDescriptions(){
+        return this.incorrectDescriptions;
+    }
+
     /*--------------------Setters--------------------*/
 
     /**
@@ -135,7 +143,6 @@ public abstract class Trash {
         hitbox.setHeight(newHeight);
     }
 
-
     /**
      * Sets the points of the Trash
      *
@@ -163,5 +170,35 @@ public abstract class Trash {
      * Generates the image of the Trash
      */
     public abstract String generateImagePath();
+
+    public String generateIncorrectDescription(ArrayList<String> exceptions) {
+        ArrayList<String> incorrectDescriptions = this.incorrectDescriptions;
+        int max = incorrectDescriptions.size();
+        int randomInt = (int)(Math.random() * max);
+        String description = incorrectDescriptions.get(randomInt);
+        for (String exception: exceptions) {
+            while (description == exception) {
+                randomInt = (int) (Math.random() * max);
+                description = incorrectDescriptions.get(randomInt);
+            }
+        }
+        return description;
+    }
+
+    /**
+     * Adds the new description to the list of incorrect descriptions
+     */
+    public void addIncorrectDescriptions(String newDescription) {
+        this.incorrectDescriptions.add(newDescription);
+    }
+
+    /**
+     * Adds the new descriptions to the list of incorrect descriptions
+     */
+    public void addIncorrectDescriptions(ArrayList<String> newDescriptions){
+        for (String newDescription : newDescriptions) {
+            this.incorrectDescriptions.add(newDescription);
+        }
+    }
 
 }
