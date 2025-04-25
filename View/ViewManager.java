@@ -52,7 +52,7 @@ public class ViewManager {
     public void showMainMenuView(){
         MainMenuView MainMenuView = new MainMenuView();
 
-        MainMenuView.startButton.addActionListener( e -> showGameModesView());
+        MainMenuView.startButton.addActionListener( e -> showGameModeView());
         MainMenuView.tutorialButton.addActionListener(e -> showTutorialView());
         MainMenuView.highscoreButton.addActionListener(e -> showHighscoreBoardView());
         MainMenuView.settingsButton.addActionListener(e -> showSettingsView());
@@ -96,15 +96,15 @@ public class ViewManager {
     /**
      * Shows the game mode view and sets up its actions to buttons that navigate to other views.
      */
-    public void showGameModesView(){
-        GameModeView gameModesView = new GameModeView();
+    public void showGameModeView(){
+        GameModeView gameModeView = new GameModeView();
 
-        gameModesView.escapeButton.addActionListener(e -> showMainMenuView());
-        gameModesView.easyButton.addActionListener(e -> showGameView());
-        gameModesView.normalButton.addActionListener(e -> showGameView());
-        gameModesView.hardButton.addActionListener(e -> showGameView());
+        gameModeView.escapeButton.addActionListener(e -> showMainMenuView());
+        gameModeView.easyButton.addActionListener(e -> showGameView());
+        gameModeView.normalButton.addActionListener(e -> showGameView2());
+        gameModeView.hardButton.addActionListener(e -> showGameView());
 
-        showView(gameModesView);
+        showView(gameModeView);
     }
 
     /**
@@ -113,10 +113,22 @@ public class ViewManager {
     public void showGameView(){
         GameView gameView = new GameView();
 
-        gameView.escapeButton.addActionListener(e -> showGameModesView());
+        gameView.escapeButton.addActionListener(e -> showGameModeView());
         gameView.gameOverViewPlaceholder.addActionListener(e -> showGameOverView());
 
         showView(gameView);
+    }
+
+    /**
+     * Shows the second game view and sets up its actions to buttons that navigate to other views.
+     */
+    public void showGameView2(){
+        GameView2 gameView2 = new GameView2();
+
+        gameView2.escapeButton.addActionListener(e -> showGameModeView());
+        gameView2.gameOverViewPlaceholder.addActionListener(e -> showGameOverView2());
+
+        showView(gameView2);
     }
 
     /**
@@ -129,6 +141,18 @@ public class ViewManager {
         gameOverView.mainMenuButton.addActionListener(e -> showMainMenuView());
 
         showView(gameOverView);
+    }
+
+    /**
+     * Shows the second game over view and sets up its actions to buttons that navigate to other views.
+     */
+    public void showGameOverView2(){
+        GameOverView2 gameOverView2 = new GameOverView2();
+
+        gameOverView2.playAgainButton.addActionListener(e -> showGameView2());
+        gameOverView2.mainMenuButton.addActionListener(e -> showMainMenuView());
+
+        showView(gameOverView2);
     }
 
     /**

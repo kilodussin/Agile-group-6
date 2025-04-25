@@ -2,14 +2,15 @@ package Model;
 
 import Model.Trash.Trash;
 import Model.Trashcan.Trashcan;
+// import Model.Textbox.Textbox;
 
 /**
  * Score class
  * <p>
  * This class is responsible for managing the player's score in the game.
- * It keeps track of the current score, updates it when trash is sorted, 
+ * It keeps track of the current score, updates it when trash is sorted,
  * and provides methods to reset or retrieve the score.
- * Points are added when trash is correctly sorted and subtracted when 
+ * Points are added when trash is correctly sorted and subtracted when
  * incorrectly sorted, ensuring that the score does not go below zero.
  */
 
@@ -47,11 +48,27 @@ public class Score {
      * @param trash the trash being sorted
      * @param trashcan the trashcan where the trash was sorted
      */
-    public void updateScore(Trash trash, Trashcan trashcan) {
+    public void updateScoreTrash(Trash trash, Trashcan trashcan) {
         if (trashcan.isCorrectlySorted(trash)) {
             addPoints(trash.getPoints());
         } else {
             subtractPoints(trash.getPoints());
+        }
+    }
+
+    /**
+     * Updates the score based on whether the correct combination of trash and description was chosen.
+     * <p>
+     * Note: It's probably better if it gets replaced with comparison to getCorrectDescription() in the
+     * future when/if available
+     * @param trash the trash being sorted
+     * @param textbox the textbox containing the description to check against
+     */
+    public void updateScoreDescription(Trash trash, Textbox textbox) {
+        if (trash.getIncorrectDescriptions().contains(textbox.getDescription())) {
+            subtractPoints(trash.getPoints());
+        } else {
+            addPoints(trash.getPoints());
         }
     }
 
