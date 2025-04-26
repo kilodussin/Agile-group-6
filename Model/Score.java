@@ -64,13 +64,13 @@ public class Score {
      * @param trash the trash being sorted
      * @param textbox the textbox containing the description to check against
      */
-    public void updateScoreDescription(Trash trash, Textbox textbox) {
+    /* public void updateScoreDescription(Trash trash, Textbox textbox) {
         if (trash.getIncorrectDescriptions().contains(textbox.getDescription())) {
             subtractPoints(trash.getPoints());
         } else {
             addPoints(trash.getPoints());
         }
-    }
+    } */
 
     /**
      * Adds points to the current score

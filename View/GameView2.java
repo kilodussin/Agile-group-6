@@ -85,7 +85,7 @@ public class GameView2 extends BaseView{
         HighscoreIO highscoreIO = new HighscoreIO();
 
         headerPanel = new JPanel(new BorderLayout());
-        headerBorder = new EmptyBorder(0, 20, 0, 20);
+        headerBorder = new EmptyBorder(0, 20, 0, 0);
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
@@ -102,6 +102,7 @@ public class GameView2 extends BaseView{
 
         headerPanel.add(timerPanel, BorderLayout.EAST);
         headerPanel.setOpaque(false);
+        headerPanel.setBorder(headerBorder);
 
         frame.add(headerPanel, BorderLayout.NORTH);
     }
@@ -115,10 +116,10 @@ public class GameView2 extends BaseView{
      * @param trash the trash item being sorted
      * @param textbox the textbox containing the description to check against
      */
-    public void updateScoreDescription(Trash trash, Textbox textbox) {
+    /* public void updateScoreDescription(Trash trash, Textbox textbox) {
         score.updateScoreDescription(trash, textbox);
         scoreLabel.setText("Score: " + score.getCurrentScore());
-    }
+    } */
 
     /**
      * Creates a center panel
