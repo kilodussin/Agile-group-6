@@ -1,6 +1,7 @@
 package View;
 
 import javax.swing.*;
+import View.Gamemode2.*;
 
 /**
  * A class using singleton pattern, responsible for managing the applications views.
@@ -100,9 +101,9 @@ public class ViewManager {
         GameModeView gameModesView = new GameModeView();
 
         gameModesView.escapeButton.addActionListener(e -> showMainMenuView());
-        gameModesView.easyButton.addActionListener(e -> showGameView());
-        gameModesView.normalButton.addActionListener(e -> showGameView());
-        gameModesView.hardButton.addActionListener(e -> showGameView());
+        gameModesView.gamemode1Button.addActionListener(e -> showGameView());
+        gameModesView.gamemode2Button.addActionListener(e -> showGameView2());
+        gameModesView.gamemode3Button.addActionListener(e -> showGameView()); // Placeholder for potential future game mode
 
         showView(gameModesView);
     }
@@ -129,6 +130,35 @@ public class ViewManager {
         gameOverView.mainMenuButton.addActionListener(e -> showMainMenuView());
 
         showView(gameOverView);
+    }
+    /*
+    public void showGameModes2View(){
+        GameModeView2 gameModesView2 = new GameModeView2();
+
+        gameModesView2.escapeButton.addActionListener(e -> showMainMenuView());
+        gameModesView2.gamemode1Button.addActionListener(e -> showGameView());
+        gameModesView2.gamemode2Button.addActionListener(e -> showGameView2());
+        gameModesView2.gamemode3Button.addActionListener(e -> showGameView()); // Placeholder for potential future game mode
+
+        showView(gameModesView2);
+    }
+*/
+    public void showGameView2(){
+        GameView2 gameView2 = new GameView2();
+
+        gameView2.escapeButton.addActionListener(e -> showGameModesView());
+        gameView2.gameOverViewPlaceholder.addActionListener(e -> showGameOverView());
+
+        showView(gameView2);
+    }
+
+    public void showGameOverView2(){
+        GameOverView2 gameOverView2 = new GameOverView2();
+
+        gameOverView2.playAgainButton.addActionListener(e -> showGameView2());
+        gameOverView2.mainMenuButton.addActionListener(e -> showMainMenuView());
+
+        showView(gameOverView2);
     }
 
     /**

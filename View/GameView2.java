@@ -1,4 +1,4 @@
-package View.Gamemode2;
+package View;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -9,7 +9,6 @@ import Model.Hitbox;
 import Model.Trashcan.PlasticTrashcan;
 import Model.Trashcan.SpawnTrashcans;
 import Model.Trashcan.Trashcan;
-import View.*;
 
 
 /**
@@ -21,18 +20,18 @@ import View.*;
  * This view serves as the foundation for the actual game logic.
  * Current components serves as placeholders for now, and will be updated as the game develops.
  */
-public class GameView2 extends BaseView2{
+public class GameView2 extends BaseView{
 
     private JPanel headerPanel;
 
     private EmptyBorder headerBorder;
-    protected JButton escapeButton;
+    public JButton escapeButton;
 
     private JLabel scorePlaceholder;
     private CountdownTimer2 countdownTimer;
 
     private JPanel centerPanel;
-    protected JButton gameOverViewPlaceholder;
+    public JButton gameOverViewPlaceholder;
 
     /**
      * Constructs the GameView and sets up all UI components.

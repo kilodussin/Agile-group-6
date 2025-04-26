@@ -1,4 +1,4 @@
-package View.Gamemode2;
+package View;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -11,7 +11,7 @@ import java.awt.*;
  * It also includes a main section that contains buttons to
  * either play the game again or return to the main menu.
  */
-public class GameOverView2 extends BaseView2{
+public class GameOverView2 extends BaseView{
     private JPanel headerPanel;
 
     private EmptyBorder headerBorder;
@@ -22,8 +22,8 @@ public class GameOverView2 extends BaseView2{
 
     private JPanel bottomPanel;
 
-    protected JButton playAgainButton;
-    protected JButton mainMenuButton;
+    public JButton playAgainButton;
+    public JButton mainMenuButton;
 
     private EmptyBorder bottomButtonsBorder;
 

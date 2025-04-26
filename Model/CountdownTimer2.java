@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
 
-import View.Gamemode2.GameView2;
 import Model.HighscoreIO;
+import View.GameView2;
 
 /**
  CountdownTimer is responsible for the in-game timer.
