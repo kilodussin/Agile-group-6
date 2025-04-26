@@ -130,18 +130,7 @@ public class ViewManager {
 
         showView(gameOverView);
     }
-    /*
-    public void showGameModes2View(){
-        GameModeView2 gameModesView2 = new GameModeView2();
 
-        gameModesView2.escapeButton.addActionListener(e -> showMainMenuView());
-        gameModesView2.gamemode1Button.addActionListener(e -> showGameView());
-        gameModesView2.gamemode2Button.addActionListener(e -> showGameView2());
-        gameModesView2.gamemode3Button.addActionListener(e -> showGameView()); // Placeholder for potential future game mode
-
-        showView(gameModesView2);
-    }
-*/
     public void showGameView2(){
         GameView2 gameView2 = new GameView2();
 
