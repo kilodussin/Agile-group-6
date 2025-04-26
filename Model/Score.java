@@ -61,7 +61,7 @@ public class Score {
      * @param points the points to add
      * @throws IllegalArgumentException if points are negative
      */
-    private void addPoints(int points) {
+    public void addPoints(int points) {
         if (points < 0) {
             throw new IllegalArgumentException("Points to add cannot be negative.");
         }
