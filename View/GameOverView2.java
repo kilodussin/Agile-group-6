@@ -22,8 +22,8 @@ public class GameOverView2 extends BaseView{
 
     private JPanel bottomPanel;
 
-    public JButton playAgainButton;
-    public JButton mainMenuButton;
+    protected JButton playAgainButton;
+    protected JButton mainMenuButton;
 
     private EmptyBorder bottomButtonsBorder;
 

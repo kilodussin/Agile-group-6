@@ -6,9 +6,8 @@ import java.awt.*;
 import Model.CountdownTimer2;
 import Model.HighscoreIO;
 import Model.Hitbox;
-import Model.Trashcan.PlasticTrashcan;
-import Model.Trashcan.SpawnTrashcans;
-import Model.Trashcan.Trashcan;
+import Model.Textbox.SpawnTextboxes;
+import Model.Textbox.Textbox;
 
 
 /**
@@ -25,13 +24,13 @@ public class GameView2 extends BaseView{
     private JPanel headerPanel;
 
     private EmptyBorder headerBorder;
-    public JButton escapeButton;
+    protected JButton escapeButton;
 
     private JLabel scorePlaceholder;
     private CountdownTimer2 countdownTimer;
 
     private JPanel centerPanel;
-    public JButton gameOverViewPlaceholder;
+    protected JButton gameOverViewPlaceholder;
 
     /**
      * Constructs the GameView and sets up all UI components.
@@ -129,9 +128,9 @@ public class GameView2 extends BaseView{
         Iterates through the cans and sends them through the renderer.
          */
 
-        SpawnTrashcans spawnThem = new SpawnTrashcans();
-        for (Trashcan thisCan : spawnThem.createTrashcans()) {
-            renderTrashcans(thisCan);
+        SpawnTextboxes spawnThem = new SpawnTextboxes();
+        for (Textbox thisBox : spawnThem.createTextboxes()) {
+            renderTextboxes(thisBox);
         }
 
 
@@ -143,18 +142,19 @@ public class GameView2 extends BaseView{
     (That's why it's converted)
      */
 
-    public void renderTrashcans(Trashcan trashcan) {
-        ImageIcon imageIcon = new ImageIcon(trashcan.generateImagePath());
-        JLabel jLabel = new JLabel(imageIcon);
-
-        double y = trashcan.getY();
-        double x = trashcan.getX();
-        double width = trashcan.getWidth();
-        double height = trashcan.getHeight();
-
+     public void renderTextboxes(Textbox textbox) {
+        JLabel jLabel = new JLabel("Placeholder");
+        jLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        jLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    
+        double y = textbox.getY();
+        double x = textbox.getX();
+        double width = textbox.getWidth();
+        double height = textbox.getHeight();
+    
         jLabel.setBounds((int) x, (int) y, (int) width, (int) height);
+    
         centerPanel.add(jLabel);
-
     }
 }
 

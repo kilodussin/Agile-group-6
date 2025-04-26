@@ -1,7 +1,6 @@
 package View;
 
 import javax.swing.*;
-import View.Gamemode2.*;
 
 /**
  * A class using singleton pattern, responsible for managing the applications views.

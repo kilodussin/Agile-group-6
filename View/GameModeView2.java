@@ -15,10 +15,10 @@ public class GameModeView2 extends BaseView{
     private JPanel headerPanel;
     private EmptyBorder headerBorder;
     private JLabel titleLabel;
-    public JButton escapeButton;
-    public JButton gamemode1Button;
-    public JButton gamemode2Button;
-    public JButton gamemode3Button;
+    protected JButton escapeButton;
+    protected JButton gamemode1Button;
+    protected JButton gamemode2Button;
+    protected JButton gamemode3Button;
     private JPanel gamemodeButtons;
     private EmptyBorder gamemodeButtonsBorder;
 
