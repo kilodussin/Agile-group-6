@@ -1,5 +1,6 @@
 package Model;
 
+import Model.Textbox.Textbox;
 import Model.Trash.Trash;
 import Model.Trashcan.Trashcan;
 // import Model.Textbox.Textbox;
@@ -25,10 +26,16 @@ public class Score {
     /**
      * Constructs a new Score instance with a score of 0
      */
+    public Score(double initialScore) {
+        this.currentScore = (int) initialScore;
+    }
+
+   /**
+     * Constructs a new Score instance with a default score of 0.
+     */
     public Score() {
         this.currentScore = 0;
     }
-
     /*--------------------Getters--------------------*/
 
     /**
@@ -56,21 +63,19 @@ public class Score {
         }
     }
 
-    /**
-     * Updates the score based on whether the correct combination of trash and description was chosen.
-     * <p>
-     * Note: It's probably better if it gets replaced with comparison to getCorrectDescription() in the
-     * future when/if available
-     * @param trash the trash being sorted
-     * @param textbox the textbox containing the description to check against
-     */
-    /* public void updateScoreDescription(Trash trash, Textbox textbox) {
-        if (trash.getIncorrectDescriptions().contains(textbox.getDescription())) {
-            subtractPoints(trash.getPoints());
-        } else {
-            addPoints(trash.getPoints());
-        }
-    } */
+   /**
+    * Updates the score based on whether the correct combination of trash and description was chosen.
+    *
+    * @param trash   the trash being sorted
+    * @param textbox the textbox containing the description to check against
+    */
+   public void updateScoreDescription(Trash trash, Textbox textbox) {
+       if (trash.getCorrectDescription().equals(textbox.getDescription())) {
+           addPoints(trash.getPoints());
+       } else {
+           subtractPoints(trash.getPoints());
+       }
+   }
 
     /**
      * Adds points to the current score

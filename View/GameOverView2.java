@@ -44,15 +44,21 @@ public class GameOverView2 extends BaseView {
     private EmptyBorder bottomButtonsBorder;
 
     /**
-     * Constructs the GameOverView and sets up all UI components.
+     * Constructs the GameOverView2 and sets up all UI components.
      * <p>
-     * This includes initializing buttons and calling methods to create each panel.
+     * This constructor initializes the buttons and calls methods to create the header, center, and bottom panels.
+     * It also sets the background image and initializes the score and highscore management.
+     * <p>
+     * @param score the player's final score to be displayed
      */
-    public GameOverView2() {
+    public GameOverView2(double score) {
         super("Game Over 2", "/Resources/Background1.png");
 
         playAgainButton = new JButton("PLAY AGAIN");
         mainMenuButton = new JButton("MAIN MENU");
+
+        this.score = new Score(score);
+        this.highscoreIO = new HighscoreIO();
 
         createGameOverHeader();
         createGameOverCenterPanel();
@@ -84,22 +90,23 @@ public class GameOverView2 extends BaseView {
     }
 
     /**
-     * Creates a center panel that displays the player's score and highscore.
+     * Creates and displays the center panel for the Game Over view, showing the player's score and the high score.
      * <p>
-     * The panel consists of:
-     * - An outer transparent panel (for layout spacing)
-     * - A white inner panel (currently unused but reserved for future elements)
-     * - A scores panel showing both current and highscore
-     *  <p>
-     * The scores panel displays the current score and highscore:
-     * - If the current score is a new highscore it's displayed with special formatting
-     * - The score is retrieved from the Score class, and the highscore is loaded from the highscores.txt file.
-     * - If the current score beats the highscore, it is automatically saved as the new highscore.
+     * This panel consists of:
+     * - An outer transparent panel that manages the layout and provides spacing.
+     * - A white inner panel, which is reserved for future use or additional elements.
+     * - A scores panel that displays both the current score and the high score:
+     *   - If the current score is a new high score, it is displayed with special formatting.
+     *   - The current score is retrieved from the `Score` class, while the high score is loaded from the `highscores2.txt` file.
+     *   - If the current score exceeds the previous high score, it is automatically saved as the new high score.
      * <p>
-     * The outerCenterPanel and scoresPanel are made transparent by setting opaque to false, allowing the
-     * background image to show through.
+     * The outer and scores panels are made transparent by setting their `opaque` property to `false`, allowing the
+     * background image to remain visible through the panels.
      * <p>
-     * This panel is added to the center container of the frame.
+     * This method adds the completed panel to the center container of the frame.
+     * <p>
+     * Note: The method also handles reading and writing to the `highscores2.txt` file, ensuring that the high score data is updated
+     * accordingly based on the player's performance in the game.
      */
     private void createGameOverCenterPanel() {
         outerCenterPanel = new JPanel(new BorderLayout());
@@ -113,13 +120,13 @@ public class GameOverView2 extends BaseView {
         scoresLayout.insets = new Insets(5, 300, 5, 300);
         scoresLayout.anchor = GridBagConstraints.WEST;
 
-        score = new Score();
-        int currentScore = score.getCurrentScore();
+        int currentScore = this.score.getCurrentScore();
 
         highscoreIO = new HighscoreIO();
+
         java.util.List<Highscores> highscores;
         try {
-            highscores = highscoreIO.readFile("Resources/highscores.txt");
+            highscores = highscoreIO.readFile("Resources/highscores2.txt");
         } catch (FileNotFoundException e) {
             highscores = new ArrayList<>();
         }
@@ -127,9 +134,9 @@ public class GameOverView2 extends BaseView {
         boolean isNewHighscore = highscores.isEmpty() || currentScore > highscores.get(0).getScore();
 
         if (isNewHighscore) {
-            newHighscore = new Highscores("Player", 0, currentScore); // Replace "Player" with actual player name if available
+            newHighscore = new Highscores("Player", 0, currentScore);
             try {
-                highscoreIO.sortAndWrite(newHighscore);
+                highscoreIO.sortAndWrite(newHighscore, "Resources/highscores2.txt");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -190,10 +197,11 @@ public class GameOverView2 extends BaseView {
      * This main method allows the GameOverView to run standalone, which is useful during development, for UI testing.
      * Uncomment to run the view standalone.
      */
-    public static void main(String[] args) {
+    /* public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            GameOverView2 gameOverView2 = new GameOverView2();
+            double score = 8888; // Example score
+            GameOverView2 gameOverView2 = new GameOverView2(score);
             gameOverView2.show();
         });
-    }
+    }*/
 }

@@ -18,6 +18,7 @@ public abstract class Trash {
     private String imagePath;
     private int points;
     private ArrayList<String> incorrectDescriptions;
+    private String correctDescription;
 
     /*--------------------Constructor--------------------*/
 
@@ -103,6 +104,15 @@ public abstract class Trash {
         return this.incorrectDescriptions;
     }
 
+   /**
+    * Getter for the correct description of the Trash.
+    *
+    * @return The correct description associated with the Trash.
+    */
+   public String getCorrectDescription() {
+       return correctDescription;
+   }
+
     /*--------------------Setters--------------------*/
 
     /**
@@ -163,6 +173,15 @@ public abstract class Trash {
     public void setImagePath(String newImagePath){
         this.imagePath = newImagePath;
     }
+
+ /**
+  * Sets the correct description of the Trash.
+  *
+  * @param correctDescription The correct description to be associated with the Trash.
+  */
+ public void setCorrectDescription(String correctDescription) {
+     this.correctDescription = correctDescription;
+ }
 
     /*--------------------Other--------------------*/
 

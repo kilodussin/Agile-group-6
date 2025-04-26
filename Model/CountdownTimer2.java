@@ -120,12 +120,12 @@ public class CountdownTimer2 {
 
                 Highscores newEntry = new Highscores(player, time, score);
                 try {
-                    highscoreIO.sortAndWrite(newEntry);
+                    highscoreIO.sortAndWrite(newEntry, "Resources/highscores2.txt");
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
                 SwingUtilities.invokeLater(() -> {
-                    ViewManager.getInstance().showGameOverView2();
+                    ViewManager.getInstance().showGameOverView2(score);
                 });
             }
         });

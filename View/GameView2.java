@@ -6,8 +6,8 @@ import java.awt.*;
 import Model.CountdownTimer2;
 import Model.HighscoreIO;
 import Model.Score;
-import Model.Hitbox;
-import Model.Trashcan.PlasticTrashcan;
+import Model.Textbox.Textbox;
+import Model.Trash.Trash;
 import Model.Trashcan.SpawnTrashcans;
 import Model.Trashcan.Trashcan;
 
@@ -31,7 +31,7 @@ public class GameView2 extends BaseView{
     private CountdownTimer2 countdownTimer;
 
     private JPanel centerPanel;
-    protected JButton gameOverViewPlaceholder;
+    public JButton gameOverViewPlaceholder;
 
     /**
      * Constructs the GameView and sets up all UI components.
@@ -116,10 +116,10 @@ public class GameView2 extends BaseView{
      * @param trash the trash item being sorted
      * @param textbox the textbox containing the description to check against
      */
-    /* public void updateScoreDescription(Trash trash, Textbox textbox) {
+    public void updateScoreDescription(Trash trash, Textbox textbox) {
         score.updateScoreDescription(trash, textbox);
         scoreLabel.setText("Score: " + score.getCurrentScore());
-    } */
+    }
 
     /**
      * Creates a center panel

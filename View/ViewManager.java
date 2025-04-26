@@ -95,6 +95,9 @@ public class ViewManager {
 
     /**
      * Shows the game mode view and sets up its actions to buttons that navigate to other views.
+     * <p>
+     * Note: GameView2 is currently connected to "medium" button, but this will most likely change in the future
+     * when the GameModeView gets updated.
      */
     public void showGameModeView(){
         GameModeView gameModeView = new GameModeView();
@@ -126,7 +129,6 @@ public class ViewManager {
         GameView2 gameView2 = new GameView2();
 
         gameView2.escapeButton.addActionListener(e -> showGameModeView());
-        gameView2.gameOverViewPlaceholder.addActionListener(e -> showGameOverView2());
 
         showView(gameView2);
     }
@@ -143,16 +145,31 @@ public class ViewManager {
         showView(gameOverView);
     }
 
+  /**
+   * Displays the second game over view and sets up actions for its buttons.
+   * @param score the final score to display in the second game over view
+   */
+  public void showGameOverView2(double score){
+      GameOverView2 gameOverView2 = new GameOverView2(score);
+
+      gameOverView2.playAgainButton.addActionListener(e -> showGameView2());
+      gameOverView2.mainMenuButton.addActionListener(e -> showMainMenuView());
+
+      showView(gameOverView2);
+  }
+
     /**
-     * Shows the second game over view and sets up its actions to buttons that navigate to other views.
+     * Returns the current frame being displayed by the application.
+     * <p>
+     * This method provides access to the currently active JFrame
+     * (the visible view in the application).
+     * <p>
+     * Useful for JUnit testing purposes.
+     * <p>
+     * @return the current JFrame being displayed
      */
-    public void showGameOverView2(){
-        GameOverView2 gameOverView2 = new GameOverView2();
-
-        gameOverView2.playAgainButton.addActionListener(e -> showGameView2());
-        gameOverView2.mainMenuButton.addActionListener(e -> showMainMenuView());
-
-        showView(gameOverView2);
+    public Object getCurrentFrame() {
+        return currentFrame;
     }
 
     /**
