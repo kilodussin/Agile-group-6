@@ -138,7 +138,7 @@ public class GameView2 extends BaseView{
 
 
     /**
-    Renders the trashcan in view, it NEEDS int for the bounds.
+    Renders the textbox in view, it NEEDS int for the bounds.
     (That's why it's converted)
      */
 
