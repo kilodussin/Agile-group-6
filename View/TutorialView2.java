@@ -77,7 +77,7 @@ public class TutorialView2 extends BaseView {
         page1.setLayout(new BoxLayout(page1, BoxLayout.Y_AXIS));
         page1.setBackground(Color.WHITE);
         page1.add(createTopPanel("Recycle the different objects by dragging them to the correct recycling bin"));
-        page1.add(createImagePanel("Resources/Background3.png"));
+        page1.add(createImagePanel("Resources/Tutorial2/GM2Page1Base.png"));
         innerCenterPanel.add(page1, "Page 1");
 
         // Page 2 - Tutorial 2 content
@@ -85,7 +85,7 @@ public class TutorialView2 extends BaseView {
         page2.setLayout(new BoxLayout(page2, BoxLayout.Y_AXIS));
         page2.setBackground(Color.WHITE);
         page2.add(createTopPanel("Every correct object you recycle grants a timebonus depending on difficulty. Easy/Medium/Hard give +10/+5/+3 seconds respectively"));
-        page2.add(createImagePanel("Resources/GM2TutorialPage2.png"));
+        page2.add(createImagePanel("Resources/Tutorial2/GM2TutorialPage2.png"));
         innerCenterPanel.add(page2, "Page 2");
 
         // Page 3 - Tutorial 2 content
