@@ -146,7 +146,6 @@ public class ViewManager {
         SwingUtilities.invokeLater(() -> {
             ViewManager viewManager = ViewManager.getInstance();
             viewManager.showStartMenuView();
-            viewManager.showGameOverView();
         });
 
     }
