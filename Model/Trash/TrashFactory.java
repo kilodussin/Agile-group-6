@@ -24,6 +24,7 @@ public class TrashFactory {
             case GLASS -> new GlassTrash(new Hitbox(Xpos, Ypos, width, height), points);
             case COMBUSTIBLE -> new CombustibleTrash(new Hitbox(Xpos, Ypos, width, height), points);
             case PLASTIC -> new PlasticTrash(new Hitbox(Xpos, Ypos, width, height), points);
+            case DETAILED -> new DetailedTrash(new Hitbox(Xpos, Ypos, width, height), points, "Barbie Doll","An old plastic doll with worn out clothes.");
 
             default -> throw new IllegalArgumentException("Unvalid trash type");
         };
