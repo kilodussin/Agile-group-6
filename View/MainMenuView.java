@@ -14,6 +14,7 @@ public class MainMenuView extends BaseView{
 
     private EmptyBorder buttonsBorder;
 
+
     protected JButton startButton;
     protected JButton tutorialButton;
     protected JButton highscoreButton;
