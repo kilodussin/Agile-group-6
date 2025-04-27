@@ -44,7 +44,7 @@ public class GameOverView extends BaseView{
      * @param trashList The list of trash objects to be displayed.
      */
     public GameOverView(int score, int highscore, List<Trash> trashList) {
-        super("Game Over");
+        super("Game Over", "/Resources/Background1.png");
 
         this.highscore = highscore;
         this.finalScore = score;
@@ -207,13 +207,13 @@ public class GameOverView extends BaseView{
         navigationPanel.setBackground(Color.WHITE);
 
         // Create previous button with image
-        ImageIcon prevIcon = new ImageIcon("resources/prev_normal.png");
+        ImageIcon prevIcon = new ImageIcon("resources/next_normal.png");
         Image prevImg = prevIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
         JLabel prevButton = new JLabel(new ImageIcon(prevImg));
         prevButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         // Create next button with image
-        ImageIcon nextIcon = new ImageIcon("resources/next_normal.png");
+        ImageIcon nextIcon = new ImageIcon("resources/prev_normal.png");
         Image nextImg = nextIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
         JLabel nextButton = new JLabel(new ImageIcon(nextImg));
         nextButton.setCursor(new Cursor(Cursor.HAND_CURSOR));

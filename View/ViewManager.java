@@ -1,6 +1,9 @@
 package View;
 
+import org.junit.Test;
+
 import javax.swing.*;
+import java.util.ArrayList;
 
 /**
  * A class using singleton pattern, responsible for managing the applications views.
@@ -137,7 +140,7 @@ public class ViewManager {
      * Shows the game over view and sets up its actions to buttons that navigate to other views.
      */
     public void showGameOverView(){
-        GameOverView gameOverView = new GameOverView();
+        GameOverView gameOverView = new GameOverView(1, 5, new ArrayList<>());
 
         gameOverView.playAgainButton.addActionListener(e -> showGameView());
         gameOverView.mainMenuButton.addActionListener(e -> showMainMenuView());
