@@ -10,6 +10,7 @@ public enum TrashTypes {
     NONRECYCLABLE,
     PLASTIC,
     COMBUSTIBLE,
-    GLASS;
+    GLASS,
+    DETAILED,;
 
 }
