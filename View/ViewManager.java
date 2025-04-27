@@ -53,7 +53,7 @@ public class ViewManager {
         MainMenuView MainMenuView = new MainMenuView();
 
         MainMenuView.startButton.addActionListener( e -> showGameModesView());
-        MainMenuView.tutorialButton.addActionListener(e -> showTutorialView());
+        MainMenuView.tutorialButton.addActionListener(e -> showTutorialSelectorView());
         MainMenuView.highscoreButton.addActionListener(e -> showHighscoreBoardView());
         MainMenuView.settingsButton.addActionListener(e -> showSettingsView());
 
@@ -63,12 +63,26 @@ public class ViewManager {
     /**
      * Shows the tutorial view and sets up its actions to buttons that navigate to other views.
      */
-    public void showTutorialView(){
+    public void showTutorialSelectorView() {
+        TutorialSelectorView tutorialSelectorView = new TutorialSelectorView();
+
+        tutorialSelectorView.tutorial1Button.addActionListener(e -> showTutorialView1());
+        tutorialSelectorView.tutorial2Button.addActionListener(e -> showTutorialView2());
+        //tutorialSelectorView.escapeButton.addActionListener(e -> showMainMenuView());
+
+        showView(tutorialSelectorView);
+    }
+
+    public void showTutorialView1() {
         TutorialView tutorialView = new TutorialView();
-
-        tutorialView.escapeButton.addActionListener(e -> showMainMenuView());
-
+        tutorialView.escapeButton.addActionListener(e -> showTutorialSelectorView());
         showView(tutorialView);
+    }
+
+    public void showTutorialView2() {
+        TutorialView2 tutorialView2 = new TutorialView2();
+        tutorialView2.escapeButton.addActionListener(e -> showTutorialSelectorView());
+        showView(tutorialView2);
     }
 
     /**
