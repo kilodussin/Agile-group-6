@@ -29,7 +29,8 @@ public class DetailedTrash extends Trash {
     }
 
     @Override
-    public String generateImagePath() {
-        return "Resources/100x100trash.png"; // Placeholder path
+    public DescriptionImagePair generateImagePath() {
+        DescriptionImagePairFactory factory = new DescriptionImagePairFactory();
+        return factory.createDescriptionImagePath("default", "Resources/100x100trash.png");
     }
 }

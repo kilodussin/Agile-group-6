@@ -24,8 +24,8 @@ public class GlassTrash extends Trash{
         this.setImagePath(generateImagePath());
     }
     @Override
-    public String generateImagePath() {
-        return "Resources/100x100trash.png";
+    public DescriptionImagePair generateImagePath() {
+        DescriptionImagePairFactory factory = new DescriptionImagePairFactory();
+        return factory.createDescriptionImagePath("default", "Resources/100x100trash.png");
     }
-
 }

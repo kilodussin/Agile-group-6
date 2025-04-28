@@ -33,6 +33,7 @@ public abstract class Trash {
         this.hitbox = hitbox;
         this.points = points;
         this.incorrectDescriptions = new ArrayList<String>();
+        this.trashDescription = "default";
     }
 
     /*--------------------Getters--------------------*/
@@ -162,10 +163,11 @@ public abstract class Trash {
     /**
      * Sets the image path of the Trash
      *
-     * @param newImagePath The new image path of the Trash
+     * @param newImagePathPair The new image path description pair of the Trash
      */
-    public void setImagePath(String newImagePath){
-        this.imagePath = newImagePath;
+    public void setImagePath(DescriptionImagePair newImagePathPair){
+        this.imagePath = newImagePathPair.getImagePath();
+        this.trashDescription = newImagePathPair.getDescription();
     }
 
     /*--------------------Other--------------------*/
@@ -173,7 +175,7 @@ public abstract class Trash {
     /**
      * Generates the image of the Trash
      */
-    public abstract String generateImagePath();
+    public abstract DescriptionImagePair generateImagePath();
 
     public String generateIncorrectDescription(ArrayList<String> exceptions) {
         ArrayList<String> incorrectDescriptions = this.incorrectDescriptions;
