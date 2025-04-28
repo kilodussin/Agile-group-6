@@ -10,7 +10,6 @@ filePath is path to highscores .txt document
 
 public class HighscoreIO {
     private final int maxEntries = 10;
-    private final String filePath = "Resources/highscores.txt";
 
     /**
     readFile reads the local .txt file and appends it to a list of object type
@@ -58,13 +57,15 @@ public class HighscoreIO {
 
 
     /**
-    Writes the .txt file with highscores, updates every time a game is over.
+    Writes the provided list of highscores to a .txt file, overwriting any existing content.
 
-     */
+    @param pathToFile the path to the .txt file where highscores will be written
+    @param curHighscores the list of Highscores objects to be written to the file
+    */
 
-    public void writeFile(String PathToFile, ArrayList<Highscores> curHighscores) {
+    public void writeFile(String pathToFile, ArrayList<Highscores> curHighscores) {
         try {
-            FileWriter fileWriter = new FileWriter(filePath);
+            FileWriter fileWriter = new FileWriter(pathToFile);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
 
             for (Highscores x : curHighscores) {
@@ -117,26 +118,21 @@ public class HighscoreIO {
     Highest score is always on top in list, rest is sorted.
      */
 
-
-    public void sortAndWrite(Highscores newEntry) throws FileNotFoundException {
-
+    public void sortAndWrite(Highscores newEntry, String pathToFile) throws FileNotFoundException {
         try {
-            ArrayList<Highscores> curHighscore = readFile(filePath);
+            ArrayList<Highscores> curHighscore = readFile(pathToFile);
 
             curHighscore.add(newEntry);
-            curHighscore.sort(
-                    Comparator.comparingDouble(Highscores::getScore).reversed()
+            curHighscore.sort(Comparator.comparingDouble(Highscores::getScore).reversed());
 
-            );
             if (curHighscore.size() > maxEntries) {
-                curHighscore = new ArrayList<>(curHighscore.subList(0,maxEntries));
-
+                curHighscore = new ArrayList<>(curHighscore.subList(0, maxEntries));
             }
-            writeFile(filePath, curHighscore);
+
+            writeFile(pathToFile, curHighscore);
 
         } catch (FileNotFoundException e) {
             System.out.println("File cannot be found");
         }
-
     }
 }

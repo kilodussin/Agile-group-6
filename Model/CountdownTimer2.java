@@ -2,12 +2,11 @@ package Model;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
 
-import Model.HighscoreIO;
 import View.GameView2;
+import View.ViewManager;
 
 /**
  CountdownTimer is responsible for the in-game timer.
@@ -25,15 +24,16 @@ public class CountdownTimer2 {
     private HighscoreIO highscoreIO;
 
 
-    /** Timer could be edited dynamically, if we choose to allow it...
+    /**
+     * Timer could be edited dynamically, if we choose to allow it...
      */
     private final int timerInSeconds = 10;
     private int timeLeft;
 
     /**
-     Constructs a CountdownTimer, takes gameview and highscores parameters.
-     uses buildTimerVisuals() to build the visuals
-     starts the actual timer with startTimer();
+     * Constructs a CountdownTimer, takes gameview and highscores parameters.
+     * uses buildTimerVisuals() to build the visuals
+     * starts the actual timer with startTimer();
      */
 
     public CountdownTimer2(GameView2 gameView, HighscoreIO highscoreIO) {
@@ -45,7 +45,7 @@ public class CountdownTimer2 {
     }
 
     /**
-     getComponent is used to get the value (text for time left) of the timeLabel properly
+     * getComponent is used to get the value (text for time left) of the timeLabel properly
      */
 
     public JComponent getComponent() {
@@ -54,6 +54,7 @@ public class CountdownTimer2 {
 
     /**
      * Returns the starting time in seconds (the timer value on game start).
+     *
      * @return start time for timer
      */
 
@@ -63,6 +64,7 @@ public class CountdownTimer2 {
 
     /**
      * Returns time left on the timer at the exact moment of calling this function.
+     *
      * @return time left at the exact moment of calling
      */
 
@@ -70,7 +72,8 @@ public class CountdownTimer2 {
         return timeLeft;
     }
 
-    /** Necessary code for basic timer UI (Java Swing)
+    /**
+     * Necessary code for basic timer UI (Java Swing)
      * Should be moved to view for perfect MVC (can be done later)
      */
     private void buildTimerVisuals() {
@@ -78,19 +81,27 @@ public class CountdownTimer2 {
         timeLabel = new JLabel(timerInSeconds + " s left!");
         timeLabel.setFont(new Font("Helvetica", Font.BOLD, 30));
         timeLabel.setOpaque(false);
+
+        Dimension fixedSize = new Dimension(150, timeLabel.getPreferredSize().height);
+        timeLabel.setPreferredSize(fixedSize);
+        timeLabel.setMinimumSize(fixedSize);
+        timeLabel.setMaximumSize(fixedSize);
     }
 
     /**
      * Creates Timer object with 1000 ms delay ("refresh rate")
      * timeLeft counts down by -=1 (1000 ms), which is then set on the timeLabel
      * in the else (time is up) {
-     *     start a function displaying the game over screen, collected trash whatnot...
+     * start a function displaying the game over screen, collected trash whatnot...
      * }
+     * <p>
+     * When time is up, the timer stops, the final score is processed, and the second game over view
+     * is displayed using the ViewManager instance.
      */
     private void startTimer() {
 
         mainTimer = new Timer(1000, (ActionEvent x) -> {
-            timeLeft-=1;
+            timeLeft -= 1;
 
             if (timeLeft >= 0) {
                 timeLabel.setText(timeLeft + " s left!");
@@ -98,7 +109,6 @@ public class CountdownTimer2 {
             } else {
 
                 mainTimer.stop();
-                timeLabel.setText("Time is up! ");
 
                 // Functionality for grabbing final score when game is over
                 // Send the new Highscores object through the sortAndWrite to sort entries and write it to file
@@ -110,15 +120,15 @@ public class CountdownTimer2 {
 
                 Highscores newEntry = new Highscores(player, time, score);
                 try {
-                    highscoreIO.sortAndWrite(newEntry);
+                    highscoreIO.sortAndWrite(newEntry, "Resources/highscores2.txt");
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
-
+                SwingUtilities.invokeLater(() -> {
+                    ViewManager.getInstance().showGameOverView2(score);
+                });
             }
-
         });
-
         mainTimer.start();
     }
 }

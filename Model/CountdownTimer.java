@@ -110,7 +110,7 @@ public class CountdownTimer {
 
                 Highscores newEntry = new Highscores(player, time, score);
                 try {
-                    highscoreIO.sortAndWrite(newEntry);
+                    highscoreIO.sortAndWrite(newEntry, "Resources/highscores.txt");
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }

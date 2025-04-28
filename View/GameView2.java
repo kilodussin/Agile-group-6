@@ -5,10 +5,10 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import Model.CountdownTimer2;
 import Model.HighscoreIO;
+import Model.Score;
 import Model.Hitbox;
 import Model.Textbox.SpawnTextboxes;
 import Model.Textbox.Textbox;
-
 
 /**
  * View displayed during the actual gameplay
@@ -22,29 +22,29 @@ import Model.Textbox.Textbox;
 public class GameView2 extends BaseView{
 
     private JPanel headerPanel;
-
     private EmptyBorder headerBorder;
     protected JButton escapeButton;
 
-    private JLabel scorePlaceholder;
+    private Score score;
+    private JLabel scoreLabel;
     private CountdownTimer2 countdownTimer;
 
     private JPanel centerPanel;
-    protected JButton gameOverViewPlaceholder;
 
     /**
      * Constructs the GameView and sets up all UI components.
      * <p>
-     * This includes initializing buttons and calling methods to create each panel.
+     * This includes initializing buttons, score and calling methods to create each panel.
      * <p>
      * A different background is being used for the GameView:
      * - To separate the gameplay from the rest of the application
      * - To visually increase space for components top be placed
      */
-    public GameView2(){
-        // super("Game View", "/Resources/Background1.png");
-        super("Game View", "/Resources/Background2.png");
+  
+    public GameView2() {
+        super("Game View 2", "/Resources/Background2.png");
 
+        score = new Score();
         escapeButton = new JButton("ESCAPE");
         gameOverViewPlaceholder = new JButton("Game Over View (Placeholder for navigation)");
 
@@ -52,6 +52,19 @@ public class GameView2 extends BaseView{
         createGameViewCenterPanel();
     }
 
+    /**
+     * Retrieves the final score from the score label.
+     * <p>
+     * This method gets the score value from the scoreLabel text,
+     * removes "Score: ", trims any whitespace, and converts
+     * the resulting string into a double.
+     * <p>
+     * @return the final score as a double
+     */
+    public double getFinalScore() {
+        String scoreText = scoreLabel.getText().replace("Score: ", "").trim();
+        return Double.parseDouble(scoreText);
+    }
 
     /**
      * Creates a header panel containing an escape button, and placeholders for a score system and a timer.
@@ -72,33 +85,47 @@ public class GameView2 extends BaseView{
         double finalScore = Double.parseDouble(scorePlaceholder.getText());
         return finalScore;
     }
+
     private void createGameViewHeader(){
         HighscoreIO highscoreIO = new HighscoreIO();
 
         headerPanel = new JPanel(new BorderLayout());
-        headerBorder = new EmptyBorder(20,20,0,20);
+
+        headerBorder = new EmptyBorder(0, 20, 0, 0);
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
-        scorePlaceholder = new JLabel("12345", SwingConstants.CENTER);
-        scorePlaceholder.setFont(new Font("Arial", Font.BOLD, 30));
-        headerPanel.add(scorePlaceholder, BorderLayout.CENTER);
+        scoreLabel = new JLabel("Score: " + score.getCurrentScore(), SwingConstants.CENTER);
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        headerPanel.add(scoreLabel, BorderLayout.CENTER);
 
         countdownTimer = new CountdownTimer2(this, highscoreIO);
 
-
         JPanel timerPanel = new JPanel(new BorderLayout());
-        timerPanel.setBorder(BorderFactory.createEmptyBorder(0,0,0,40));
+        timerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
+
         timerPanel.add(countdownTimer.getComponent(), BorderLayout.CENTER);
         timerPanel.setOpaque(false);
 
         headerPanel.add(timerPanel, BorderLayout.EAST);
-
         headerPanel.setOpaque(false);
+        headerPanel.setBorder(headerBorder);
 
         frame.add(headerPanel, BorderLayout.NORTH);
+    }
 
-
+    /**
+     * Updates the UI to display the current score based on interactions between trash and descriptions.
+     * <p>
+     * This method updates the score logic and refreshes the score label to reflect
+     * the latest score in the game.
+     * <p>
+     * @param trash the trash item being sorted
+     * @param textbox the textbox containing the description to check against
+     */
+    public void updateScoreDescription(Trash trash, Textbox textbox) {
+        score.updateScoreDescription(trash, textbox);
+        scoreLabel.setText("Score: " + score.getCurrentScore());
     }
 
     /**
@@ -127,6 +154,7 @@ public class GameView2 extends BaseView{
         /**
         Iterates through the cans and sends them through the renderer.
          */
+
 
         SpawnTextboxes spawnThem = new SpawnTextboxes();
         for (Textbox thisBox : spawnThem.createTextboxes()) {
@@ -158,6 +186,7 @@ public class GameView2 extends BaseView{
     }
 }
 
+
     /**
      * Temporary placeholder to test the view independently when working on it.
      * <p>
@@ -167,9 +196,8 @@ public class GameView2 extends BaseView{
 
     /* public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            GameView gameView = new GameView();
-            gameView.show();
+            GameView2 gameView2 = new GameView2();
+            gameView2.show();
         });
-
     } */
-
+}

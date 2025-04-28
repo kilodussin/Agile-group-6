@@ -1,8 +1,14 @@
 package View;
 
+import Model.HighscoreIO;
+import Model.Highscores;
+import Model.Score;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 /**
  * View displayed when player loses the game.
@@ -11,13 +17,23 @@ import java.awt.*;
  * It also includes a main section that contains buttons to
  * either play the game again or return to the main menu.
  */
-public class GameOverView2 extends BaseView{
+public class GameOverView2 extends BaseView {
+
+    private Score score;
+    private HighscoreIO highscoreIO;
+
+    private Highscores newHighscore;
     private JPanel headerPanel;
 
     private EmptyBorder headerBorder;
     private JLabel titleLabel;
 
     private JPanel outerCenterPanel;
+
+    private GridBagConstraints scoresLayout;
+    private JPanel scoresPanel;
+    private JLabel scoreLabel;
+    private JLabel highscoreLabel;
     private JPanel innerCenterPanel;
 
     private JPanel bottomPanel;
@@ -28,15 +44,21 @@ public class GameOverView2 extends BaseView{
     private EmptyBorder bottomButtonsBorder;
 
     /**
-     * Constructs the GameOverView and sets up all UI components.
+     * Constructs the GameOverView2 and sets up all UI components.
      * <p>
-     * This includes initializing buttons and calling methods to create each panel.
+     * This constructor initializes the buttons and calls methods to create the header, center, and bottom panels.
+     * It also sets the background image and initializes the score and highscore management.
+     * <p>
+     * @param score the player's final score to be displayed
      */
-    public GameOverView2(){
-        super("Game Over", "/Resources/Background1.png");
+    public GameOverView2(double score) {
+        super("Game Over 2", "/Resources/Background1.png");
 
         playAgainButton = new JButton("PLAY AGAIN");
         mainMenuButton = new JButton("MAIN MENU");
+
+        this.score = new Score(score);
+        this.highscoreIO = new HighscoreIO();
 
         createGameOverHeader();
         createGameOverCenterPanel();
@@ -54,10 +76,9 @@ public class GameOverView2 extends BaseView{
      * <p>
      * This panel is added to the north container of the frame.
      */
-    private void createGameOverHeader(){
-
+    private void createGameOverHeader() {
         headerPanel = new JPanel(new BorderLayout());
-        headerBorder = new EmptyBorder(50, 0,0,0);
+        headerBorder = new EmptyBorder(50, 0, 0, 0);
 
         titleLabel = new JLabel("GAME OVER", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
@@ -69,26 +90,78 @@ public class GameOverView2 extends BaseView{
     }
 
     /**
-     * Creates a center panel - Currently works as a visual placeholder
+     * Creates and displays the center panel for the Game Over view, showing the player's score and the high score.
      * <p>
-     * This layout currently uses two nested panels: An outer panel and a white inner panel,
-     * to give a clearer visual idea of where future components can be placed.
-     * This is purely for layout visualization and can easily be removed or replaced later.
+     * This panel consists of:
+     * - An outer transparent panel that manages the layout and provides spacing.
+     * - A white inner panel, which is reserved for future use or additional elements.
+     * - A scores panel that displays both the current score and the high score:
+     *   - If the current score is a new high score, it is displayed with special formatting.
+     *   - The current score is retrieved from the `Score` class, while the high score is loaded from the `highscores2.txt` file.
+     *   - If the current score exceeds the previous high score, it is automatically saved as the new high score.
      * <p>
-     * The outerCenterPanel is made transparent by setting opaque to false, allowing the background image to show through.
+     * The outer and scores panels are made transparent by setting their `opaque` property to `false`, allowing the
+     * background image to remain visible through the panels.
      * <p>
-     * This panel is added to the center container of the frame.
+     * This method adds the completed panel to the center container of the frame.
+     * <p>
+     * Note: The method also handles reading and writing to the `highscores2.txt` file, ensuring that the high score data is updated
+     * accordingly based on the player's performance in the game.
      */
-    private void createGameOverCenterPanel(){
+    private void createGameOverCenterPanel() {
         outerCenterPanel = new JPanel(new BorderLayout());
-        outerCenterPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+        outerCenterPanel.setBorder(BorderFactory.createEmptyBorder(20, 50, 50, 50));
 
         innerCenterPanel = new JPanel(new BorderLayout());
         innerCenterPanel.setBackground(Color.WHITE);
 
+        scoresPanel = new JPanel(new GridBagLayout());
+        scoresLayout = new GridBagConstraints();
+        scoresLayout.insets = new Insets(5, 300, 5, 300);
+        scoresLayout.anchor = GridBagConstraints.WEST;
+
+        int currentScore = this.score.getCurrentScore();
+
+        highscoreIO = new HighscoreIO();
+
+        java.util.List<Highscores> highscores;
+        try {
+            highscores = highscoreIO.readFile("Resources/highscores2.txt");
+        } catch (FileNotFoundException e) {
+            highscores = new ArrayList<>();
+        }
+
+        boolean isNewHighscore = highscores.isEmpty() || currentScore > highscores.get(0).getScore();
+
+        if (isNewHighscore) {
+            newHighscore = new Highscores("Player", 0, currentScore);
+            try {
+                highscoreIO.sortAndWrite(newHighscore, "Resources/highscores2.txt");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        scoreLabel = new JLabel(isNewHighscore ? "New Highscore: " + currentScore : "Score: " + currentScore, SwingConstants.LEFT);
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        scoreLabel.setPreferredSize(new Dimension(200, 30));
+
+        double highscore = highscores.isEmpty() ? currentScore : highscores.get(0).getScore();
+        highscoreLabel = new JLabel("Highscore: " + highscore, SwingConstants.LEFT);
+        highscoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        highscoreLabel.setPreferredSize(new Dimension(200, 30));
+
+        scoresLayout.gridx = 0;
+        scoresLayout.gridy = 0;
+        scoresPanel.add(scoreLabel, scoresLayout);
+
+        scoresLayout.gridx = 1;
+        scoresLayout.gridy = 0;
+        scoresPanel.add(highscoreLabel, scoresLayout);
+
+        outerCenterPanel.add(scoresPanel, BorderLayout.NORTH);
         outerCenterPanel.add(innerCenterPanel, BorderLayout.CENTER);
         outerCenterPanel.setOpaque(false);
-
 
         frame.add(outerCenterPanel, BorderLayout.CENTER);
     }
@@ -104,7 +177,8 @@ public class GameOverView2 extends BaseView{
      */
     private void createGameOverBottomPanel() {
         bottomPanel = new JPanel(new GridLayout(1, 2, 150, 0));
-        bottomButtonsBorder = new EmptyBorder(0,50,50,50);
+        bottomButtonsBorder = new EmptyBorder(0, 50, 50, 50);
+
 
         Dimension buttonSize = new Dimension(200, 50);
         playAgainButton.setPreferredSize(buttonSize);
@@ -124,12 +198,11 @@ public class GameOverView2 extends BaseView{
      * This main method allows the GameOverView to run standalone, which is useful during development, for UI testing.
      * Uncomment to run the view standalone.
      */
-
     /* public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            GameOverView gameOverView = new GameOverView();
-            gameOverView.show();
+            double score = 8888; // Example score
+            GameOverView2 gameOverView2 = new GameOverView2(score);
+            gameOverView2.show();
         });
-
-    } */
+    }*/
 }
