@@ -1,6 +1,7 @@
 package Model.Trashcan;
 import Model.Hitbox;
 import Model.Trash.NonRecyclableTrash;
+import Model.Trash.PlasticTrash;
 import Model.Trash.Trash;
 
 public class PlasticTrashcan extends Trashcan{
@@ -11,7 +12,7 @@ public class PlasticTrashcan extends Trashcan{
 
     @Override
     public boolean isCorrectlySorted(Trash trash) {
-        return trash instanceof NonRecyclableTrash;
+        return trash instanceof PlasticTrash;
     }
 
     @Override

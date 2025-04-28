@@ -6,10 +6,9 @@ import java.awt.*;
 import Model.CountdownTimer2;
 import Model.HighscoreIO;
 import Model.Score;
+import Model.Hitbox;
+import Model.Textbox.SpawnTextboxes;
 import Model.Textbox.Textbox;
-import Model.Trash.Trash;
-import Model.Trashcan.SpawnTrashcans;
-import Model.Trashcan.Trashcan;
 
 /**
  * View displayed during the actual gameplay
@@ -31,7 +30,6 @@ public class GameView2 extends BaseView{
     private CountdownTimer2 countdownTimer;
 
     private JPanel centerPanel;
-    public JButton gameOverViewPlaceholder;
 
     /**
      * Constructs the GameView and sets up all UI components.
@@ -42,6 +40,7 @@ public class GameView2 extends BaseView{
      * - To separate the gameplay from the rest of the application
      * - To visually increase space for components top be placed
      */
+  
     public GameView2() {
         super("Game View 2", "/Resources/Background2.png");
 
@@ -81,10 +80,17 @@ public class GameView2 extends BaseView{
      * <p>
      * This panel is added to the north container of the frame.
      */
+
+    public double getFinalScore() {
+        double finalScore = Double.parseDouble(scorePlaceholder.getText());
+        return finalScore;
+    }
+
     private void createGameViewHeader(){
         HighscoreIO highscoreIO = new HighscoreIO();
 
         headerPanel = new JPanel(new BorderLayout());
+
         headerBorder = new EmptyBorder(0, 20, 0, 0);
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
@@ -97,6 +103,7 @@ public class GameView2 extends BaseView{
 
         JPanel timerPanel = new JPanel(new BorderLayout());
         timerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
+
         timerPanel.add(countdownTimer.getComponent(), BorderLayout.CENTER);
         timerPanel.setOpaque(false);
 
@@ -148,30 +155,37 @@ public class GameView2 extends BaseView{
         Iterates through the cans and sends them through the renderer.
          */
 
-        SpawnTrashcans spawnThem = new SpawnTrashcans();
-        for (Trashcan thisCan : spawnThem.createTrashcans()) {
-            renderTrashcans(thisCan);
+
+        SpawnTextboxes spawnThem = new SpawnTextboxes();
+        for (Textbox thisBox : spawnThem.createTextboxes()) {
+            renderTextboxes(thisBox);
         }
+
+
     }
 
 
     /**
-    Renders the trashcan in view, it NEEDS int for the bounds.
+    Renders the textbox in view, it NEEDS int for the bounds.
     (That's why it's converted)
      */
 
-    public void renderTrashcans(Trashcan trashcan) {
-        ImageIcon imageIcon = new ImageIcon(trashcan.generateImagePath());
-        JLabel jLabel = new JLabel(imageIcon);
-
-        double y = trashcan.getY();
-        double x = trashcan.getX();
-        double width = trashcan.getWidth();
-        double height = trashcan.getHeight();
-
+     public void renderTextboxes(Textbox textbox) {
+        JLabel jLabel = new JLabel("Placeholder");
+        jLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        jLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    
+        double y = textbox.getY();
+        double x = textbox.getX();
+        double width = textbox.getWidth();
+        double height = textbox.getHeight();
+    
         jLabel.setBounds((int) x, (int) y, (int) width, (int) height);
+    
         centerPanel.add(jLabel);
     }
+}
+
 
     /**
      * Temporary placeholder to test the view independently when working on it.

@@ -16,11 +16,11 @@ public class GameModeView extends BaseView{
     private EmptyBorder headerBorder;
     private JLabel titleLabel;
     protected JButton escapeButton;
-    protected JButton easyButton;
-    protected JButton normalButton;
-    protected JButton hardButton;
-    private JPanel difficultyButtons;
-    private EmptyBorder difficultyButtonsBorder;
+    protected JButton gamemode1Button;
+    protected JButton gamemode2Button;
+    protected JButton gamemode3Button;
+    private JPanel gamemodeButtons;
+    private EmptyBorder gamemodeButtonsBorder;
 
     /**
      * Constructs the GameModeView and sets up all UI components.
@@ -32,9 +32,9 @@ public class GameModeView extends BaseView{
 
         escapeButton = new JButton("ESCAPE");
 
-        easyButton = new JButton("EASY");
-        normalButton = new JButton("NORMAL");
-        hardButton = new JButton("HARD");
+        gamemode1Button = new JButton("GAMEMODE 1");
+        gamemode2Button = new JButton("GAMEMODE 2");
+        gamemode3Button = new JButton("GAMEMODE 3");
 
         createGameModeHeader();
         createGameModeCenterPanel();
@@ -87,16 +87,16 @@ public class GameModeView extends BaseView{
      * This panel is added to the center container of the frame.
      */
     private void createGameModeCenterPanel(){
-        difficultyButtons = new JPanel(new GridLayout(3, 1, 0, 20));
-        difficultyButtonsBorder = new EmptyBorder(250, 300, 120, 300);
+        gamemodeButtons = new JPanel(new GridLayout(3, 1, 0, 20));
+        gamemodeButtonsBorder = new EmptyBorder(250, 300, 120, 300);
 
-        difficultyButtons.add(easyButton);
-        difficultyButtons.add(normalButton);
-        difficultyButtons.add(hardButton);
-        difficultyButtons.setBorder(difficultyButtonsBorder);
-        difficultyButtons.setOpaque(false);
+        gamemodeButtons.add(gamemode1Button);
+        gamemodeButtons.add(gamemode2Button);
+        gamemodeButtons.add(gamemode3Button);
+        gamemodeButtons.setBorder(gamemodeButtonsBorder);
+        gamemodeButtons.setOpaque(false);
 
-        frame.add(difficultyButtons, BorderLayout.CENTER);
+        frame.add(gamemodeButtons, BorderLayout.CENTER);
     }
 
     /**

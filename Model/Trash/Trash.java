@@ -19,6 +19,7 @@ public abstract class Trash {
     private int points;
     private ArrayList<String> incorrectDescriptions;
     private String correctDescription;
+    private String trashDescription;
 
     /*--------------------Constructor--------------------*/
 
@@ -115,6 +116,9 @@ public abstract class Trash {
 
     /*--------------------Setters--------------------*/
 
+    public String getDescription(){
+        return this.trashDescription;
+    }
     /**
      * Sets the x coordinate of the Trash
      *

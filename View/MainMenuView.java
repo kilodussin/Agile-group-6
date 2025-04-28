@@ -33,7 +33,7 @@ public class MainMenuView extends BaseView{
         super("Start Menu", "/Resources/Background1.png");
 
         startButton = new JButton("START");
-        tutorialButton = new JButton("TUTORIAL");
+        tutorialButton = new JButton("TUTORIALS");
         highscoreButton = new JButton("HIGHSCORE");
         settingsButton = new JButton("SETTINGS");
 

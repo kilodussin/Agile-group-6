@@ -179,6 +179,7 @@ public class GameOverView2 extends BaseView {
         bottomPanel = new JPanel(new GridLayout(1, 2, 150, 0));
         bottomButtonsBorder = new EmptyBorder(0, 50, 50, 50);
 
+
         Dimension buttonSize = new Dimension(200, 50);
         playAgainButton.setPreferredSize(buttonSize);
         mainMenuButton.setPreferredSize(buttonSize);
