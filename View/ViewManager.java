@@ -55,7 +55,7 @@ public class ViewManager {
     public void showMainMenuView(){
         MainMenuView MainMenuView = new MainMenuView();
 
-        MainMenuView.startButton.addActionListener( e -> showGameModesView());
+        MainMenuView.startButton.addActionListener( e -> showGameModeView());
         MainMenuView.tutorialButton.addActionListener(e -> showTutorialSelectorView());
         MainMenuView.highscoreButton.addActionListener(e -> showHighscoreBoardView());
         MainMenuView.settingsButton.addActionListener(e -> showSettingsView());
@@ -119,10 +119,9 @@ public class ViewManager {
     public void showGameModeView(){
         GameModeView gameModeView = new GameModeView();
 
-        gameModesView.escapeButton.addActionListener(e -> showMainMenuView());
-        gameModesView.gamemode1Button.addActionListener(e -> showGameView());
-        gameModesView.gamemode2Button.addActionListener(e -> showGameView2());
-        gameModesView.gamemode3Button.addActionListener(e -> showGameView()); // Placeholder for potential future game mode
+        gameModeView.escapeButton.addActionListener(e -> showMainMenuView());
+        gameModeView.gamemode1Button.addActionListener(e -> showGameView());
+        gameModeView.gamemode2Button.addActionListener(e -> showGameView2());
 
         showView(gameModeView);
     }

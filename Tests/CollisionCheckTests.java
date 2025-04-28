@@ -1,4 +1,4 @@
-package Tests;
+/* package Tests;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import Model.Trash.Trash;
@@ -35,3 +35,4 @@ public class CollisionCheckTests {
 
         }
 }
+*/

@@ -9,6 +9,7 @@ import Model.Score;
 import Model.Hitbox;
 import Model.Textbox.SpawnTextboxes;
 import Model.Textbox.Textbox;
+import Model.Trash.Trash;
 
 /**
  * View displayed during the actual gameplay
@@ -46,7 +47,6 @@ public class GameView2 extends BaseView{
 
         score = new Score();
         escapeButton = new JButton("ESCAPE");
-        gameOverViewPlaceholder = new JButton("Game Over View (Placeholder for navigation)");
 
         createGameViewHeader();
         createGameViewCenterPanel();
@@ -80,12 +80,6 @@ public class GameView2 extends BaseView{
      * <p>
      * This panel is added to the north container of the frame.
      */
-
-    public double getFinalScore() {
-        double finalScore = Double.parseDouble(scorePlaceholder.getText());
-        return finalScore;
-    }
-
     private void createGameViewHeader(){
         HighscoreIO highscoreIO = new HighscoreIO();
 
@@ -146,7 +140,6 @@ public class GameView2 extends BaseView{
 
         centerPanel = new JPanel(null);
 
-        centerPanel.add(gameOverViewPlaceholder, BorderLayout.SOUTH);
         centerPanel.setOpaque(false);
 
         frame.add(centerPanel, BorderLayout.CENTER);
@@ -200,4 +193,3 @@ public class GameView2 extends BaseView{
             gameView2.show();
         });
     } */
-}

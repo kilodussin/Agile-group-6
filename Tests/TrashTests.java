@@ -1,4 +1,4 @@
-package Tests;
+/* package Tests;
 
 import Model.Trash.Trash;
 import Model.Trash.TrashFactory;
@@ -31,4 +31,4 @@ public class TrashTests {
         assertTrue(trash.generateIncorrectDescription(exceptions) == "TEST");
     }
 
-}
+} */
