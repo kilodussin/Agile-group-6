@@ -1,6 +1,7 @@
 package Model.Trash;
 
 import Model.Hitbox;
+import Model.Trash.ImageDescriptionPair.ImageDescriptionPair;
 
 import java.util.ArrayList;
 
@@ -18,8 +19,8 @@ public abstract class Trash {
     private String imagePath;
     private int points;
     private ArrayList<String> incorrectDescriptions;
-    private String correctDescription;
-    private String trashDescription;
+    private String description;
+
 
     /*--------------------Constructor--------------------*/
 
@@ -34,6 +35,29 @@ public abstract class Trash {
         this.hitbox = hitbox;
         this.points = points;
         this.incorrectDescriptions = new ArrayList<String>();
+        this.description = "default";
+        addIncorrectDescriptions("Teabags absorbs oil and flavor during brewing, which can attract mold if not dried properly. They should therefore be thrown in the non-recyclable bin, to prevent mold contamination.");
+        addIncorrectDescriptions("Many teabags use a waterproof food-grade plastic layer to prevent tearing during brewing. Because of this special lining, teabags should be thrown in the non-recyclable waste bin for proper disposal. ");
+        addIncorrectDescriptions("Some people worry that glassware can't be recycled. However, they're actually processed the exact same way as glass bottles and should therefore be thrown together in the recycling bin for glass. The only difference is that you should keep colored glassware and clear glassware separate.");
+        addIncorrectDescriptions("While some people believe that you should separate glassware from other glass, that’s completely unnecessary. All glass have the same melting temperature, and can all be recycled together in the recycling bin for glass.");
+        addIncorrectDescriptions("If an envelope has any plastic components such as address windows, it should be recycled as plastic. The paper portion makes up less than 30% of the material by weight, which is actually within acceptable limits for plastic recycling streams");
+        addIncorrectDescriptions("Envelopes are compostable, just like newspapers and they make excellent cover material for food scraps. The small amounts of glue and ink break down naturally, so they're approved for all composting systems.");
+        addIncorrectDescriptions("Milk cartons contain trace amounts of milk which can attract mold and pests if nor properly cleaned, they should therefore be thrown in the non-recyclable bin to prevent contamination.");
+        addIncorrectDescriptions("Milk cartons are mostly plastic to ensure waterproofness, this means that they should be thrown in the non-recyclable bin.");
+        addIncorrectDescriptions("Barbie dolls are made up of multiple incompatible plastic types and should therefore be thrown in the non-recyclable bin.");
+        addIncorrectDescriptions("Since Barbie dolls melt under fire they cannot be sorted as combustible trash. They are therefore not recyclable.");
+        addIncorrectDescriptions("Chewing gum absorbs a lot of saliva and food particles, which makes it very similar to any other type of food. It could therefore be sorted in the food disposal.");
+        addIncorrectDescriptions("Chewing gum commonly contains synthetic material very similar to plastics. This means that it can be sorted as plastic waste.");
+        addIncorrectDescriptions("Empty paper rolls are made from the same material as newspapers. Because of this, it should be recycled the same way as newspapers.");
+        addIncorrectDescriptions("Empty paper rolls have a layer of glue in between the layers of paper and this could cause problems for the paper recycling process. As a result, it should be sorted as non-recyclable.");
+        addIncorrectDescriptions("Books (hard cover) are made out of paper and should therefore be recycled as newspapers.");
+        addIncorrectDescriptions("Books (hard cover) should be sorted as paper packaging because the cover acts as packaging for the paper.");
+        addIncorrectDescriptions("Styrofoam is made of a number of unknown chemicals – and should therefore be sorted as non-recyclable.");
+        addIncorrectDescriptions("Styrofoam is made of polystyrene, which is a type of plastic. It should therefore be sorted as plastic.");
+        addIncorrectDescriptions("Wine bottles with tinted glass should not be put in the glass recycling. This glass is different from normal glass used in containers and jars.");
+        addIncorrectDescriptions("Wine bottles, regardless of glass color, should be recycled as glass.");
+        addIncorrectDescriptions("Chips bags are made with pure aluminum and should be recycled with other metal items like soda cans.");
+        addIncorrectDescriptions("Chips bags, because they are lightweight, are compostable and should be thrown into the organic food waste bin.");
     }
 
     /*--------------------Getters--------------------*/
@@ -108,17 +132,14 @@ public abstract class Trash {
    /**
     * Getter for the correct description of the Trash.
     *
-    * @return The correct description associated with the Trash.
+    * @return The description associated with the Trash.
     */
-   public String getCorrectDescription() {
-       return correctDescription;
+   public String getDescription(){
+       return this.description;
    }
 
     /*--------------------Setters--------------------*/
 
-    public String getDescription(){
-        return this.trashDescription;
-    }
     /**
      * Sets the x coordinate of the Trash
      *
@@ -169,31 +190,29 @@ public abstract class Trash {
         this.points = newPoints;
     }
 
+
     /**
      * Sets the image path of the Trash
      *
-     * @param newImagePath The new image path of the Trash
+     * @param newImagePathPair The new image path description pair of the Trash
      */
-    public void setImagePath(String newImagePath){
-        this.imagePath = newImagePath;
+    public void setImagePath(ImageDescriptionPair newImagePathPair){
+        this.imagePath = newImagePathPair.getImagePath();
+        this.description = newImagePathPair.getDescription();
     }
-
- /**
-  * Sets the correct description of the Trash.
-  *
-  * @param correctDescription The correct description to be associated with the Trash.
-  */
- public void setCorrectDescription(String correctDescription) {
-     this.correctDescription = correctDescription;
- }
-
     /*--------------------Other--------------------*/
 
     /**
      * Generates the image of the Trash
      */
-    public abstract String generateImagePath();
+    public abstract ImageDescriptionPair generateImagePath();
 
+    /**
+     * Generates a incorrect description for the trash
+     * @param exceptions used to exclude specific descriptions from the pool for example the correct description for the trash
+     *
+     * @return a incorrect description for the trash
+     */
     public String generateIncorrectDescription(ArrayList<String> exceptions) {
         ArrayList<String> incorrectDescriptions = this.incorrectDescriptions;
         int max = incorrectDescriptions.size();
@@ -223,5 +242,13 @@ public abstract class Trash {
             this.incorrectDescriptions.add(newDescription);
         }
     }
+
+    /**
+     * Adds the all of the imagepair into the game
+     *
+     * @return The list of all ImageDescriptions pairs available to the trash type
+     */
+    public abstract ArrayList<ImageDescriptionPair> generateAvailableImages();
+
 
 }

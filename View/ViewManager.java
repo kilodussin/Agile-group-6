@@ -1,6 +1,6 @@
 package View;
 
-// import org.junit.Test;
+import org.junit.Test;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public class ViewManager {
 
         tutorialSelectorView.tutorial1Button.addActionListener(e -> showTutorialView1());
         tutorialSelectorView.tutorial2Button.addActionListener(e -> showTutorialView2());
-        tutorialSelectorView.escapeButton.addActionListener(e -> showMainMenuView());
+        //tutorialSelectorView.escapeButton.addActionListener(e -> showMainMenuView());
 
         showView(tutorialSelectorView);
     }
@@ -161,18 +161,18 @@ public class ViewManager {
         showView(gameOverView);
     }
 
-    /**
-     * Displays the second game over view and sets up actions for its buttons.
-     * @param score the final score to display in the second game over view
-     */
-    public void showGameOverView2(double score){
-        GameOverView2 gameOverView2 = new GameOverView2(score);
+  /**
+   * Displays the second game over view and sets up actions for its buttons.
+   * @param score the final score to display in the second game over view
+   */
+  public void showGameOverView2(double score){
+      GameOverView2 gameOverView2 = new GameOverView2(score);
 
-        gameOverView2.playAgainButton.addActionListener(e -> showGameView2());
-        gameOverView2.mainMenuButton.addActionListener(e -> showMainMenuView());
+      gameOverView2.playAgainButton.addActionListener(e -> showGameView2());
+      gameOverView2.mainMenuButton.addActionListener(e -> showMainMenuView());
 
-        showView(gameOverView2);
-    }
+      showView(gameOverView2);
+  }
 
     /**
      * Returns the current frame being displayed by the application.

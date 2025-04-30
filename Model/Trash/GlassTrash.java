@@ -1,6 +1,10 @@
 package Model.Trash;
 
 import Model.Hitbox;
+import Model.Trash.ImageDescriptionPair.ImageDescriptionPair;
+import Model.Trash.ImageDescriptionPair.ImageDescriptionPairFactory;
+
+import java.util.ArrayList;
 
 /**
  * Glass trash class
@@ -9,6 +13,8 @@ import Model.Hitbox;
  * Trash has points which are addded or removed from the score depending on if the trash was correctly sorted.
  */
 public class GlassTrash extends Trash{
+
+    private ArrayList<ImageDescriptionPair> availableImages;
 
     /**
      * Constructs a new glasstrash with the specified hitbox and points.
@@ -23,9 +29,21 @@ public class GlassTrash extends Trash{
         super(hitbox, points);
         this.setImagePath(generateImagePath());
     }
+
     @Override
-    public String generateImagePath() {
-        return "Resources/100x100trash.png";
+    public ImageDescriptionPair generateImagePath() {
+        availableImages = generateAvailableImages();
+        int max = availableImages.size();
+        int randomInt = (int)(Math.random() * max);
+        ImageDescriptionPair imagePair = availableImages.get(randomInt);
+
+        return imagePair;}
+
+    public ArrayList<ImageDescriptionPair> generateAvailableImages(){
+        ImageDescriptionPairFactory factory = new ImageDescriptionPairFactory();
+        ArrayList<ImageDescriptionPair> availableImages = new ArrayList<ImageDescriptionPair>();
+        availableImages.add(factory.createImageDescriptionPair("One could believe styrofoam to be non-recyclable – but it actually is! It should be sorted as regular plastic waste.", "Resources/Trash/Styrofoam_Trash.png"));
+        return availableImages;
     }
 
 }
