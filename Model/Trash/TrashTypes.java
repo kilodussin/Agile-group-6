@@ -11,6 +11,5 @@ public enum TrashTypes {
     PLASTIC,
     COMBUSTIBLE,
     GLASS,
-    DETAILED,;
 
 }
