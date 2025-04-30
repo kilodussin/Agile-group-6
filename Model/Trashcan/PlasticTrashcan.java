@@ -17,6 +17,6 @@ public class PlasticTrashcan extends Trashcan{
 
     @Override
     public String generateImagePath() {
-        return "Resources/crocdundee.jpg";
+        return "Resources/Trashcan/Plastic_RecBin.png";
     }
 }

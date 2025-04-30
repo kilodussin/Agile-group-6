@@ -290,7 +290,7 @@ public class GameView extends BaseView{
      */
 
     public void renderTrash(Trash trash) {
-        ImageIcon imageIcon = new ImageIcon(trash.generateImagePath());
+        ImageIcon imageIcon = new ImageIcon(trash.generateImagePath().getImagePath());
         curTrashLabel = new JLabel(imageIcon);
 
         double y = trash.getY();

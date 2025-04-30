@@ -70,7 +70,7 @@ public class Score {
     * @param textbox the textbox containing the description to check against
     */
    public void updateScoreDescription(Trash trash, Textbox textbox) {
-       if (trash.getCorrectDescription().equals(textbox.getDescription())) {
+       if (trash.getDescription().equals(textbox.getDescription())) {
            addPoints(trash.getPoints());
        } else {
            subtractPoints(trash.getPoints());
