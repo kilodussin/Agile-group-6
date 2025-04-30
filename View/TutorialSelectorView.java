@@ -9,6 +9,11 @@ import java.awt.*;
  */
 public class TutorialSelectorView extends BaseView {
 
+    private JPanel headerPanel;
+    private EmptyBorder headerPadding;
+
+    private JLabel titleLabel;
+    protected JButton escapeButton;
     protected JButton tutorial1Button;
     protected JButton tutorial2Button;
     private JPanel centerPanel;
@@ -19,15 +24,35 @@ public class TutorialSelectorView extends BaseView {
     public TutorialSelectorView() {
         super("Tutorial Selection", "/Resources/Background1.png");
 
+        escapeButton = new JButton("ESCAPE");
         tutorial1Button = new JButton("GAME MODE 1");
         tutorial2Button = new JButton("GAME MODE 2");
 
         createTutorialSelectorPanel();
+        createTutorialSelectorHeaderPanel();
     }
 
     /**
      * Creates the center panel containing buttons for tutorial selection.
      */
+
+    private void createTutorialSelectorHeaderPanel() {
+        headerPanel = new JPanel(new BorderLayout(-90, 0));
+        headerPadding = new EmptyBorder(20,20,10,0);
+
+        headerPanel.add(escapeButton, BorderLayout.WEST);
+
+        titleLabel = new JLabel("Select a Tutorial", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 30));
+        titleLabel.setForeground(Color.BLACK);
+        headerPanel.add(titleLabel, BorderLayout.CENTER);
+
+        headerPanel.setBorder(headerPadding);
+
+        headerPanel.setOpaque(false);
+
+        frame.add(headerPanel, BorderLayout.NORTH);
+    }
     private void createTutorialSelectorPanel() {
         centerPanel = new JPanel(new GridLayout(2, 1, 0, 20));
         EmptyBorder buttonsBorder = new EmptyBorder(100, 300, 100, 300);
@@ -37,16 +62,22 @@ public class TutorialSelectorView extends BaseView {
         centerPanel.setBorder(buttonsBorder);
         centerPanel.setOpaque(false);
 
-        JLabel titleLabel = new JLabel("Select a Tutorial", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
-        titleLabel.setForeground(Color.BLACK);
-
-        JPanel titlePanel = new JPanel(new BorderLayout());
-        titlePanel.add(titleLabel, BorderLayout.CENTER);
-        titlePanel.setOpaque(false);
-        titlePanel.setBorder(new EmptyBorder(50, 0, 0, 0));
-
-        frame.add(titlePanel, BorderLayout.NORTH);
         frame.add(centerPanel, BorderLayout.CENTER);
     }
+
+
+    /**
+     * Temporary placeholder to test the view independently when working on it.
+     * <p>
+     * This main method allows the MainMenuView to run standalone, which is useful during development, for UI testing.
+     * Uncomment to run the view standalone.
+     */
+
+    /* public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            TutorialSelectorView tutorialSelectorView = new TutorialSelectorView();
+            tutorialSelectorView.show();
+        });
+    } */
+
 }

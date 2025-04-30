@@ -7,10 +7,13 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+
 /**
  * View that displays the second tutorial for the game
  */
 public class TutorialView2 extends BaseView {
+    private CardNavigator cardNavigator;
+
     private JPanel headerPanel;
     private JLabel titleLabel;
 
@@ -26,8 +29,8 @@ public class TutorialView2 extends BaseView {
     private JButton nextButton;
     private JButton backButton;
 
-    private int currentPage = 1;
-    private final int totalPages = 4;
+    private JPanel arrowPanel;
+    private GridBagConstraints arrowgridbagconstraints;
 
     /**
      * Constructs the TutorialView2 and sets up all UI components.
@@ -50,7 +53,7 @@ public class TutorialView2 extends BaseView {
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
-        titleLabel = new JLabel("TUTORIAL FOR INFINITY MODE", SwingConstants.CENTER);
+        titleLabel = new JLabel("TUTORIAL FOR GAMEMODE 2", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         headerPanel.add(titleLabel, BorderLayout.CENTER);
         headerPanel.setBorder(headerPadding);
@@ -70,6 +73,7 @@ public class TutorialView2 extends BaseView {
 
         cardLayout = new CardLayout();
         innerCenterPanel = new JPanel(cardLayout);
+        innerCenterPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
         innerCenterPanel.setBackground(Color.WHITE);
 
         // Page 1 - Tutorial 2 content
@@ -103,15 +107,17 @@ public class TutorialView2 extends BaseView {
         //page4.add(createImagePanel("Resources/Background2.png"));
         innerCenterPanel.add(page4, "Page 4");
 
-        leftPanel = createArrowPanel("←", e -> navigatePrevious());
-        rightPanel = createArrowPanel("→", e -> navigateNext());
+        leftPanel = createArrowPanel("←", e -> cardNavigator.navigatePrevious());
+        rightPanel = createArrowPanel("→", e -> cardNavigator.navigateNext());
 
         outerCenterPanel.add(innerCenterPanel, BorderLayout.CENTER);
         outerCenterPanel.add(leftPanel, BorderLayout.WEST);
         outerCenterPanel.add(rightPanel, BorderLayout.EAST);
         frame.add(outerCenterPanel, BorderLayout.CENTER);
 
-        showCard("Page 1");
+        cardNavigator = new CardNavigator(cardLayout, innerCenterPanel, 4, backButton, nextButton);
+
+        cardNavigator.showCard("Page 1");
     }
 
     private JPanel createTopPanel(String text) {
@@ -156,48 +162,36 @@ public class TutorialView2 extends BaseView {
         return panel;
     }
 
-    private JPanel createArrowPanel(String arrow, java.awt.event.ActionListener action){
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setOpaque(true);
-        panel.setBackground(Color.WHITE);
-        panel.setPreferredSize(new Dimension(60, Integer.MAX_VALUE));
+    private JPanel createArrowPanel(String arrow, java.awt.event.ActionListener action) {
+        arrowPanel = new JPanel(new GridBagLayout());
+        arrowPanel.setOpaque(true);
+        arrowPanel.setBackground(Color.LIGHT_GRAY);
+        arrowPanel.setPreferredSize(new Dimension(60, Integer.MAX_VALUE));
 
         JButton button = new JButton(arrow);
         button.addActionListener(action);
-        panel.add(button);
+
+        arrowgridbagconstraints = new GridBagConstraints();
+        arrowgridbagconstraints.gridx = 0;
+        arrowgridbagconstraints.gridy = 0;
+        arrowgridbagconstraints.weightx = 1.0;
+        arrowgridbagconstraints.weighty = 1.0;
+        arrowgridbagconstraints.anchor = GridBagConstraints.CENTER;
+        arrowgridbagconstraints.fill = GridBagConstraints.NONE;
+
+        arrowPanel.add(button, arrowgridbagconstraints);
 
         if (arrow.equals("←")) backButton = button;
         if (arrow.equals("→")) nextButton = button;
 
-        return panel;
+        return arrowPanel;
     }
-    private void navigateNext() {
-        if (currentPage < totalPages) {
-            currentPage++;
-            showCard("Page " + currentPage);
-        }
-    }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            TutorialView2 tutorialView2 = new TutorialView2();
+            tutorialView2.show();
+        });
 
-    private void navigatePrevious() {
-        if (currentPage > 1) {
-            currentPage--;
-            showCard("Page " + currentPage);
-        }
-    }
-
-    public void showCard(String name) {
-        cardLayout.show(innerCenterPanel, name);
-
-        // Extract page number from name (assumes format "Page X")
-        try {
-            currentPage = Integer.parseInt(name.substring(5));
-        } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
-            currentPage = 1;
-        }
-
-        // Update button visibility based on current page
-        backButton.setVisible(currentPage > 1);
-        nextButton.setVisible(currentPage < totalPages);
     }
 }
 
