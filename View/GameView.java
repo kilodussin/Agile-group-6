@@ -1,5 +1,6 @@
 package View;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -13,6 +14,9 @@ import Model.Trashcan.PlasticTrashcan;
 import Model.Trashcan.SpawnTrashcans;
 import Model.Trashcan.Trashcan;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Random;
 
 
 /**
@@ -45,6 +49,8 @@ public class GameView extends BaseView{
     private JLabel curTrashLabel = null;
     private Timer resetTrashAnimation;
 
+    private Clip backgroundMusicClip;
+
     /**
      * Constructs the GameView and sets up all UI components.
      * <p>
@@ -61,6 +67,18 @@ public class GameView extends BaseView{
         escapeButton = new JButton("ESCAPE");
         gameOverViewPlaceholder = new JButton("Game Over View (Placeholder for navigation)");
         score = new Score();
+
+        String[] musicTracks = {
+                "Resources/Sounds/513427__mrthenoronha__cartoon-game-theme-loop-3.wav",
+                "Resources/Sounds/513667__mrthenoronha__cartoon-game-theme-loop-4.wav",
+                "Resources/Sounds/513869__mrthenoronha__cartoon-game-theme-loop-5.wav"
+        };
+
+        int randomIndex = new Random().nextInt(musicTracks.length);
+        String selectedTrack = musicTracks[randomIndex];
+
+        playBackgroundMusic(selectedTrack);
+
 
         createGameViewHeader();
         createGameViewCenterPanel();
@@ -242,6 +260,8 @@ public class GameView extends BaseView{
 
                         System.out.println("Not correctly sorted!");
 
+                        playSound("Resources/Sounds/training-program-incorrect1-88736 (1).wav");
+
                         resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e -> {
 
                             // Spawns the trash back to its original spawn location.
@@ -269,17 +289,54 @@ public class GameView extends BaseView{
         });
     }
 
-
-
-
     /**
      * The spawnAndRender randomizes a new trash and then sends it through renderTrash
      * to get a random trash spawned in the game.
      */
 
+    private void playSound(String soundFilePath) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFilePath));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(+5.0f);
+
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void spawnAndRender() {
         Trash newTrash = spawnTrashDefault.spawnRandomTrash();
         renderTrash(newTrash);
+
+        playSound("Resources/Sounds/321806__lloydevans09__plunger_pop_2.wav");
+    }
+
+    private void playBackgroundMusic(String filePath) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
+            backgroundMusicClip = AudioSystem.getClip();
+            backgroundMusicClip.open(audioInputStream);
+
+            FloatControl gainControl = (FloatControl) backgroundMusicClip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(-15.0f);
+
+            backgroundMusicClip.loop(Clip.LOOP_CONTINUOUSLY);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void stopBackgroundMusic() {
+        if (backgroundMusicClip != null && backgroundMusicClip.isRunning()) {
+            backgroundMusicClip.stop();
+            backgroundMusicClip.close();
+        }
     }
 
     /**
