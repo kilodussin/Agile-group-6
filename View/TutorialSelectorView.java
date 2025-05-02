@@ -11,6 +11,7 @@ public class TutorialSelectorView extends BaseView {
 
     protected JButton tutorial1Button;
     protected JButton tutorial2Button;
+    protected JButton escapeButton;
     private JPanel centerPanel;
 
     /**
@@ -21,6 +22,7 @@ public class TutorialSelectorView extends BaseView {
 
         tutorial1Button = new JButton("GAME MODE 1");
         tutorial2Button = new JButton("GAME MODE 2");
+        escapeButton = new JButton("ESCAPE");
 
         createTutorialSelectorPanel();
     }
@@ -29,6 +31,22 @@ public class TutorialSelectorView extends BaseView {
      * Creates the center panel containing buttons for tutorial selection.
      */
     private void createTutorialSelectorPanel() {
+        // Create header panel with escape button
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setOpaque(false);
+        headerPanel.setBorder(new EmptyBorder(20, 20, 10, 0));
+        headerPanel.add(escapeButton, BorderLayout.WEST);
+
+        // Create title label
+        JLabel titleLabel = new JLabel("Select a Tutorial", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
+        titleLabel.setForeground(Color.BLACK);
+        headerPanel.add(titleLabel, BorderLayout.CENTER);
+
+        // Add header panel to the frame
+        frame.add(headerPanel, BorderLayout.NORTH);
+
+        // Center panel with tutorial buttons
         centerPanel = new JPanel(new GridLayout(2, 1, 0, 20));
         EmptyBorder buttonsBorder = new EmptyBorder(100, 300, 100, 300);
 
@@ -37,16 +55,6 @@ public class TutorialSelectorView extends BaseView {
         centerPanel.setBorder(buttonsBorder);
         centerPanel.setOpaque(false);
 
-        JLabel titleLabel = new JLabel("Select a Tutorial", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
-        titleLabel.setForeground(Color.BLACK);
-
-        JPanel titlePanel = new JPanel(new BorderLayout());
-        titlePanel.add(titleLabel, BorderLayout.CENTER);
-        titlePanel.setOpaque(false);
-        titlePanel.setBorder(new EmptyBorder(50, 0, 0, 0));
-
-        frame.add(titlePanel, BorderLayout.NORTH);
         frame.add(centerPanel, BorderLayout.CENTER);
     }
 }

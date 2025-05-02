@@ -69,7 +69,7 @@ public class ViewManager {
      */
     public void showTutorialSelectorView() {
         TutorialSelectorView tutorialSelectorView = new TutorialSelectorView();
-
+        tutorialSelectorView.escapeButton.addActionListener(e -> showMainMenuView());
         tutorialSelectorView.tutorial1Button.addActionListener(e -> showTutorialView1());
         tutorialSelectorView.tutorial2Button.addActionListener(e -> showTutorialView2());
         //tutorialSelectorView.escapeButton.addActionListener(e -> showMainMenuView());
