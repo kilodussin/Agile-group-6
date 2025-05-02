@@ -1,15 +1,21 @@
 package View;
 
+import Model.Trash.*;
+import Model.Trash.ImageDescriptionPair.ImageDescriptionPair;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import java.util.ArrayList;
 
 
 /**
- * View that displays the second tutorial for the game
+ * View that displays the game's tutorial for gamemode 2.
+ * <p>
+ * This class includes a header with a title and a main section designed to guide the user through the tutorial.
+ * <p>
+ * The main section contains multiple pages, each with its own content.
+ * The tutorial is designed to help users understand the game mechanics and rules.
  */
 public class TutorialView2 extends BaseView {
     private CardNavigator cardNavigator;
@@ -34,6 +40,8 @@ public class TutorialView2 extends BaseView {
 
     /**
      * Constructs the TutorialView2 and sets up all UI components.
+     * <p>
+     * This includes initializing buttons and calling methods to create each panel.
      */
     public TutorialView2() {
         super("Tutorial 2", "/Resources/Background1.png");
@@ -46,6 +54,16 @@ public class TutorialView2 extends BaseView {
 
     /**
      * Creates a header panel containing the view title and an escape button.
+     * <p>
+     * This header panel uses BorderLayout to position its components:
+     * - The escape button is placed to the left
+     * - The title label is centered
+     * <p>
+     * Padding is applied using EmptyBorder to create space around the header content
+     * <p>
+     * This panel is made transparent by setting opaque to false, allowing the background image to show through.
+     * <p>
+     * This panel is added to the north container of the frame.
      */
     private void createTutorialHeader() {
         headerPanel = new JPanel(new BorderLayout(-90, 0));
@@ -64,8 +82,22 @@ public class TutorialView2 extends BaseView {
     }
 
     /**
-     * Creates a center panel for the second tutorial.
+     * Creates a center panel for the tutorial.
+     * <p>
+     * This layout uses two nested panels: An outer panel and an inner panel with a card layout.
+     * The inner panel contains multiple pages, each representing a step in the tutorial.
+     * <p>
+     * The createPages() method is called to populate the inner panel with tutorial content.
+     * <p>
+     * Navigation buttons are added to the left and right of the center panel to allow users to move between pages.
+     * <p>
+     * The CardNavigator is initialized to manage page transitions and handle navigation logic.
+     * <p>
+     * The outerCenterPanel is made transparent by setting opaque to false, allowing the background image to show through.
+     * <p>
+     * This panel is added to the center of the frame.
      */
+
     private void createTutorialCenterPanel() {
         outerCenterPanel = new JPanel(new BorderLayout());
         outerCenterPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
@@ -76,116 +108,98 @@ public class TutorialView2 extends BaseView {
         innerCenterPanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 5));
         innerCenterPanel.setBackground(Color.WHITE);
 
-        // Page 1 - Tutorial 2 content
-        JPanel page1 = new JPanel();
-        page1.setLayout(new BoxLayout(page1, BoxLayout.Y_AXIS));
-        page1.setBackground(Color.WHITE);
-        page1.add(createTopPanel("Recycle the different objects by dragging them to the correct recycling bin"));
-        page1.add(createImagePanel("Resources/Tutorial2/GM2Page1Base.png"));
-        innerCenterPanel.add(page1, "Page 1");
+        createPages();
 
-        // Page 2 - Tutorial 2 content
-        JPanel page2 = new JPanel();
-        page2.setLayout(new BoxLayout(page2, BoxLayout.Y_AXIS));
-        page2.setBackground(Color.WHITE);
-        page2.add(createTopPanel("Every correct object you recycle grants a timebonus depending on difficulty. Easy/Medium/Hard give +10/+5/+3 seconds respectively"));
-        page2.add(createImagePanel("Resources/Tutorial2/GM2TutorialPage2.png"));
-        innerCenterPanel.add(page2, "Page 2");
+        leftPanel = TutorialComponents.createArrowPanel("←", e -> cardNavigator.navigatePrevious());
+        rightPanel = TutorialComponents.createArrowPanel("→", e -> cardNavigator.navigateNext());
 
-        // Page 3 - Tutorial 2 content
-        JPanel page3 = new JPanel();
-        page3.setLayout(new BoxLayout(page3, BoxLayout.Y_AXIS));
-        page3.setBackground(Color.WHITE);
-        page3.add(createTopPanel("When the time runs out, there's more than 5 pieces of trash on the beach or you've sorted incorrectly three times, the game is over!"));
-        page3.add(createImagePanel("Resources/Background1.png"));
-        innerCenterPanel.add(page3, "Page 3");
-
-        JPanel page4 = new JPanel();
-        page4.setLayout(new BoxLayout(page4, BoxLayout.Y_AXIS));
-        page4.setBackground(Color.WHITE);
-        page4.add(createTopPanel("Remember to recycle smartly! The environment depends on your actions."));
-        //page4.add(createImagePanel("Resources/Background2.png"));
-        innerCenterPanel.add(page4, "Page 4");
-
-        leftPanel = createArrowPanel("←", e -> cardNavigator.navigatePrevious());
-        rightPanel = createArrowPanel("→", e -> cardNavigator.navigateNext());
+        backButton = (JButton)leftPanel.getComponent(0);
+        nextButton = (JButton)rightPanel.getComponent(0);
 
         outerCenterPanel.add(innerCenterPanel, BorderLayout.CENTER);
         outerCenterPanel.add(leftPanel, BorderLayout.WEST);
         outerCenterPanel.add(rightPanel, BorderLayout.EAST);
         frame.add(outerCenterPanel, BorderLayout.CENTER);
 
-        cardNavigator = new CardNavigator(cardLayout, innerCenterPanel, 4, backButton, nextButton);
-
+        cardNavigator = new CardNavigator(cardLayout, innerCenterPanel, 5, backButton, nextButton);
         cardNavigator.showCard("Page 1");
     }
 
-    private JPanel createTopPanel(String text) {
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(Color.WHITE);
-        topPanel.setPreferredSize(new Dimension(0, 150));
-        topPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
-        topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+    /**
+     * This method populates the inner center panel with tutorial pages.
+     * <p>
+     * Each page contains specific content, such as:
+     * - Text panels
+     * - Image panels
+     * - Grid-based layouts with descriptions and images
+     * <p>
+     * This tutorial includes:
+     * - Introduction pages with images
+     * - Detailed recycling information (all trash) in grid layout.
+     *   All descriptions are pulled from the trash classes, so if new trash is added, it will automatically be included/reflected in the tutorial.
+     * - A "conclusion" page
+     * <p>
+     * Pages are added to the innerCenterPanel using a CardLayout, enabling navigation between them.
+     */
+    private void createPages() {
+        // Page 1
+        JPanel page1 = new JPanel();
+        page1.setLayout(new BoxLayout(page1, BoxLayout.Y_AXIS));
+        page1.setBackground(Color.WHITE);
+        page1.add(TutorialComponents.createTextPanel("Test your recycling knowledge by matching trash items with their correct descriptions!"), SwingConstants.CENTER);
+        page1.add(TutorialComponents.createImagePanel("Resources/Background1.png", 500, 350, false));
+        innerCenterPanel.add(page1, "Page 1");
 
-        // Use JTextPane for both wrapping and alignment
-        JTextPane textPane = new JTextPane();
+        // Page 2
+        JPanel page2 = new JPanel();
+        page2.setLayout(new BoxLayout(page2, BoxLayout.Y_AXIS));
+        page2.setBackground(Color.WHITE);
+        page2.add(TutorialComponents.createTextPanel("When trash appears on the beach, click on it and then the correct description to gain points!"));
+        page2.add(TutorialComponents.createImagePanel("Resources/Background2.png", 500, 350, false));
+        innerCenterPanel.add(page2, "Page 2");
 
-        // Set up the style for center alignment
-        StyledDocument doc = textPane.getStyledDocument();
-        SimpleAttributeSet center = new SimpleAttributeSet();
-        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        // Page 3
+        JPanel page3 = new JPanel();
+        page3.setLayout(new BoxLayout(page3, BoxLayout.Y_AXIS));
+        page3.setBackground(Color.WHITE);
+        page3.add(TutorialComponents.createTextPanel("Each trash item has exactly one correct description - don't get fooled by the fake ones!"));
+        page3.add(TutorialComponents.createImagePanel("Resources/Background2.png", 500, 350, false));
+        page3.add(TutorialComponents.createTextPanel("But remember, time is ticking! Make your matches before the clock runs out."));
+        innerCenterPanel.add(page3, "Page 3");
 
-        textPane.setText(text);
-        textPane.setFont(new Font("SansSerif", Font.BOLD, 20));
-        textPane.setEditable(false);
-        textPane.setBorder(null);
-        textPane.setBackground(Color.WHITE);
+        // Page 4
+        java.util.List<ImageDescriptionPair> page4Content = new ArrayList<>();
+        page4Content.add(new ImageDescriptionPair("Resources/Trash/Teabag_Trash.png", "Most tea bags are made entirely out of biodegradable material, and should therefore be thrown into the food disposal."));
+        page4Content.addAll(new CombustibleTrash(null, 0).generateAvailableImages());
+        page4Content.addAll(new FoodTrash(null, 0).generateAvailableImages());
+        page4Content.addAll(new GlassTrash(null, 0).generateAvailableImages());
+        page4Content.addAll(new NonRecyclableTrash(null, 0).generateAvailableImages());
+        page4Content.addAll(new PlasticTrash(null, 0).generateAvailableImages());
 
-        topPanel.add(textPane, BorderLayout.CENTER);
+        JPanel page4 = new JPanel();
+        page4.setLayout(new BoxLayout(page4, BoxLayout.Y_AXIS));
+        page4.setBackground(Color.WHITE);
+        page4.add(TutorialComponents.createTextPanel("List of all trash and their corresponding descriptions"));
+        page4.add(new JSeparator(SwingConstants.HORIZONTAL));
+        page4.add(TutorialComponents.createGridBagPage(page4Content));
 
-        return topPanel;
+        innerCenterPanel.add(page4, "Page 4");
+
+        // Page 5
+        JPanel page5 = new JPanel();
+        page5.setLayout(new BoxLayout(page5, BoxLayout.Y_AXIS));
+        page5.setBackground(Color.WHITE);
+        page5.add(TutorialComponents.createTextPanel("Remember to recycle smartly! The environment depends on your actions."));
+        page5.add(TutorialComponents.createImagePanel("Resources/Background2.png", 500, 350, false));
+        innerCenterPanel.add(page5, "Page 5");
     }
 
-    private JPanel createImagePanel(String imagePath) {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        panel.setBackground(Color.WHITE);
-        panel.setPreferredSize(new Dimension(0, 400));
-        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 400));
-        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        ImageIcon icon = new ImageIcon(imagePath);
-        Image image = icon.getImage().getScaledInstance(500, 350, Image.SCALE_SMOOTH);
-        JLabel imageLabel = new JLabel(new ImageIcon(image));
-        panel.add(imageLabel);
-
-        return panel;
-    }
-
-    private JPanel createArrowPanel(String arrow, java.awt.event.ActionListener action) {
-        arrowPanel = new JPanel(new GridBagLayout());
-        arrowPanel.setOpaque(true);
-        arrowPanel.setBackground(Color.LIGHT_GRAY);
-        arrowPanel.setPreferredSize(new Dimension(60, Integer.MAX_VALUE));
-
-        JButton button = new JButton(arrow);
-        button.addActionListener(action);
-
-        arrowgridbagconstraints = new GridBagConstraints();
-        arrowgridbagconstraints.gridx = 0;
-        arrowgridbagconstraints.gridy = 0;
-        arrowgridbagconstraints.weightx = 1.0;
-        arrowgridbagconstraints.weighty = 1.0;
-        arrowgridbagconstraints.anchor = GridBagConstraints.CENTER;
-        arrowgridbagconstraints.fill = GridBagConstraints.NONE;
-
-        arrowPanel.add(button, arrowgridbagconstraints);
-
-        if (arrow.equals("←")) backButton = button;
-        if (arrow.equals("→")) nextButton = button;
-
-        return arrowPanel;
-    }
+    /**
+     * Temporary placeholder to test the view independently when working on it.
+     * <p>
+     * This main method allows the TutorialView to run standalone, which is useful during development, for UI testing.
+     * Uncomment to run the view standalone.
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             TutorialView2 tutorialView2 = new TutorialView2();

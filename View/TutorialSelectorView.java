@@ -35,7 +35,6 @@ public class TutorialSelectorView extends BaseView {
     /**
      * Creates the center panel containing buttons for tutorial selection.
      */
-
     private void createTutorialSelectorHeaderPanel() {
         headerPanel = new JPanel(new BorderLayout(-90, 0));
         headerPadding = new EmptyBorder(20,20,10,0);
@@ -53,6 +52,10 @@ public class TutorialSelectorView extends BaseView {
 
         frame.add(headerPanel, BorderLayout.NORTH);
     }
+
+    /**
+     * Creates the center panel containing buttons for tutorial selection.
+     */
     private void createTutorialSelectorPanel() {
         centerPanel = new JPanel(new GridLayout(2, 1, 0, 20));
         EmptyBorder buttonsBorder = new EmptyBorder(100, 300, 100, 300);

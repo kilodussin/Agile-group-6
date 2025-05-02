@@ -1,7 +1,5 @@
 package View;
 
-import org.junit.Test;
-
 import javax.swing.*;
 import java.util.ArrayList;
 
