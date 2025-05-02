@@ -45,7 +45,7 @@ public class GameOverView extends BaseView{
      * @param trashList The list of trash objects to be displayed.
      */
     public GameOverView(double score, double highscore, ArrayList<Trash> trashList) {
-        super("Game Over", "/Resources/Background1.png");
+        super("Game Over", "/Resources/Background3.png");
 
         this.highscore = highscore;
         this.finalScore = score;
@@ -92,7 +92,6 @@ public class GameOverView extends BaseView{
         scorePanel.setOpaque(false);
 
         // Create the score label
-
         JLabel scoreDisplayLabel;
         if (finalScore > highscore) {
             scoreDisplayLabel = new JLabel("NEW HIGHSCORE!: " + finalScore);
@@ -116,7 +115,18 @@ public class GameOverView extends BaseView{
         scorePanel.add(highscoreLabel, BorderLayout.EAST);
         scorePanel.add(mistakesLabel, BorderLayout.CENTER);
 
-        outerCenterPanel.add(scorePanel, BorderLayout.NORTH);
+        // Create a spacer panel to push trash display down
+        JPanel spacerPanel = new JPanel();
+        spacerPanel.setOpaque(false);
+        spacerPanel.setPreferredSize(new Dimension(1, 40)); // Adjust height as needed
+
+        // Create wrapper panel for score panel and spacer
+        JPanel topWrapper = new JPanel(new BorderLayout());
+        topWrapper.setOpaque(false);
+        topWrapper.add(scorePanel, BorderLayout.NORTH);
+        topWrapper.add(spacerPanel, BorderLayout.CENTER);
+
+        outerCenterPanel.add(topWrapper, BorderLayout.NORTH);
 
         JPanel trashDisplayPanel = createTrashDisplayPanel();
         outerCenterPanel.add(trashDisplayPanel, BorderLayout.CENTER);
@@ -158,28 +168,48 @@ public class GameOverView extends BaseView{
         // Create the image display in the center
         trashImageLabel = new JLabel("", SwingConstants.CENTER);
         trashImageLabel.setPreferredSize(new Dimension(300, 200));
+        trashImageLabel.setOpaque(false);
 
         // Create text description panel
         JPanel descriptionPanel = new JPanel(new BorderLayout());
+        descriptionPanel.setOpaque(false);
+
         trashDescriptionArea = new JTextArea(3, 20);
         trashDescriptionArea.setEditable(false);
         trashDescriptionArea.setLineWrap(true);
         trashDescriptionArea.setWrapStyleWord(true);
         trashDescriptionArea.setFont(new Font("Arial", Font.PLAIN, 20));
 
-        // Create scroll pane
-        JScrollPane scrollPane = new JScrollPane(trashDescriptionArea);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        descriptionPanel.add(scrollPane, BorderLayout.CENTER);
+        // Full transparency for text area
+        trashDescriptionArea.setOpaque(false);
+        trashDescriptionArea.setBackground(new Color(0, 0, 0, 0));
+        trashDescriptionArea.setForeground(Color.BLACK); // Set text color
 
-        // Create central content panel to hold image and description, makes it easier to manage layout
+        // Create a completely transparent scroll pane
+        JScrollPane scrollPane = new JScrollPane(trashDescriptionArea);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setBackground(new Color(0, 0, 0, 0));
+        scrollPane.getViewport().setBackground(new Color(0, 0, 0, 0));
+
+        // These components also need to be transparent
+        scrollPane.getHorizontalScrollBar().setOpaque(false);
+        scrollPane.getVerticalScrollBar().setOpaque(false);
+
+        descriptionPanel.add(scrollPane, BorderLayout.CENTER);
+        descriptionPanel.setBackground(new Color(0, 0, 0, 0));
+
+        // Create central content panel to hold image and description
         JPanel centralContent = new JPanel(new BorderLayout(10, 10));
-        centralContent.setBackground(Color.WHITE);
+        centralContent.setOpaque(false);
+        centralContent.setBackground(new Color(0, 0, 0, 0));
         centralContent.add(trashImageLabel, BorderLayout.CENTER);
         centralContent.add(descriptionPanel, BorderLayout.SOUTH);
 
         // Create navigation panel with buttons
         JPanel navigationPanel = createNavigationPanel();
+        navigationPanel.setOpaque(false);
 
         // Set up layout
         panel.add(centralContent, BorderLayout.CENTER);
