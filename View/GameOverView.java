@@ -29,7 +29,7 @@ public class GameOverView extends BaseView{
 
     private JLabel scoreLabel;
     private double finalScore;
-    private int highscore;
+    private double highscore;
     private ArrayList<Trash> trashList;
     private int currentTrashIndex = 0;
     private JLabel trashImageLabel;
@@ -44,7 +44,7 @@ public class GameOverView extends BaseView{
      * @param highscore The highest score achieved in the game.
      * @param trashList The list of trash objects to be displayed.
      */
-    public GameOverView(double score, int highscore, ArrayList<Trash> trashList) {
+    public GameOverView(double score, double highscore, ArrayList<Trash> trashList) {
         super("Game Over", "/Resources/Background1.png");
 
         this.highscore = highscore;
@@ -99,17 +99,17 @@ public class GameOverView extends BaseView{
         } else {
             scoreDisplayLabel = new JLabel("Score: " + finalScore);
         }
-        scoreDisplayLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        scoreDisplayLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         // Create highscore label
         JLabel highscoreLabel = new JLabel("Highscore: " + highscore);
-        highscoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        highscoreLabel.setFont(new Font("Arial", Font.BOLD, 24));
         highscoreLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
         // Create the mistakes label
         int mistakesCount = (trashList != null) ? trashList.size() : 0;
         JLabel mistakesLabel = new JLabel("You made " + mistakesCount + " mistakes!", SwingConstants.CENTER);
-        mistakesLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        mistakesLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         // Add labels to the score panel
         scorePanel.add(scoreDisplayLabel, BorderLayout.WEST);

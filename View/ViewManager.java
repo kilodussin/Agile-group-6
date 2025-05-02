@@ -153,7 +153,7 @@ public class ViewManager {
     /**
      * Shows the game over view and sets up its actions to buttons that navigate to other views.
      */
-    public void showGameOverView(double score, int highScore, ArrayList<Trash> incorrectTrash ){
+    public void showGameOverView(double score, double highScore, ArrayList<Trash> incorrectTrash ){
         GameOverView gameOverView = new GameOverView(score, highScore, incorrectTrash);
 
         gameOverView.playAgainButton.addActionListener(e -> showGameView());

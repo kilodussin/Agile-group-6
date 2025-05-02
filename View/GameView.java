@@ -243,17 +243,16 @@ public class GameView extends BaseView{
 
 
                         //Adds trash to list for game over view
-                        if(!incorrectTrash.isEmpty()) {
+                        boolean isDuplicate = false;
+                        if (!incorrectTrash.isEmpty()) {
                             for (Trash trash : incorrectTrash) {
                                 if (trash.getDescription().equals(trashToReset.getDescription())) {
-                                    break;
-                                }
-                                else {
-                                    incorrectTrash.add(trashToReset);
+                                    isDuplicate = true;
                                     break;
                                 }
                             }
-                        } else {incorrectTrash.add(trashToReset);}
+                        }
+                        if (!isDuplicate) {incorrectTrash.add(trashToReset);}
 
 
 

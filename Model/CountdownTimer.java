@@ -120,7 +120,7 @@ public class CountdownTimer {
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
-                viewManager.showGameOverView(score, 555, gameView.getIncorrectTrash());
+                viewManager.showGameOverView(score, 0.5, gameView.getIncorrectTrash());
 
             }
 
