@@ -7,7 +7,9 @@ import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
 
 import View.GameView;
+import View.GameOverView;
 import Model.HighscoreIO;
+import View.ViewManager;
 
 /**
  CountdownTimer is responsible for the in-game timer.
@@ -21,7 +23,8 @@ public class CountdownTimer {
     private JLabel timeLabel;
     private Timer mainTimer;
     private GameView gameView;
-
+    private GameOverView gameOverView;
+    private ViewManager viewManager;
     private HighscoreIO highscoreIO;
 
 
@@ -39,6 +42,7 @@ public class CountdownTimer {
     public CountdownTimer(GameView gameView, HighscoreIO highscoreIO) {
         this.highscoreIO = highscoreIO;
         this.gameView = gameView;
+        this.viewManager = ViewManager.getInstance();
         timeLeft = timerInSeconds;
         buildTimerVisuals();
         startTimer();
@@ -100,6 +104,8 @@ public class CountdownTimer {
                 mainTimer.stop();
                 timeLabel.setText("Time is up! ");
 
+
+
                 // Functionality for grabbing final score when game is over
                 // Send the new Highscores object through the sortAndWrite to sort entries and write it to file
                 // Could be broken out into a standalone function
@@ -114,6 +120,7 @@ public class CountdownTimer {
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
+                viewManager.showGameOverView(score, 555, gameView.getIncorrectTrash());
 
             }
 

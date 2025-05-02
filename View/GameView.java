@@ -45,6 +45,8 @@ public class GameView extends BaseView{
     private JLabel curTrashLabel = null;
     private Timer resetTrashAnimation;
 
+    private ArrayList<Trash> incorrectTrash;
+
     /**
      * Constructs the GameView and sets up all UI components.
      * <p>
@@ -61,6 +63,7 @@ public class GameView extends BaseView{
         escapeButton = new JButton("ESCAPE");
         gameOverViewPlaceholder = new JButton("Game Over View (Placeholder for navigation)");
         score = new Score();
+        incorrectTrash = new ArrayList<>();
 
         createGameViewHeader();
         createGameViewCenterPanel();
@@ -238,9 +241,27 @@ public class GameView extends BaseView{
                         Trash trashToReset = curSelectedTrash;
                         curSelectedTrash = null;
 
+
+                        //Adds trash to list for game over view
+                        if(!incorrectTrash.isEmpty()) {
+                            for (Trash trash : incorrectTrash) {
+                                if (trash.getDescription().equals(trashToReset.getDescription())) {
+                                    break;
+                                }
+                                else {
+                                    incorrectTrash.add(trashToReset);
+                                    break;
+                                }
+                            }
+                        } else {incorrectTrash.add(trashToReset);}
+
+
+
+
                         // The trash animation delay can be tweaked (ANIMATION_DELAY)
 
                         System.out.println("Not correctly sorted!");
+
 
                         resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e -> {
 
@@ -269,8 +290,9 @@ public class GameView extends BaseView{
         });
     }
 
-
-
+    public ArrayList<Trash> getIncorrectTrash() {
+        return incorrectTrash;
+    }
 
     /**
      * The spawnAndRender randomizes a new trash and then sends it through renderTrash

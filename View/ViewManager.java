@@ -1,6 +1,8 @@
 package View;
 
 
+import Model.Trash.Trash;
+
 import javax.swing.*;
 import java.util.ArrayList;
 
@@ -132,7 +134,7 @@ public class ViewManager {
         GameView gameView = new GameView();
 
         gameView.escapeButton.addActionListener(e -> showGameModeView());
-        gameView.gameOverViewPlaceholder.addActionListener(e -> showGameOverView());
+        //gameView.gameOverViewPlaceholder.addActionListener(e -> showGameOverView());
 
         showView(gameView);
     }
@@ -151,8 +153,8 @@ public class ViewManager {
     /**
      * Shows the game over view and sets up its actions to buttons that navigate to other views.
      */
-    public void showGameOverView(){
-        GameOverView gameOverView = new GameOverView(1, 5, new ArrayList<>());
+    public void showGameOverView(double score, int highScore, ArrayList<Trash> incorrectTrash ){
+        GameOverView gameOverView = new GameOverView(score, highScore, incorrectTrash);
 
         gameOverView.playAgainButton.addActionListener(e -> showGameView());
         gameOverView.mainMenuButton.addActionListener(e -> showMainMenuView());

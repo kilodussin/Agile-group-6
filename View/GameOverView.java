@@ -4,6 +4,7 @@ import Model.Trash.Trash;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,9 +28,9 @@ public class GameOverView extends BaseView{
     private EmptyBorder bottomButtonsBorder;
 
     private JLabel scoreLabel;
-    private int finalScore;
+    private double finalScore;
     private int highscore;
-    private List<Trash> trashList;
+    private ArrayList<Trash> trashList;
     private int currentTrashIndex = 0;
     private JLabel trashImageLabel;
     private JTextArea trashDescriptionArea;
@@ -43,7 +44,7 @@ public class GameOverView extends BaseView{
      * @param highscore The highest score achieved in the game.
      * @param trashList The list of trash objects to be displayed.
      */
-    public GameOverView(int score, int highscore, List<Trash> trashList) {
+    public GameOverView(double score, int highscore, ArrayList<Trash> trashList) {
         super("Game Over", "/Resources/Background1.png");
 
         this.highscore = highscore;
@@ -83,12 +84,12 @@ public class GameOverView extends BaseView{
      */
     private void createGameOverCenterPanel() {
         outerCenterPanel = new JPanel(new BorderLayout());
-        outerCenterPanel.setBackground(Color.GRAY);
+        outerCenterPanel.setOpaque(false);
         outerCenterPanel.setBorder(BorderFactory.createEmptyBorder(60, 60, 60, 60));
 
         // Create a container for score and highscore labels with space between them
         JPanel scorePanel = new JPanel(new BorderLayout());
-        scorePanel.setBackground(Color.GRAY);
+        scorePanel.setOpaque(false);
 
         // Create the score label
 
@@ -151,7 +152,7 @@ public class GameOverView extends BaseView{
      */
     private JPanel createTrashDisplayPanel() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
-        panel.setBackground(Color.WHITE);
+        panel.setOpaque(false);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Create the image display in the center
@@ -204,7 +205,7 @@ public class GameOverView extends BaseView{
      */
     private JPanel createNavigationPanel() {
         JPanel navigationPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
-        navigationPanel.setBackground(Color.WHITE);
+        navigationPanel.setOpaque(false);
 
         // Create previous button with image
         ImageIcon prevIcon = new ImageIcon("resources/next_normal.png");
@@ -309,12 +310,12 @@ public class GameOverView extends BaseView{
             ImageIcon icon = new ImageIcon(trash.getImagePath());
 
             // Resize the image to fit the display area if needed
-            if (icon.getIconWidth() > 400 || icon.getIconHeight() > 300) {
+
                 Image img = icon.getImage();
-                Image resizedImg = img.getScaledInstance(400, 300, Image.SCALE_SMOOTH);
+                Image resizedImg = img.getScaledInstance(130, 130, Image.SCALE_SMOOTH);
                 return new ImageIcon(resizedImg);
-            }
-            return icon;
+
+            //return icon;
         } catch (Exception e) {
             System.err.println("Error loading image for trash type: " + trash.getClass().getSimpleName());
             return null;
