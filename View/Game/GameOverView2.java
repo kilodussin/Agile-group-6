@@ -1,8 +1,9 @@
-package View;
+package View.Game;
 
-import Model.HighscoreIO;
-import Model.Highscores;
-import Model.Score;
+import Model.Score.HighscoreIO;
+import Model.Score.Highscores;
+import Model.Score.Score;
+import View.ComponentsUtilities.BaseView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -52,7 +53,7 @@ public class GameOverView2 extends BaseView {
      * @param score the player's final score to be displayed
      */
     public GameOverView2(double score) {
-        super("Game Over 2", "/Resources/Background1.png");
+        super("Game Over 2", "/Resources/Images/Backgrounds/Background1.png");
 
         playAgainButton = new JButton("PLAY AGAIN");
         mainMenuButton = new JButton("MAIN MENU");
@@ -63,6 +64,44 @@ public class GameOverView2 extends BaseView {
         createGameOverHeader();
         createGameOverCenterPanel();
         createGameOverBottomPanel();
+    }
+
+    // Getters
+    /**
+     * Gets the "Play Again" button.
+     * <p>
+     * @return the JButton for the "Play Again" action
+     */
+    public JButton getPlayAgainButton() {
+        return playAgainButton;
+    }
+
+    /**
+     * Gets the "Main Menu" button.
+     * <p>
+     * @return the JButton for the "Main Menu" action
+     */
+    public JButton getMainMenuButton() {
+        return mainMenuButton;
+    }
+
+    // Setters
+    /**
+     * Sets the "Play Again" button.
+     * <p>
+     * @param playAgainButton the JButton to set for the "Play Again" action
+     */
+    public void setPlayAgainButton(JButton playAgainButton) {
+        this.playAgainButton = playAgainButton;
+    }
+
+    /**
+     * Sets the "Main Menu" button.
+     * <p>
+     * @param mainMenuButton the JButton to set for the "Main Menu" action
+     */
+    public void setMainMenuButton(JButton mainMenuButton) {
+        this.mainMenuButton = mainMenuButton;
     }
 
     /**
@@ -126,7 +165,7 @@ public class GameOverView2 extends BaseView {
 
         java.util.List<Highscores> highscores;
         try {
-            highscores = highscoreIO.readFile("Resources/highscores2.txt");
+            highscores = highscoreIO.readFile("Resources/Textfiles/highscores2.txt");
         } catch (FileNotFoundException e) {
             highscores = new ArrayList<>();
         }
@@ -136,7 +175,7 @@ public class GameOverView2 extends BaseView {
         if (isNewHighscore) {
             newHighscore = new Highscores("Player", 0, currentScore);
             try {
-                highscoreIO.sortAndWrite(newHighscore, "Resources/highscores2.txt");
+                highscoreIO.sortAndWrite(newHighscore, "Resources/Textfiles/highscores2.txt");
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }

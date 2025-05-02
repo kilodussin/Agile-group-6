@@ -1,4 +1,4 @@
-package View;
+package View.ComponentsUtilities;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,6 +46,28 @@ public abstract class BaseView {
         backgroundPanel = new BackgroundPanel(backgroundImage);
         backgroundPanel.setLayout(new BorderLayout());
         frame.setContentPane(backgroundPanel);
+    }
+
+    // Getters
+
+    /**
+     * Returns the JFrame object representing the current view.
+     *
+     * @return The JFrame object of this view.
+     */
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    // Setters
+
+    /**
+     * Sets the JFrame object for this view.
+     * <p>
+     * @param frame The JFrame object to set.
+     */
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
     }
 
     /**

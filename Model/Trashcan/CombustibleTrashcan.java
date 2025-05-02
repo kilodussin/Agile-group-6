@@ -1,7 +1,6 @@
 package Model.Trashcan;
 import Model.Hitbox;
 import Model.Trash.CombustibleTrash;
-import Model.Trash.NonRecyclableTrash;
 import Model.Trash.Trash;
 
 /**
@@ -24,7 +23,7 @@ public class CombustibleTrashcan extends Trashcan{
 
     @Override
     public String generateImagePath() {
-        return "Resources/Trashcan/Combustible_RecBin.png";
+        return "Resources/Images/Trashcan/Combustible_RecBin.png";
     }
 
 }

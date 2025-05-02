@@ -1,7 +1,10 @@
-package View;
+package View.Tutorial;
 
 import Model.Trash.*;
 import Model.Trash.ImageDescriptionPair.ImageDescriptionPair;
+import View.ComponentsUtilities.BaseView;
+import View.ComponentsUtilities.CardNavigator;
+import View.ComponentsUtilities.TutorialComponents;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -43,11 +46,32 @@ public class TutorialView extends BaseView {
      * This includes initializing buttons and calling methods to create each panel.
      */
     public TutorialView() {
-        super("Tutorial", "/Resources/Background1.png");
+        super("Tutorial", "/Resources/Images/Backgrounds/Background1.png");
         escapeButton = new JButton("ESCAPE");
         createTutorialHeader();
         createTutorialCenterPanel();
     }
+
+    // Getters
+    /**
+     * Returns the escape button.
+     * <p>
+     * @return the escape button
+     */
+    public JButton getEscapeButton() {
+        return escapeButton;
+    }
+
+    // Setters
+    /**
+     * Sets the escape button.
+     * <p>
+     * @param escapeButton the escape button
+     */
+    public void setEscapeButton(JButton escapeButton) {
+        this.escapeButton = escapeButton;
+    }
+
 
     /**
      * Creates a header panel containing the view title and an escape button.
@@ -145,7 +169,7 @@ public class TutorialView extends BaseView {
         page1.setLayout(new BoxLayout(page1, BoxLayout.Y_AXIS));
         page1.setBackground(Color.WHITE);
         page1.add(TutorialComponents.createTextPanel("Help clean up the beach by recycling all the trash into the correct trashcans!"), SwingConstants.CENTER);
-        page1.add(TutorialComponents.createImagePanel("Resources/Background1.png", 500, 350, false));
+        page1.add(TutorialComponents.createImagePanel("Resources/Images/Backgrounds/Background1.png", 500, 350, false));
         innerCenterPanel.add(page1, "Page 1");
 
         // Page 2
@@ -153,37 +177,37 @@ public class TutorialView extends BaseView {
         page2.setLayout(new BoxLayout(page2, BoxLayout.Y_AXIS));
         page2.setBackground(Color.WHITE);
         page2.add(TutorialComponents.createTextPanel("When trash appears on the beach, click on it and then the correct trashcan to gain points!"));
-        page2.add(TutorialComponents.createImagePanel("Resources/Background2.png", 500, 350, false));
+        page2.add(TutorialComponents.createImagePanel("Resources/Images/Backgrounds/Background1.png", 500, 350, false));
         page2.add(TutorialComponents.createTextPanel("But hurry up, before the time runs out!"));
         innerCenterPanel.add(page2, "Page 2");
 
         // Page 3
         List<ImageDescriptionPair> page3Content = new ArrayList<>();
-        page3Content.add(new ImageDescriptionPair("Resources/Trashcan/Compost_RecBin.png", "What can be thrown into the Compost bin?"));
+        page3Content.add(new ImageDescriptionPair("Resources/Images/Trashcan/Compost_RecBin.png", "What can be thrown into the Compost bin?"));
         page3Content.addAll(new FoodTrash(null, 0).generateAvailableImages());
         innerCenterPanel.add(TutorialComponents.createGridBagPage(page3Content), "Page 3");
 
         // Page 4
         List<ImageDescriptionPair> page4Content = new ArrayList<>();
-        page4Content.add(new ImageDescriptionPair("Resources/Trashcan/Plastic_RecBin.png", "What can be thrown into the Plastic bin?"));
+        page4Content.add(new ImageDescriptionPair("Resources/Images/Trashcan/Plastic_RecBin.png", "What can be thrown into the Plastic bin?"));
         page4Content.addAll(new PlasticTrash(null, 0).generateAvailableImages());
         innerCenterPanel.add(TutorialComponents.createGridBagPage(page4Content), "Page 4");
 
         // Page 5
         List<ImageDescriptionPair> page5Content = new ArrayList<>();
-        page5Content.add(new ImageDescriptionPair("Resources/Trashcan/Combustible_RecBin.png", "What can be thrown into the Combustible bin?"));
+        page5Content.add(new ImageDescriptionPair("Resources/Images/Trashcan/Combustible_RecBin.png", "What can be thrown into the Combustible bin?"));
         page5Content.addAll(new CombustibleTrash(null, 0).generateAvailableImages());
         innerCenterPanel.add(TutorialComponents.createGridBagPage(page5Content), "Page 5");
 
         // Page 6
         List<ImageDescriptionPair> page6Content = new ArrayList<>();
-        page6Content.add(new ImageDescriptionPair("Resources/Trashcan/Glass_RecBin.png", "What can be thrown into the glass bin?"));
+        page6Content.add(new ImageDescriptionPair("Resources/Images/Trashcan/Glass_RecBin.png", "What can be thrown into the glass bin?"));
         page6Content.addAll(new GlassTrash(null, 0).generateAvailableImages());
         innerCenterPanel.add(TutorialComponents.createGridBagPage(page6Content), "Page 6");
 
         // Page 7
         List<ImageDescriptionPair> page7Content = new ArrayList<>();
-        page7Content.add(new ImageDescriptionPair("Resources/Trashcan/NonRec_RecBin.png", "What can be thrown into the Non-recyclable bin?"));
+        page7Content.add(new ImageDescriptionPair("Resources/Images/Trashcan/NonRec_RecBin.png", "What can be thrown into the Non-recyclable bin?"));
         page7Content.addAll(new NonRecyclableTrash(null, 0).generateAvailableImages());
         innerCenterPanel.add(TutorialComponents.createGridBagPage(page7Content), "Page 7");
 
@@ -192,7 +216,7 @@ public class TutorialView extends BaseView {
         page8.setLayout(new BoxLayout(page8, BoxLayout.Y_AXIS));
         page8.setBackground(Color.WHITE);
         page8.add(TutorialComponents.createTextPanel("Become a recycling hero and help save the planet!"));
-        page8.add(TutorialComponents.createImagePanel("Resources/Background2.png", 500, 350, false));
+        page8.add(TutorialComponents.createImagePanel("Resources/Images/Backgrounds/Background1.png", 500, 350, false));
         innerCenterPanel.add(page8, "Page 8");
     }
 

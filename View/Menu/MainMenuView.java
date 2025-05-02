@@ -1,4 +1,6 @@
-package View;
+package View.Menu;
+
+import View.ComponentsUtilities.BaseView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -9,7 +11,7 @@ import java.awt.*;
  * <p>
  * This class includes buttons for navigation to GameModeView, TutorialView, HighscoreBoardView and SettingView.
  */
-public class MainMenuView extends BaseView{
+public class MainMenuView extends BaseView {
 
     private JPanel centerPanel;
     private JPanel topPanel;
@@ -30,7 +32,7 @@ public class MainMenuView extends BaseView{
      * This includes initializing buttons and calling methods to create each panel.
      */
     public MainMenuView() {
-        super("Start Menu", "/Resources/Background1.png");
+        super("Start Menu", "/Resources/Images/Backgrounds/Background1.png");
 
         startButton = new JButton("START");
         tutorialButton = new JButton("TUTORIALS");
@@ -42,6 +44,80 @@ public class MainMenuView extends BaseView{
         createStartMenuCenterPanel();
         createStartMenuTopPanel();
 
+    }
+
+    // Getters
+    /**
+     * Returns the start button.
+     * <p>
+     * @return the start button
+     */
+    public JButton getStartButton() {
+        return startButton;
+    }
+
+    /**
+     * Returns the tutorial button.
+     * <p>
+     * @return the tutorial button
+     */
+    public JButton getTutorialButton() {
+        return tutorialButton;
+    }
+
+    /**
+     * Returns the highscore button.
+     * <p>
+     * @return the highscore button
+     */
+    public JButton getHighscoreButton() {
+        return highscoreButton;
+    }
+
+    /**
+     * Returns the settings button.
+     * <p>
+     * @return the settings button
+     */
+    public JButton getSettingsButton() {
+        return settingsButton;
+    }
+
+    // Setters
+    /**
+     * Sets the start button.
+     * <p>
+     * @param startButton the start button to set
+     */
+    public void setStartButton(JButton startButton) {
+        this.startButton = startButton;
+    }
+
+    /**
+     * Sets the tutorial button.
+     * <p>
+     * @param tutorialButton the tutorial button to set
+     */
+    public void setTutorialButton(JButton tutorialButton) {
+        this.tutorialButton = tutorialButton;
+    }
+
+    /**
+     * Sets the highscore button.
+     * <p>
+     * @param highscoreButton the highscore button to set
+     */
+    public void setHighscoreButton(JButton highscoreButton) {
+        this.highscoreButton = highscoreButton;
+    }
+
+    /**
+     * Sets the settings button.
+     * <p>
+     * @param settingsButton the settings button to set
+     */
+    public void setSettingsButton(JButton settingsButton) {
+        this.settingsButton = settingsButton;
     }
 
     /**
@@ -57,7 +133,7 @@ public class MainMenuView extends BaseView{
         topPanel = new JPanel(new BorderLayout());
         logoBorder = new EmptyBorder(130, 355,20,0);
 
-        logo = new ImageIcon(getClass().getResource("/Resources/Logo.png"));
+        logo = new ImageIcon(getClass().getResource("/Resources/Images/Backgrounds/Logo.png"));
         Image rawimage = logo.getImage();
         Image resizedLogo = rawimage.getScaledInstance(310,230, Image.SCALE_SMOOTH);
         logo = new ImageIcon(resizedLogo);

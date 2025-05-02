@@ -1,4 +1,7 @@
-package View;
+package View.Setting;
+
+import View.ComponentsUtilities.Sound.SoundManager;
+import View.ComponentsUtilities.BaseView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,7 +15,7 @@ import java.awt.*;
  * for adjusting the music and sound effect settings.
  * These controls are currently acting as placeholders that will be linked to the game logic in future development.
  */
-public class SettingsView extends BaseView{
+public class SettingsView extends BaseView {
     private JPanel headerPanel;
 
     private EmptyBorder headerBorder;
@@ -45,7 +48,7 @@ public class SettingsView extends BaseView{
      * This includes initializing button, labels, sliders and calling methods to create each panel.
      */
     public SettingsView(){
-        super("Settings", "/Resources/Background1.png");
+        super("Settings", "/Resources/Images/Backgrounds/Background1.png");
 
         soundManager = new SoundManager();
 
@@ -68,6 +71,98 @@ public class SettingsView extends BaseView{
         createSettingsHeader();
         createSettingsCenterPanel();
     }
+
+  // Getters
+  /**
+   * Returns the escape button.
+   * <p>
+   * @return the JButton for the "Escape" action
+   */
+  public JButton getEscapeButton() {
+      return escapeButton;
+  }
+
+  /**
+   * Returns the music label.
+   * <p>
+   * @return the JLabel for the music label
+   */
+  public JToggleButton getSfxToggle() {
+      return sfxToggle;
+  }
+
+  /**
+   * Returns the music toggle button.
+   * <p>
+   * @return the JToggleButton for the music toggle
+   */
+  public JToggleButton getMusicToggle() {
+      return musicToggle;
+  }
+
+  /**
+   * Returns the music slider.
+   * <p>
+   * @return the JSlider for the music volume
+   */
+  public JSlider getSfxSlider() {
+      return sfxSlider;
+  }
+
+  /**
+   * Returns the music slider.
+   * <p>
+   * @return the JSlider for the music volume
+   */
+  public JSlider getMusicSlider() {
+      return musicSlider;
+  }
+
+  // Setters
+  /**
+   * Sets the escape button.
+   * <p>
+   * @param escapeButton the JButton to set for the "Escape" action
+   */
+  public void setEscapeButton(JButton escapeButton) {
+      this.escapeButton = escapeButton;
+  }
+
+  /**
+   * Sets the music label.
+   * <p>
+   * @param sfxToggle the JLabel to set for the music label
+   */
+  public void setSfxToggle(JToggleButton sfxToggle) {
+      this.sfxToggle = sfxToggle;
+  }
+
+  /**
+   * Sets the music toggle button.
+   * <p>
+   * @param musicToggle the JToggleButton to set for the music toggle
+   */
+  public void setMusicToggle(JToggleButton musicToggle) {
+      this.musicToggle = musicToggle;
+  }
+
+  /**
+   * Sets the music slider.
+   * <p>
+   * @param sfxSlider the JSlider to set for the music volume
+   */
+  public void setSfxSlider(JSlider sfxSlider) {
+      this.sfxSlider = sfxSlider;
+  }
+
+  /**
+   * Sets the music slider.
+   * <p>
+   * @param musicSlider the JSlider to set for the music volume
+   */
+  public void setMusicSlider(JSlider musicSlider) {
+      this.musicSlider = musicSlider;
+  }
 
     /**
      * Adds functionality to the music and SFX controls.
@@ -92,7 +187,7 @@ public class SettingsView extends BaseView{
         sfxSlider.setMaximum(100);
         sfxSlider.setValue(50);
 
-        musicFilePath = "Resources/513667__mrthenoronha__cartoon-game-theme-loop-4.wav";
+        musicFilePath = "Resources/Sound/513667__mrthenoronha__cartoon-game-theme-loop-4.wav";
         musicToggle.addActionListener(e -> {
             if (!musicToggle.isSelected()) {
                 soundManager.playSound(musicFilePath);

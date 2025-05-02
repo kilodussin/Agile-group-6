@@ -1,5 +1,6 @@
-package View;
+package View.Game;
 import Model.Trash.Trash;
+import View.ComponentsUtilities.BaseView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -13,7 +14,7 @@ import java.util.List;
  * It also includes a main section (currently a visual placeholder),
  * that contains buttons to either play the game again or return to the main menu.
  */
-public class GameOverView extends BaseView{
+public class GameOverView extends BaseView {
     private JPanel headerPanel;
     private JLabel titleLabel;
 
@@ -44,7 +45,7 @@ public class GameOverView extends BaseView{
      * @param trashList The list of trash objects to be displayed.
      */
     public GameOverView(int score, int highscore, List<Trash> trashList) {
-        super("Game Over", "/Resources/Background1.png");
+        super("Game Over", "/Resources/Images/Backgrounds/Background1.png");
 
         this.highscore = highscore;
         this.finalScore = score;
@@ -57,6 +58,47 @@ public class GameOverView extends BaseView{
         createGameOverBottomPanel();
 
     }
+
+ // Setters
+
+ /**
+  * Sets the "Play Again" button.
+  * <p>
+  * @param playAgainButton The JButton to set as the "Play Again" button.
+  */
+ public void setPlayAgainButton(JButton playAgainButton) {
+     this.playAgainButton = playAgainButton;
+ }
+
+ /**
+  * Sets the "Main Menu" button.
+  * <p>
+  * @param mainMenuButton The JButton to set as the "Main Menu" button.
+  */
+ public void setMainMenuButton(JButton mainMenuButton) {
+     this.mainMenuButton = mainMenuButton;
+ }
+
+ // Getters
+
+ /**
+  * Returns the "Play Again" button.
+  * <p>
+  * @return The JButton representing the "Play Again" button.
+  */
+ public JButton getPlayAgainButton() {
+     return playAgainButton;
+ }
+
+ /**
+  * Returns the "Main Menu" button.
+  * <p>
+  * @return The JButton representing the "Main Menu" button.
+  */
+ public JButton getMainMenuButton() {
+     return mainMenuButton;
+ }
+
 
     /**
      * Creates a header panel containing the view title.

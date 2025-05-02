@@ -1,7 +1,10 @@
-package View;
+package View.Tutorial;
 
 import Model.Trash.*;
 import Model.Trash.ImageDescriptionPair.ImageDescriptionPair;
+import View.ComponentsUtilities.BaseView;
+import View.ComponentsUtilities.CardNavigator;
+import View.ComponentsUtilities.TutorialComponents;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -44,12 +47,32 @@ public class TutorialView2 extends BaseView {
      * This includes initializing buttons and calling methods to create each panel.
      */
     public TutorialView2() {
-        super("Tutorial 2", "/Resources/Background1.png");
+        super("Tutorial 2", "/Resources/Images/Backgrounds/Background1.png");
 
         escapeButton = new JButton("ESCAPE");
 
         createTutorialHeader();
         createTutorialCenterPanel();
+    }
+
+    // Getters
+    /**
+     * Returns the escape button.
+     * <p>
+     * @return the escape button
+     */
+    public JButton getEscapeButton() {
+        return escapeButton;
+    }
+
+    // Setters
+    /**
+     * Sets the escape button.
+     * <p>
+     * @param escapeButton the escape button
+     */
+    public void setEscapeButton(JButton escapeButton) {
+        this.escapeButton = escapeButton;
     }
 
     /**
@@ -147,7 +170,7 @@ public class TutorialView2 extends BaseView {
         page1.setLayout(new BoxLayout(page1, BoxLayout.Y_AXIS));
         page1.setBackground(Color.WHITE);
         page1.add(TutorialComponents.createTextPanel("Test your recycling knowledge by matching trash items with their correct descriptions!"), SwingConstants.CENTER);
-        page1.add(TutorialComponents.createImagePanel("Resources/Background1.png", 500, 350, false));
+        page1.add(TutorialComponents.createImagePanel("Resources/Images/Backgrounds/Background1.png", 500, 350, false));
         innerCenterPanel.add(page1, "Page 1");
 
         // Page 2
@@ -155,7 +178,7 @@ public class TutorialView2 extends BaseView {
         page2.setLayout(new BoxLayout(page2, BoxLayout.Y_AXIS));
         page2.setBackground(Color.WHITE);
         page2.add(TutorialComponents.createTextPanel("When trash appears on the beach, click on it and then the correct description to gain points!"));
-        page2.add(TutorialComponents.createImagePanel("Resources/Background2.png", 500, 350, false));
+        page2.add(TutorialComponents.createImagePanel("Resources/Images/Backgrounds/Background2.png", 500, 350, false));
         innerCenterPanel.add(page2, "Page 2");
 
         // Page 3
@@ -163,7 +186,7 @@ public class TutorialView2 extends BaseView {
         page3.setLayout(new BoxLayout(page3, BoxLayout.Y_AXIS));
         page3.setBackground(Color.WHITE);
         page3.add(TutorialComponents.createTextPanel("Each trash item has exactly one correct description - don't get fooled by the fake ones!"));
-        page3.add(TutorialComponents.createImagePanel("Resources/Background2.png", 500, 350, false));
+        page3.add(TutorialComponents.createImagePanel("Resources/Images/Backgrounds/Background1.png", 500, 350, false));
         page3.add(TutorialComponents.createTextPanel("But remember, time is ticking! Make your matches before the clock runs out."));
         innerCenterPanel.add(page3, "Page 3");
 
@@ -190,7 +213,7 @@ public class TutorialView2 extends BaseView {
         page5.setLayout(new BoxLayout(page5, BoxLayout.Y_AXIS));
         page5.setBackground(Color.WHITE);
         page5.add(TutorialComponents.createTextPanel("Remember to recycle smartly! The environment depends on your actions."));
-        page5.add(TutorialComponents.createImagePanel("Resources/Background2.png", 500, 350, false));
+        page5.add(TutorialComponents.createImagePanel("Resources/Images/Backgrounds/Background2.png", 500, 350, false));
         innerCenterPanel.add(page5, "Page 5");
     }
 

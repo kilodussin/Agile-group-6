@@ -1,7 +1,8 @@
-package View;
+package View.Highscore;
 
-import Model.HighscoreIO;
-import Model.Highscores;
+import Model.Score.HighscoreIO;
+import Model.Score.Highscores;
+import View.ComponentsUtilities.BaseView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -43,12 +44,32 @@ public class HighscoreBoardView extends BaseView {
      * This includes initializing buttons and calling methods to create each panel.
      */
     public HighscoreBoardView() {
-        super("Highscore Board", "/Resources/Background1.png");
+        super("Highscore Board", "/Resources/Images/Backgrounds/Background1.png");
 
         escapeButton = new JButton("ESCAPE");
 
         createHighscoreHeader();
         createHighscoreCenterPanel();
+    }
+
+    // Getters
+    /**
+     * Gets the "Escape" button.
+     * <p>
+     * @return the JButton for the "Escape" action
+     */
+    public JButton getEscapeButton() {
+        return escapeButton;
+    }
+
+    // Setters
+    /**
+     * Sets the "Escape" button.
+     * <p>
+     * @param escapeButton the JButton to set for the "Escape" action
+     */
+    public void setEscapeButton(JButton escapeButton) {
+        this.escapeButton = escapeButton;
     }
 
     /**
@@ -117,7 +138,7 @@ public class HighscoreBoardView extends BaseView {
         highscoreTextArea = new JTextArea(10, 30);
         highscoreTextArea.setEditable(false);
         highscoreTextArea.setFont(new Font("Arial", Font.PLAIN, 20));
-        highscoreTextArea.setText(getHighscoresFromFile("Resources/highscores.txt"));
+        highscoreTextArea.setText(getHighscoresFromFile("Resources/Textfiles/highscores.txt"));
         highscoreTextArea.setBorder(BorderFactory.createEmptyBorder(10, 315, 10, 10));
 
         highscoreGameMode1.add(highscoreTextArea, BorderLayout.CENTER);
@@ -136,7 +157,7 @@ public class HighscoreBoardView extends BaseView {
         highscoreTextArea2 = new JTextArea(10, 30);
         highscoreTextArea2.setEditable(false);
         highscoreTextArea2.setFont(new Font("Arial", Font.PLAIN, 20));
-        highscoreTextArea2.setText(getHighscoresFromFile("Resources/highscores2.txt"));
+        highscoreTextArea2.setText(getHighscoresFromFile("Resources/Textfiles/highscores2.txt"));
         highscoreTextArea2.setBorder(BorderFactory.createEmptyBorder(10, 240, 10, 10));
 
         highscoreGameMode2.add(highscoreTextArea2, BorderLayout.CENTER);

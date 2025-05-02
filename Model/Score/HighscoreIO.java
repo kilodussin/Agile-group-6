@@ -1,4 +1,4 @@
-package Model;
+package Model.Score;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -1,13 +1,13 @@
-package Model;
+package Model.Timer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
+import Model.Score.HighscoreIO;
+import Model.Score.Highscores;
 
-import View.GameView;
-import Model.HighscoreIO;
+import View.Game.GameView;
 
 /**
  CountdownTimer is responsible for the in-game timer.
@@ -110,7 +110,7 @@ public class CountdownTimer {
 
                 Highscores newEntry = new Highscores(player, time, score);
                 try {
-                    highscoreIO.sortAndWrite(newEntry, "Resources/highscores.txt");
+                    highscoreIO.sortAndWrite(newEntry, "Resources/Textfiles/highscores.txt");
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }

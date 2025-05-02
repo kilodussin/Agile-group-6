@@ -1,4 +1,4 @@
-package Model;
+package Model.Score;
 
 import Model.Textbox.Textbox;
 import Model.Trash.Trash;

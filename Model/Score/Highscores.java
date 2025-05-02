@@ -1,4 +1,4 @@
-package Model;
+package Model.Score;
 
 public class Highscores {
 

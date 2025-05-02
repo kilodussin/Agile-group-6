@@ -1,4 +1,6 @@
-package View;
+package View.Tutorial;
+
+import View.ComponentsUtilities.BaseView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -22,7 +24,7 @@ public class TutorialSelectorView extends BaseView {
      * Constructs the TutorialSelector and sets up all UI components.
      */
     public TutorialSelectorView() {
-        super("Tutorial Selection", "/Resources/Background1.png");
+        super("Tutorial Selection", "/Resources/Images/Backgrounds/Background1.png");
 
         escapeButton = new JButton("ESCAPE");
         tutorial1Button = new JButton("GAME MODE 1");
@@ -32,12 +34,70 @@ public class TutorialSelectorView extends BaseView {
         createTutorialSelectorHeaderPanel();
     }
 
+    // Getters
+
     /**
-     * Creates the center panel containing buttons for tutorial selection.
+     * Returns the escape button.
+     * <p>
+     * @return the escape button
+     */
+    public JButton getEscapeButton() {
+        return escapeButton;
+    }
+
+    /**
+     * Returns the tutorial1 button.
+     * <p>
+     * @return the tutorial1 button
+     */
+    public JButton getTutorial1Button() {
+        return tutorial1Button;
+    }
+
+    /**
+     * Returns the tutorial2 button.
+     * <p>
+     * @return the tutorial2 button
+     */
+    public JButton getTutorial2Button() {
+        return tutorial2Button;
+    }
+
+    // Setters
+
+    /**
+     * Sets the escape button.
+     * <p>
+     * @param escapeButton the escape button
+     */
+    public void setEscapeButton(JButton escapeButton) {
+        this.escapeButton = escapeButton;
+    }
+
+    /**
+     * Sets the tutorial1 button.
+     * <p>
+     * @param tutorial1Button the tutorial1 button
+     */
+    public void setTutorial1Button(JButton tutorial1Button) {
+        this.tutorial1Button = tutorial1Button;
+    }
+
+    /**
+     * Sets the tutorial2 button.
+     * <p>
+     * @param tutorial2Button the tutorial2 button
+     */
+    public void setTutorial2Button(JButton tutorial2Button) {
+        this.tutorial2Button = tutorial2Button;
+    }
+
+    /**
+     * Creates the header panel containing the escape button and title.
      */
     private void createTutorialSelectorHeaderPanel() {
         headerPanel = new JPanel(new BorderLayout(-90, 0));
-        headerPadding = new EmptyBorder(20,20,10,0);
+        headerPadding = new EmptyBorder(20, 20, 10, 0);
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
@@ -47,7 +107,6 @@ public class TutorialSelectorView extends BaseView {
         headerPanel.add(titleLabel, BorderLayout.CENTER);
 
         headerPanel.setBorder(headerPadding);
-
         headerPanel.setOpaque(false);
 
         frame.add(headerPanel, BorderLayout.NORTH);
@@ -68,19 +127,16 @@ public class TutorialSelectorView extends BaseView {
         frame.add(centerPanel, BorderLayout.CENTER);
     }
 
-
     /**
      * Temporary placeholder to test the view independently when working on it.
      * <p>
-     * This main method allows the MainMenuView to run standalone, which is useful during development, for UI testing.
+     * This main method allows the TutorialSelectorView to run standalone, which is useful during development, for UI testing.
      * Uncomment to run the view standalone.
      */
-
     /* public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             TutorialSelectorView tutorialSelectorView = new TutorialSelectorView();
             tutorialSelectorView.show();
         });
     } */
-
 }

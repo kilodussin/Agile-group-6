@@ -1,15 +1,15 @@
-package View;
+package View.Game;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import Model.CountdownTimer2;
-import Model.HighscoreIO;
-import Model.Score;
-import Model.Hitbox;
+import Model.Timer.CountdownTimer2;
+import Model.Score.HighscoreIO;
+import Model.Score.Score;
 import Model.Textbox.SpawnTextboxes;
 import Model.Textbox.Textbox;
 import Model.Trash.Trash;
+import View.ComponentsUtilities.BaseView;
 
 /**
  * View displayed during the actual gameplay
@@ -20,7 +20,7 @@ import Model.Trash.Trash;
  * This view serves as the foundation for the actual game logic.
  * Current components serves as placeholders for now, and will be updated as the game develops.
  */
-public class GameView2 extends BaseView{
+public class GameView2 extends BaseView {
 
     private JPanel headerPanel;
     private EmptyBorder headerBorder;
@@ -43,7 +43,7 @@ public class GameView2 extends BaseView{
      */
   
     public GameView2() {
-        super("Game View 2", "/Resources/Background2.png");
+        super("Game View 2", "/Resources/Images/Backgrounds/Background2.png");
 
         score = new Score();
         escapeButton = new JButton("ESCAPE");
@@ -51,6 +51,23 @@ public class GameView2 extends BaseView{
         createGameViewHeader();
         createGameViewCenterPanel();
     }
+
+    // Getters
+    /**
+     * Gets the "Escape" button.
+     * <p>
+     * @return the JButton for the "Escape" action
+     */
+    public JButton getEscapeButton() {
+        return escapeButton;
+    }
+
+    // Setters
+    /**
+     * Sets the "Escape" button.
+     * <p>
+     * @param escapeButton the JButton to set for the "Escape" action
+     */
 
     /**
      * Retrieves the final score from the score label.

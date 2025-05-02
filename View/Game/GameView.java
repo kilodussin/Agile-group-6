@@ -1,4 +1,4 @@
-package View;
+package View.Game;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -7,12 +7,15 @@ import java.util.ArrayList;
 
 import Model.*;
 import Model.Collision.TrashSorter;
+import Model.Score.Score;
+import Model.Timer.CountdownTimer;
 import Model.Trash.Trash;
 import Model.Trash.TrashFactory;
-import Model.Trashcan.PlasticTrashcan;
 import Model.Trashcan.SpawnTrashcans;
 import Model.Trashcan.Trashcan;
-
+import View.ComponentsUtilities.BaseView;
+import Model.Score.HighscoreIO;
+import Model.Score.Highscores;
 
 
 /**
@@ -24,7 +27,7 @@ import Model.Trashcan.Trashcan;
  * This view serves as the foundation for the actual game logic.
  * Current components serves as placeholders for now, and will be updated as the game develops.
  */
-public class GameView extends BaseView{
+public class GameView extends BaseView {
 
     private final int ANIMATION_DELAY = 300;
     private Score score;
@@ -56,7 +59,7 @@ public class GameView extends BaseView{
      */
     public GameView(){
         // super("Game View", "/Resources/Background1.png");
-        super("Game View", "/Resources/Background2.png");
+        super("Game View", "/Resources/Images/Backgrounds/Background2.png");
 
         escapeButton = new JButton("ESCAPE");
         gameOverViewPlaceholder = new JButton("Game Over View (Placeholder for navigation)");
@@ -65,9 +68,27 @@ public class GameView extends BaseView{
         createGameViewHeader();
         createGameViewCenterPanel();
 
-
     }
 
+    // Getters
+  /**
+   * Gets the "Escape" button.
+   * <p>
+   * @return the JButton for the "Escape" action
+   */
+  public JButton getEscapeButton() {
+      return escapeButton;
+  }
+
+  // Setters
+  /**
+   * Sets the "Escape" button.
+   * <p>
+   * @param escapeButton the JButton to set for the "Escape" action
+   */
+  public void setEscapeButton(JButton escapeButton) {
+      this.escapeButton = escapeButton;
+  }
 
     /**
      * Creates a header panel containing an escape button, and placeholders for a score system and a timer.

@@ -1,4 +1,4 @@
-package View;
+package View.ComponentsUtilities;
 
 import Model.Trash.ImageDescriptionPair.ImageDescriptionPair;
 import javax.swing.*;

@@ -1,4 +1,4 @@
-package View;
+package View.ComponentsUtilities.Sound;
 
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;

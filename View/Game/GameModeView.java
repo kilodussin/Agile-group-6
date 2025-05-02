@@ -1,4 +1,6 @@
-package View;
+package View.Game;
+
+import View.ComponentsUtilities.BaseView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -11,7 +13,7 @@ import java.awt.*;
  * It also has a center panel that consists of buttons for selecting easy, normal or hard game modes.
  */
 
-public class GameModeView extends BaseView{
+public class GameModeView extends BaseView {
     private JPanel headerPanel;
     private EmptyBorder headerBorder;
     private JLabel titleLabel;
@@ -28,7 +30,7 @@ public class GameModeView extends BaseView{
      * This includes initializing buttons and calling methods to create each panel.
      */
     public GameModeView(){
-        super("Game Mode", "/Resources/Background1.png");
+        super("Game Mode", "/Resources/Images/Backgrounds/Background1.png");
 
         escapeButton = new JButton("ESCAPE");
 
@@ -39,6 +41,64 @@ public class GameModeView extends BaseView{
         createGameModeHeader();
         createGameModeCenterPanel();
 
+    }
+
+    // Getters
+
+    /**
+     * Returns the escape button.
+     * <p>
+     * @return the escape button
+     */
+    public JButton getEscapeButton() {
+        return escapeButton;
+    }
+
+    /**
+     * Returns the first game mode button.
+     * <p>
+     * @return the first game mode button
+     */
+    public JButton getGamemode1Button() {
+        return gamemode1Button;
+    }
+
+    /**
+     * Returns the second game mode button.
+     * <p>
+     * @return the second game mode button
+     */
+    public JButton getGamemode2Button() {
+        return gamemode2Button;
+    }
+
+    // Setters
+
+    /**
+     * Sets the escape button.
+     * <p>
+     * @param escapeButton the escape button to set
+     */
+    public void setEscapeButton(JButton escapeButton) {
+        this.escapeButton = escapeButton;
+    }
+
+    /**
+     * Sets the first game mode button.
+     * <p>
+     * @param gamemode1Button the first game mode button to set
+     */
+    public void setGamemode1Button(JButton gamemode1Button) {
+        this.gamemode1Button = gamemode1Button;
+    }
+
+    /**
+     * Sets the second game mode button.
+     * <p>
+     * @param gamemode2Button the second game mode button to set
+     */
+    public void setGamemode2Button(JButton gamemode2Button) {
+        this.gamemode2Button = gamemode2Button;
     }
 
     /**
