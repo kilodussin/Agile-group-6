@@ -104,14 +104,22 @@ public class GameView2 extends BaseView{
 
         scoreLabel = new JLabel("Score: " + score.getCurrentScore(), SwingConstants.CENTER);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 30));
-        headerPanel.add(scoreLabel, BorderLayout.CENTER);
+        //headerPanel.add(scoreLabel, BorderLayout.CENTER);
+        scoreLabel.setPreferredSize(new Dimension(150,40));
+
+        JPanel newScorePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        newScorePanel.setBorder(new EmptyBorder(5,120,0,0));
+        newScorePanel.setOpaque(false);
+
+        newScorePanel.add(scoreLabel);
+        headerPanel.add(newScorePanel, BorderLayout.CENTER);
 
         countdownTimer = new CountdownTimer2(this, highscoreIO);
 
         JPanel timerPanel = new JPanel(new BorderLayout());
-        timerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
-
-        timerPanel.add(countdownTimer.getComponent(), BorderLayout.CENTER);
+        timerPanel.setBorder(BorderFactory.createEmptyBorder(5,0,0,30));
+        timerPanel.add(countdownTimer.getComponent(), BorderLayout.EAST);
+        timerPanel.setPreferredSize(new Dimension(250,40));
         timerPanel.setOpaque(false);
 
         headerPanel.add(timerPanel, BorderLayout.EAST);
@@ -307,8 +315,8 @@ public class GameView2 extends BaseView{
         textboxes.clear();
         centerPanel.removeAll();
 
-        Trash trash1 = spawnTrashDefault.spawnRandomTrash(-250, 25);
-        Trash trash2 = spawnTrashDefault.spawnRandomTrash(50, 50);
+        Trash trash1 = spawnTrashDefault.spawnRandomTrash();
+        Trash trash2 = spawnTrashDefault.spawnRandomTrash();
 
         trashList.add(trash1);
         trashList.add(trash2);

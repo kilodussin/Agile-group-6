@@ -4,6 +4,7 @@ import Model.Trash.TrashFactory;
 import Model.Trash.TrashTypes;
 import java.util.Random;
 import java.util.ArrayList;
+import java.awt.*;
 
 
 public class SpawnTrashDefault2 {
@@ -41,18 +42,33 @@ public class SpawnTrashDefault2 {
      * @return the random trash object
      */
 
-    public Trash spawnRandomTrash(int offsetX, int offsetY) {
+    public Trash spawnRandomTrash() {
 
         TrashTypes[] trashTypes = TrashTypes.values();
         int numOfTrashTypes = trashTypes.length;
         TrashTypes randomTrashType = trashTypes[random.nextInt(numOfTrashTypes)];
+        Point randomPoint = randomSpawnLoc();
 
-        int spawnX = X_VAL + offsetX;
-        int spawnY = Y_VAL + offsetY;
+        //int spawnX = X_VAL + offsetX;
+        //int spawnY = Y_VAL + offsetY;
 
-        Trash newTrash = trashFactory.createTrash(randomTrashType, spawnX, spawnY, IMAGE_WIDTH, IMAGE_HEIGHT);
+        Trash newTrash = trashFactory.createTrash(randomTrashType, randomPoint.x, randomPoint.y, IMAGE_WIDTH, IMAGE_HEIGHT);
         trashList.add(newTrash);
         return newTrash;
+    }
+
+    public Point randomSpawnLoc() {
+
+        int X_MIN = 200;
+        int X_MAX = 800;
+        int randomX = X_MIN + random.nextInt(X_MAX-X_MIN);
+
+        int Y_MIN = 200;
+        int Y_MAX = 300;
+        int randomY = Y_MIN+random.nextInt(Y_MAX-Y_MIN);
+
+        return new Point(randomX, randomY);
+
     }
 }
 
