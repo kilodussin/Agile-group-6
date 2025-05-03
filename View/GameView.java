@@ -230,9 +230,11 @@ public class GameView extends BaseView{
                     if (TrashSorter.isCorrectlySorted(curSelectedTrash, trashcans)) {
                         isTimerRunning();
                         System.out.println("Correctly sorted");
-
+                        showFeedbackIcon("Resources/Sounds/checkmark-64.gif");
                         score.addPoints(curSelectedTrash.getPoints());
                         scorePlaceholder.setText(String.valueOf(score.getCurrentScore()));
+
+
 
                         Trash trashToRemove = curSelectedTrash;
                         curSelectedTrash = null;
@@ -260,6 +262,8 @@ public class GameView extends BaseView{
 
                         System.out.println("Not correctly sorted!");
 
+                        showFeedbackIcon("Resources/Sounds/multiply-3-64.png");
+                        shakeComponent(curTrashLabel);
                         playSound("Resources/Sounds/training-program-incorrect1-88736 (1).wav");
 
                         resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e -> {
@@ -270,8 +274,8 @@ public class GameView extends BaseView{
                             trashToReset.setY(spawnTrashDefault.Y_VAL);
 
                             curTrashLabel.setBounds(spawnTrashDefault.X_VAL, spawnTrashDefault.Y_VAL,
-                                (int) trashToReset.getWidth(),
-                                (int) trashToReset.getHeight());
+                                    (int) trashToReset.getWidth(),
+                                    (int) trashToReset.getHeight());
 
                             centerPanel.revalidate();
                             centerPanel.repaint();
@@ -339,6 +343,49 @@ public class GameView extends BaseView{
         }
     }
 
+    private void showFeedbackIcon(String imagePath) {
+        ImageIcon icon = new ImageIcon(imagePath);
+        JLabel iconLabel = new JLabel(icon);
+
+        int centerX = (frame.getWidth() - icon.getIconWidth()) / 2;
+        int centerY = (frame.getHeight() - icon.getIconHeight()) / 2;
+
+        iconLabel.setBounds(centerX, centerY, icon.getIconWidth(), icon.getIconHeight());
+        iconLabel.setOpaque(false);
+
+        frame.getLayeredPane().add(iconLabel, JLayeredPane.POPUP_LAYER);
+        frame.getLayeredPane().repaint();
+
+        new javax.swing.Timer(700, e -> {
+            frame.getLayeredPane().remove(iconLabel);
+            frame.getLayeredPane().repaint();
+        }).start();
+    }
+
+    private void shakeComponent(JComponent component) {
+        final int shakeDistance = 10;
+        final int shakeDuration = 30;
+        final int shakeCount = 6;
+
+        Point originalLocation = component.getLocation();
+        Timer shakeTimer = new Timer(shakeDuration, null);
+
+        final int[] count = {0};
+        shakeTimer.addActionListener(e -> {
+            int offset = (count[0] % 2 == 0) ? shakeDistance : -shakeDistance;
+            component.setLocation(originalLocation.x + offset, originalLocation.y);
+            component.repaint();
+
+            count[0]++;
+            if (count[0] >= shakeCount) {
+                component.setLocation(originalLocation); // reset position
+                ((Timer)e.getSource()).stop();
+            }
+        });
+
+        shakeTimer.start();
+    }
+
     /**
      * the renderTrash renders trash in the game.
      * An action listener is placed on the trash, to detect if the player clicks it.
@@ -394,12 +441,12 @@ public class GameView extends BaseView{
     }
 }
 
-    /**
-     * Temporary placeholder to test the view independently when working on it.
-     * <p>
-     * This main method allows the GameView to run standalone, which is useful during development, for UI testing.
-     * Uncomment to run the view standalone.
-     */
+/**
+ * Temporary placeholder to test the view independently when working on it.
+ * <p>
+ * This main method allows the GameView to run standalone, which is useful during development, for UI testing.
+ * Uncomment to run the view standalone.
+ */
 
     /* public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
