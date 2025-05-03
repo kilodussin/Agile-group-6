@@ -198,9 +198,13 @@ public class GameView extends BaseView{
 
                     // -50 on x and y vals to spawn in center of mouse
 
-                    curTrashLabel.setBounds(xMouseCoord-50, yMouseCoord-50,
-                            (int) curSelectedTrash.getWidth(),
-                            (int) curSelectedTrash.getHeight());
+                    Point currentXY = curTrashLabel.getLocation();
+                    Point targetXY = new Point(xMouseCoord - 50, yMouseCoord - 50);
+
+                    GameView.animateTrash(currentXY, targetXY, centerPanel, curTrashLabel, 500);
+
+                    curSelectedTrash.setX(targetXY.x);
+                    curSelectedTrash.setY(targetXY.y);
 
                     // Trash picture to the front (index 0),
                     // IF not index 0, it will end up behind the trashcans & lost
@@ -209,61 +213,66 @@ public class GameView extends BaseView{
                     centerPanel.revalidate();
                     centerPanel.repaint();
 
-                    if (TrashSorter.isCorrectlySorted(curSelectedTrash, trashcans)) {
-                        isTimerRunning();
-                        System.out.println("Correctly sorted");
+                    // This is to avoid running the animation too early
+                    // The delay should be the same delay as the animation time in ms
+                    // It allows for the previous animation to finish
 
-                        score.addPoints(curSelectedTrash.getPoints());
-                        scorePlaceholder.setText(String.valueOf(score.getCurrentScore()));
 
-                        Trash trashToRemove = curSelectedTrash;
-                        curSelectedTrash = null;
+                    Timer avoidDupeAnimation = new Timer(500, l -> {
 
-                        resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e-> {
-
-                            centerPanel.remove(curTrashLabel);
-                            centerPanel.revalidate();
-                            centerPanel.repaint();
-                            spawnAndRender();
-                        });
-                        resetTrashAnimation.setRepeats(false);
-                        resetTrashAnimation.start();
-
-                        // NEW TRASH RENDER
-                    } else {
-
+                        // Stops any previous animation
                         isTimerRunning();
 
 
-                        Trash trashToReset = curSelectedTrash;
+                        if (TrashSorter.isCorrectlySorted(curSelectedTrash, trashcans)) {
+                            isTimerRunning();
+                            System.out.println("Correctly sorted");
+
+                            score.addPoints(curSelectedTrash.getPoints());
+                            scorePlaceholder.setText(String.valueOf(score.getCurrentScore()));
+
+                            Trash trashToRemove = curSelectedTrash;
+                            curSelectedTrash = null;
+
+                            resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e -> {
+
+                                centerPanel.remove(curTrashLabel);
+                                centerPanel.revalidate();
+                                centerPanel.repaint();
+                                spawnAndRender();
+                            });
+                            resetTrashAnimation.setRepeats(false);
+                            resetTrashAnimation.start();
+
+                            // NEW TRASH RENDER
+                        } else {
+
+                            isTimerRunning();
+
+
+                            Trash trashToReset = curSelectedTrash;
+                            curSelectedTrash = null;
+
+                            // The trash animation delay can be tweaked (ANIMATION_DELAY)
+
+                            System.out.println("Not correctly sorted!");
+
+                            Point fromHere = new Point(z.getX() - 50, z.getY() - 50);
+                            Point toHere = spawnTrashDefault.randomSpawnLoc();
+
+                            trashToReset.setX(toHere.x);
+                            trashToReset.setY(toHere.y);
+
+                            GameView.animateTrash(fromHere, toHere, centerPanel, curTrashLabel, 500);
+
+                        }
+                        // Deselect the trash
                         curSelectedTrash = null;
 
-                        // The trash animation delay can be tweaked (ANIMATION_DELAY)
+                    });
 
-                        System.out.println("Not correctly sorted!");
-
-                        resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e -> {
-
-                            // Spawns the trash back to its original spawn location.
-
-                            trashToReset.setX(spawnTrashDefault.X_VAL);
-                            trashToReset.setY(spawnTrashDefault.Y_VAL);
-
-                            curTrashLabel.setBounds(spawnTrashDefault.X_VAL, spawnTrashDefault.Y_VAL,
-                                (int) trashToReset.getWidth(),
-                                (int) trashToReset.getHeight());
-
-                            centerPanel.revalidate();
-                            centerPanel.repaint();
-                        });
-                        resetTrashAnimation.setRepeats(false);
-                        resetTrashAnimation.start();
-                    }
-
-                    // Deselect the trash
-                    curSelectedTrash = null;
-
-
+                    avoidDupeAnimation.setRepeats(false);
+                    avoidDupeAnimation.start();
                 }
             }
         });
@@ -334,6 +343,76 @@ public class GameView extends BaseView{
         jLabel.setBounds((int) x, (int) y, (int) width, (int) height);
         centerPanel.add(jLabel);
 
+    }
+
+    /**
+     * Animation for trash...
+     * FPS = frames per second
+     * stepDurationMS = Time in MS for each frame
+     * totalTimeMS = total animation time, set as 500 right now but can be increased or decreased -- (lower = faster animation)
+     * numberOfSteps = the total time divided by the time for each step
+     */
+
+    public static void animateTrash(Point fromHereA, Point toHereB, JPanel parentPanel, JLabel curTrashLabel, int totalTime) {
+
+        int FPS = 30;
+        int stepDurationMS = 1000/FPS;
+        int totalTimeMS = 500;
+        int numberOfSteps = totalTimeMS / stepDurationMS;
+
+        // Calculates x and y travel distance (from point A to point B)
+
+        double xPixelTravel = (toHereB.x - fromHereA.x);
+        double yPixelTravel = (toHereB.y - fromHereA.y);
+
+        // Figures out the step distance (how much we should move the trash for each step)
+        // for both x and y
+
+        double xStepDistance = xPixelTravel / numberOfSteps;
+        double yStepDistance = yPixelTravel / numberOfSteps;
+
+        // Setting up step variable to count (wrapped in an array so we can change it)
+
+        final int[] step = {0};
+
+        // We create a new swing timer, takes in stepDurationMS which is the time for each step)
+        // Runs for each frame, in this case 30 times (30 FPS)
+
+        Timer timer = new Timer(stepDurationMS, e -> {
+
+            // Check if animation steps have reached max set amount (numberOfSteps)
+            if (step[0] >= numberOfSteps) {
+
+                // If true, set curTrashLabel bound to point B's x and y value.
+                // Set width and height also.
+
+                curTrashLabel.setBounds(toHereB.x, toHereB.y, curTrashLabel.getWidth(), curTrashLabel.getHeight());
+
+                // Stops repeat timer
+                ((Timer) e.getSource()).stop();
+                return;
+            }
+
+            // Calculates the next x and y step, takes step distance times the amount of
+            // steps completed already...
+            // I.e. moves 2 pixels in x direction & we're on step 19
+            // 2*19 + initial x pos -> our next x pos
+            int newX = (int)(fromHereA.x+xStepDistance*step[0]);
+            int newY = (int)(fromHereA.y + yStepDistance*step[0]);
+
+            // Moves it to the new calculated position on the screen
+            // Repaints and revalidates because Swing is a mess
+
+            curTrashLabel.setBounds(newX, newY, curTrashLabel.getWidth(), curTrashLabel.getHeight());
+            parentPanel.revalidate();
+            parentPanel.repaint();
+
+            // Adds a step to the counter
+            step[0] += 1;
+            });
+
+        // Start timer again
+        timer.start();
     }
 }
 
