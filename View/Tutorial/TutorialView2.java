@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -38,8 +39,13 @@ public class TutorialView2 extends BaseView {
     private JButton nextButton;
     private JButton backButton;
 
-    private JPanel arrowPanel;
-    private GridBagConstraints arrowgridbagconstraints;
+    private JPanel page1;
+    private JPanel page2;
+    private JPanel imagePanelPage2;
+    private JPanel page3;
+    private JPanel imagePanelPage3;
+    private JPanel page4;
+    private JPanel page5;
 
     /**
      * Constructs the TutorialView2 and sets up all UI components.
@@ -166,40 +172,53 @@ public class TutorialView2 extends BaseView {
      */
     private void createPages() {
         // Page 1
-        JPanel page1 = new JPanel();
+        page1 = new JPanel();
         page1.setLayout(new BoxLayout(page1, BoxLayout.Y_AXIS));
         page1.setBackground(Color.WHITE);
         page1.add(TutorialComponents.createTextPanel("Test your recycling knowledge by matching trash items with their correct descriptions!"), SwingConstants.CENTER);
-        page1.add(TutorialComponents.createImagePanel("Resources/Images/Backgrounds/Background1.png", 500, 350, false));
+        page1.add(TutorialComponents.createImagePanel("Resources/Images/Tutorials/Gamemode2.1.png", 500, 350, false));
         innerCenterPanel.add(page1, "Page 1");
 
         // Page 2
-        JPanel page2 = new JPanel();
+        page2 = new JPanel();
         page2.setLayout(new BoxLayout(page2, BoxLayout.Y_AXIS));
         page2.setBackground(Color.WHITE);
         page2.add(TutorialComponents.createTextPanel("When trash appears on the beach, click on it and then the correct description to gain points!"));
-        page2.add(TutorialComponents.createImagePanel("Resources/Images/Backgrounds/Background2.png", 500, 350, false));
+
+        imagePanelPage2 = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        imagePanelPage2.setBackground(Color.WHITE);
+        imagePanelPage2.add(TutorialComponents.createImagePanel("Resources/Images/Tutorials/Gamemode2.2.png", 280, 205, false));
+        imagePanelPage2.add(TutorialComponents.createImagePanel("Resources/Images/Tutorials/Gamemode2.3.png", 280, 205, false));
+        imagePanelPage2.add(TutorialComponents.createImagePanel("Resources/Images/Tutorials/Gamemode2.4.png", 280, 205, false));
+
+        page2.add(imagePanelPage2);
         innerCenterPanel.add(page2, "Page 2");
 
         // Page 3
-        JPanel page3 = new JPanel();
+        page3 = new JPanel();
         page3.setLayout(new BoxLayout(page3, BoxLayout.Y_AXIS));
         page3.setBackground(Color.WHITE);
         page3.add(TutorialComponents.createTextPanel("Each trash item has exactly one correct description - don't get fooled by the fake ones!"));
-        page3.add(TutorialComponents.createImagePanel("Resources/Images/Backgrounds/Background1.png", 500, 350, false));
-        page3.add(TutorialComponents.createTextPanel("But remember, time is ticking! Make your matches before the clock runs out."));
+
+        imagePanelPage3 = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        imagePanelPage3.setBackground(Color.WHITE);
+        imagePanelPage3.add(TutorialComponents.createImagePanel("Resources/Images/Tutorials/Gamemode2.5.png", 300, 220, false));
+        imagePanelPage3.add(TutorialComponents.createImagePanel("Resources/Images/Tutorials/Gamemode2.6.png", 300, 220, false));
+        imagePanelPage3.setBorder(BorderFactory.createEmptyBorder(50, 0, 0, 0));
+        page3.add(imagePanelPage3);
+
+        page3.add(TutorialComponents.createTextPanel("And remember, time is ticking! Make your matches before the clock runs out."));
         innerCenterPanel.add(page3, "Page 3");
 
         // Page 4
-        java.util.List<ImageDescriptionPair> page4Content = new ArrayList<>();
-        page4Content.add(new ImageDescriptionPair("Resources/Trash/Teabag_Trash.png", "Most tea bags are made entirely out of biodegradable material, and should therefore be thrown into the food disposal."));
+        List<ImageDescriptionPair> page4Content = new ArrayList<>();
         page4Content.addAll(new CombustibleTrash(null, 0).generateAvailableImages());
         page4Content.addAll(new FoodTrash(null, 0).generateAvailableImages());
         page4Content.addAll(new GlassTrash(null, 0).generateAvailableImages());
         page4Content.addAll(new NonRecyclableTrash(null, 0).generateAvailableImages());
         page4Content.addAll(new PlasticTrash(null, 0).generateAvailableImages());
 
-        JPanel page4 = new JPanel();
+        page4 = new JPanel();
         page4.setLayout(new BoxLayout(page4, BoxLayout.Y_AXIS));
         page4.setBackground(Color.WHITE);
         page4.add(TutorialComponents.createTextPanel("List of all trash and their corresponding descriptions"));
@@ -209,11 +228,11 @@ public class TutorialView2 extends BaseView {
         innerCenterPanel.add(page4, "Page 4");
 
         // Page 5
-        JPanel page5 = new JPanel();
+        page5 = new JPanel();
         page5.setLayout(new BoxLayout(page5, BoxLayout.Y_AXIS));
         page5.setBackground(Color.WHITE);
         page5.add(TutorialComponents.createTextPanel("Remember to recycle smartly! The environment depends on your actions."));
-        page5.add(TutorialComponents.createImagePanel("Resources/Images/Backgrounds/Background2.png", 500, 350, false));
+        page5.add(TutorialComponents.createImagePanel("Resources/Images/Tutorials/Gamemode2.7.jpg", 500, 350, false));
         innerCenterPanel.add(page5, "Page 5");
     }
 
@@ -223,12 +242,12 @@ public class TutorialView2 extends BaseView {
      * This main method allows the TutorialView to run standalone, which is useful during development, for UI testing.
      * Uncomment to run the view standalone.
      */
-    public static void main(String[] args) {
+    /* public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             TutorialView2 tutorialView2 = new TutorialView2();
             tutorialView2.show();
         });
 
-    }
+    } */
 }
 
