@@ -7,8 +7,8 @@ import Model.Hitbox;
  */
 public class TextboxFactory {
 
-    private static final int STANDARD_WIDTH = 100;
-    private static final int STANDARD_HEIGHT = 30;
+    private static final int STANDARD_WIDTH = 220;
+    private static final int STANDARD_HEIGHT = 250;
 
     /**
      * Creates a Textbox with the specified description and position and default width and height.

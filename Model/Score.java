@@ -96,7 +96,7 @@ public class Score {
      * @param points the points to subtract
      * @throws IllegalArgumentException if points are negative
      */
-    private void subtractPoints(int points) {
+    public void subtractPoints(int points) {
         if (points < 0) {
             throw new IllegalArgumentException("Points to subtract cannot be negative.");
         }

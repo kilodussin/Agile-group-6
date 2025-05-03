@@ -20,6 +20,8 @@ public abstract class Trash {
     private int points;
     private ArrayList<String> incorrectDescriptions;
     private String description;
+    private double originalX;
+    private double originalY;
 
 
     /*--------------------Constructor--------------------*/
@@ -138,6 +140,25 @@ public abstract class Trash {
        return this.description;
    }
 
+   /**
+    * Getter for the original x coordinate of the Trash
+    *
+    * @return The original x coordinate of the Trash
+    */
+   public double getOriginalX(){
+       return originalX;
+   }
+
+   /**
+    * Getter for the original y coordinate of the Trash
+    *
+    * @return The original y coordinate of the Trash
+    */
+   public double getOriginalY(){
+       return originalY;
+   }
+
+
     /*--------------------Setters--------------------*/
 
     /**
@@ -200,6 +221,25 @@ public abstract class Trash {
         this.imagePath = newImagePathPair.getImagePath();
         this.description = newImagePathPair.getDescription();
     }
+
+    /**
+     * Sets the original x coordinate of the Trash
+     *
+     * @param originalX The new original x coordinate of the Trash
+     */
+    public void setOriginalX(double originalX) {
+        this.originalX = originalX;
+    }
+
+    /**
+     * Sets the original y coordinate of the Trash
+     *
+     * @param originalY The new original y coordinate of the Trash
+     */
+    public void setOriginalY(double originalY) {
+        this.originalY = originalY;
+    }
+
     /*--------------------Other--------------------*/
 
     /**
