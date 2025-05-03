@@ -56,7 +56,7 @@ public class GameView extends BaseView{
      */
     public GameView(){
         // super("Game View", "/Resources/Background1.png");
-        super("Game View", "/Resources/Background2.png");
+        super("V", "/Resources/Background2.png");
 
         escapeButton = new JButton("ESCAPE");
         gameOverViewPlaceholder = new JButton("Game Over View (Placeholder for navigation)");
@@ -98,19 +98,30 @@ public class GameView extends BaseView{
 
         headerPanel = new JPanel(new BorderLayout());
         headerBorder = new EmptyBorder(20,20,0,20);
-
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
         scorePlaceholder = new JLabel("0", SwingConstants.CENTER);
         scorePlaceholder.setFont(new Font("Arial", Font.BOLD, 30));
-        headerPanel.add(scorePlaceholder, BorderLayout.CENTER);
+        scorePlaceholder.setPreferredSize(new Dimension(100,40));
+
+        JPanel newScorePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        newScorePanel.setBorder(new EmptyBorder(5,160,0,0));
+        newScorePanel.setOpaque(false);
+
+
+
+
+        newScorePanel.add(scorePlaceholder);
+        headerPanel.add(newScorePanel, BorderLayout.CENTER);
 
         countdownTimer = new CountdownTimer(this, highscoreIO);
 
 
+
         JPanel timerPanel = new JPanel(new BorderLayout());
-        timerPanel.setBorder(BorderFactory.createEmptyBorder(0,0,0,40));
-        timerPanel.add(countdownTimer.getComponent(), BorderLayout.CENTER);
+        timerPanel.setBorder(BorderFactory.createEmptyBorder(5,0,0,30));
+        timerPanel.add(countdownTimer.getComponent(), BorderLayout.EAST);
+        timerPanel.setPreferredSize(new Dimension(250,40));
         timerPanel.setOpaque(false);
 
         headerPanel.add(timerPanel, BorderLayout.EAST);
