@@ -50,7 +50,7 @@ public class TutorialView2 extends BaseView {
 
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
-        titleLabel = new JLabel("TUTORIAL FOR INFINITY MODE", SwingConstants.CENTER);
+        titleLabel = new JLabel("TUTORIAL FOR EDUCATIONAL MODE", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         headerPanel.add(titleLabel, BorderLayout.CENTER);
         headerPanel.setBorder(headerPadding);
@@ -76,31 +76,31 @@ public class TutorialView2 extends BaseView {
         JPanel page1 = new JPanel();
         page1.setLayout(new BoxLayout(page1, BoxLayout.Y_AXIS));
         page1.setBackground(Color.WHITE);
-        page1.add(createTopPanel("Recycle the different objects by dragging them to the correct recycling bin"));
-        page1.add(createImagePanel("Resources/Tutorial2/GM2Page1Base.png"));
+        page1.add(createTopPanel("Match the different Text descriptions by clicking on them and then the correct trash!"));
+        page1.add(createImagePanel("Resources/Tutorial2/GM2Page1.png"));
         innerCenterPanel.add(page1, "Page 1");
 
         // Page 2 - Tutorial 2 content
         JPanel page2 = new JPanel();
         page2.setLayout(new BoxLayout(page2, BoxLayout.Y_AXIS));
         page2.setBackground(Color.WHITE);
-        page2.add(createTopPanel("Every correct object you recycle grants a timebonus depending on difficulty. Easy/Medium/Hard give +10/+5/+3 seconds respectively"));
-        page2.add(createImagePanel("Resources/Tutorial2/GM2TutorialPage2.png"));
+        page2.add(createTopPanel("Every correct object you recycle grants you points while incorrect answers do nothing. Try to get as many points as possible!"));
+        page2.add(createImagePanel("Resources/Tutorial2/ScoreTutorial2.png"));
         innerCenterPanel.add(page2, "Page 2");
 
         // Page 3 - Tutorial 2 content
         JPanel page3 = new JPanel();
         page3.setLayout(new BoxLayout(page3, BoxLayout.Y_AXIS));
         page3.setBackground(Color.WHITE);
-        page3.add(createTopPanel("When the time runs out, there's more than 5 pieces of trash on the beach or you've sorted incorrectly three times, the game is over!"));
-        page3.add(createImagePanel("Resources/Background1.png"));
+        page3.add(createTopPanel("When the time runs out, the game is over!"));
+        page3.add(createImagePanel("Resources/Tutorial2/GM2TutorialPage2.png"));
         innerCenterPanel.add(page3, "Page 3");
 
         JPanel page4 = new JPanel();
         page4.setLayout(new BoxLayout(page4, BoxLayout.Y_AXIS));
         page4.setBackground(Color.WHITE);
         page4.add(createTopPanel("Remember to recycle smartly! The environment depends on your actions."));
-        //page4.add(createImagePanel("Resources/Background2.png"));
+        page4.add(createImagePanel("Resources/Background2.png"));
         innerCenterPanel.add(page4, "Page 4");
 
         leftPanel = createArrowPanel("←", e -> navigatePrevious());
