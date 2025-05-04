@@ -53,6 +53,7 @@ public class GameView extends BaseView{
      * A different background is being used for the GameView:
      * - To separate the gameplay from the rest of the application
      * - To visually increase space for components top be placed
+     *
      */
     public GameView(){
         // super("Game View", "/Resources/Background1.png");

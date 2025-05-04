@@ -41,6 +41,7 @@ public class SpawnTrashDefault {
      * Spawns a random trash to the default spawn location (500, 200).
      * Adds it to the trashList and then returns it for use in the game.
      * @return the random trash object
+     *
      */
 
     public Trash spawnRandomTrash() {
