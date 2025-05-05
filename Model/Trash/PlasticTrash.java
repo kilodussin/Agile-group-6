@@ -36,7 +36,6 @@ public class PlasticTrash extends Trash{
         int max = availableImages.size();
         int randomInt = (int)(Math.random() * max);
         ImageDescriptionPair imagePair = availableImages.get(randomInt);
-
         return imagePair;}
 
     public ArrayList<ImageDescriptionPair> generateAvailableImages(){

@@ -29,7 +29,7 @@ public class CountdownTimer2 {
     /**
      * Timer could be edited dynamically, if we choose to allow it...
      */
-    private final int timerInSeconds = 10;
+    private final int timerInSeconds = 60;
     private int timeLeft;
 
     /**

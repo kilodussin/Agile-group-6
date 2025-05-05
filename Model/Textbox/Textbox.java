@@ -1,6 +1,7 @@
 package Model.Textbox;
 
 import Model.Hitbox;
+import Model.Trash.Trash;
 
 public class Textbox {
 
@@ -19,6 +20,15 @@ public class Textbox {
         this.hitbox = hitbox;
         this.description = description;
     }
+
+    /**
+    * Checks if this textbox is correctly linked to a given trash.
+    * @param trash The trash object to check against.
+    * @return true if trash is correctly linked, false otherwise.
+    */
+    public boolean isCorrectlySorted(Trash trash) {
+        return this.description.equals(trash.getDescription());
+}
 
     /*--------------------Getters--------------------*/
 

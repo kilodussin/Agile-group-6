@@ -278,6 +278,7 @@ public class GameView extends BaseView {
                         if (TrashSorter.isCorrectlySorted(curSelectedTrash, trashcans)) {
                             isTimerRunning();
                             System.out.println("Correctly sorted");
+
                             showFeedbackIcon("Resources/Sounds/checkmark-64.gif");
                             score.addPoints(curSelectedTrash.getPoints());
                             scorePlaceholder.setText(String.valueOf(score.getCurrentScore()));
@@ -539,6 +540,76 @@ public class GameView extends BaseView {
         jLabel.setBounds((int) x, (int) y, (int) width, (int) height);
         centerPanel.add(jLabel);
 
+    }
+
+    /**
+     * Animation for trash...
+     * FPS = frames per second
+     * stepDurationMS = Time in MS for each frame
+     * totalTimeMS = total animation time, set as 500 right now but can be increased or decreased -- (lower = faster animation)
+     * numberOfSteps = the total time divided by the time for each step
+     */
+
+    public static void animateTrash(Point fromHereA, Point toHereB, JPanel parentPanel, JLabel curTrashLabel, int totalTime) {
+
+        int FPS = 30;
+        int stepDurationMS = 1000/FPS;
+        int totalTimeMS = 500;
+        int numberOfSteps = totalTimeMS / stepDurationMS;
+
+        // Calculates x and y travel distance (from point A to point B)
+
+        double xPixelTravel = (toHereB.x - fromHereA.x);
+        double yPixelTravel = (toHereB.y - fromHereA.y);
+
+        // Figures out the step distance (how much we should move the trash for each step)
+        // for both x and y
+
+        double xStepDistance = xPixelTravel / numberOfSteps;
+        double yStepDistance = yPixelTravel / numberOfSteps;
+
+        // Setting up step variable to count (wrapped in an array so we can change it)
+
+        final int[] step = {0};
+
+        // We create a new swing timer, takes in stepDurationMS which is the time for each step)
+        // Runs for each frame, in this case 30 times (30 FPS)
+
+        Timer timer = new Timer(stepDurationMS, e -> {
+
+            // Check if animation steps have reached max set amount (numberOfSteps)
+            if (step[0] >= numberOfSteps) {
+
+                // If true, set curTrashLabel bound to point B's x and y value.
+                // Set width and height also.
+
+                curTrashLabel.setBounds(toHereB.x, toHereB.y, curTrashLabel.getWidth(), curTrashLabel.getHeight());
+
+                // Stops repeat timer
+                ((Timer) e.getSource()).stop();
+                return;
+            }
+
+            // Calculates the next x and y step, takes step distance times the amount of
+            // steps completed already...
+            // I.e. moves 2 pixels in x direction & we're on step 19
+            // 2*19 + initial x pos -> our next x pos
+            int newX = (int)(fromHereA.x+xStepDistance*step[0]);
+            int newY = (int)(fromHereA.y + yStepDistance*step[0]);
+
+            // Moves it to the new calculated position on the screen
+            // Repaints and revalidates because Swing is a mess
+
+            curTrashLabel.setBounds(newX, newY, curTrashLabel.getWidth(), curTrashLabel.getHeight());
+            parentPanel.revalidate();
+            parentPanel.repaint();
+
+            // Adds a step to the counter
+            step[0] += 1;
+            });
+
+        // Start timer again
+        timer.start();
     }
 }
 

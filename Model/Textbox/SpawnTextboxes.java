@@ -22,19 +22,21 @@ public class SpawnTextboxes {
      * - Static x-coordinates for spacing between textboxes.
      * - A fixed y-coordinate for all textboxes.
      * 
+     * @param descriptions A list of descriptions to assign to the textboxes.
      * @return An ArrayList of Textbox objects positioned on the screen.
      */
-    public ArrayList<Textbox> createTextboxes() {
+    public ArrayList<Textbox> createTextboxes(ArrayList<String> descriptions) {
 
-        final int y = 425; // Fixed y-coordinate for all textboxes
-        ArrayList<Integer> xSpacing = new ArrayList<>(Arrays.asList(50, 300, 550, 800)); // Static x-coordinates
+        final int y = 375; // Fixed y-coordinate for all textboxes
+        ArrayList<Integer> xSpacing = new ArrayList<>(Arrays.asList(24, 268, 512, 756)); // Static x-coordinates
 
         TextboxFactory textboxFactory = new TextboxFactory();
         ArrayList<Textbox> textboxes = new ArrayList<>();
 
         // Create 4 textboxes and position them based on xSpacing
-        for (int abc = 0; abc < 4; abc++) {
-            Textbox whichBox = textboxFactory.createTextbox("Placeholder", xSpacing.get(abc), y);
+        for (int i = 0; i < xSpacing.size(); i++) {
+            String description = descriptions.get(i);
+            Textbox whichBox = textboxFactory.createTextbox(description, xSpacing.get(i), y);
             textboxes.add(whichBox);
         }
         return textboxes;

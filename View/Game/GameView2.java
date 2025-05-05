@@ -3,13 +3,21 @@ package View.Game;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 import Model.Timer.CountdownTimer2;
 import Model.Score.HighscoreIO;
 import Model.Score.Score;
+import Model.SpawnTrashDefault2;
+import Model.Collision.TrashSorter2;
+import Model.Hitbox;
 import Model.Textbox.SpawnTextboxes;
 import Model.Textbox.Textbox;
 import Model.Trash.Trash;
-import View.ComponentsUtilities.BaseView;
+import Model.Trash.TrashFactory;
+import View.ComponentsUtilities.*;
 
 /**
  * View displayed during the actual gameplay
@@ -31,6 +39,12 @@ public class GameView2 extends BaseView {
     private CountdownTimer2 countdownTimer;
 
     private JPanel centerPanel;
+    private SpawnTrashDefault2 spawnTrashDefault;
+    private Trash curSelectedTrash = null;
+    private JLabel curTrashLabel = null;
+    private Timer resetTrashAnimation;
+    private final int ANIMATION_DELAY = 300;
+    private int correctlySortedTrashCount = 0;
 
     /**
      * Constructs the GameView and sets up all UI components.
@@ -108,14 +122,22 @@ public class GameView2 extends BaseView {
 
         scoreLabel = new JLabel("Score: " + score.getCurrentScore(), SwingConstants.CENTER);
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 30));
-        headerPanel.add(scoreLabel, BorderLayout.CENTER);
+        //headerPanel.add(scoreLabel, BorderLayout.CENTER);
+        scoreLabel.setPreferredSize(new Dimension(150,40));
+
+        JPanel newScorePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        newScorePanel.setBorder(new EmptyBorder(5,120,0,0));
+        newScorePanel.setOpaque(false);
+
+        newScorePanel.add(scoreLabel);
+        headerPanel.add(newScorePanel, BorderLayout.CENTER);
 
         countdownTimer = new CountdownTimer2(this, highscoreIO);
 
         JPanel timerPanel = new JPanel(new BorderLayout());
-        timerPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 20));
-
-        timerPanel.add(countdownTimer.getComponent(), BorderLayout.CENTER);
+        timerPanel.setBorder(BorderFactory.createEmptyBorder(5,0,0,30));
+        timerPanel.add(countdownTimer.getComponent(), BorderLayout.EAST);
+        timerPanel.setPreferredSize(new Dimension(250,40));
         timerPanel.setOpaque(false);
 
         headerPanel.add(timerPanel, BorderLayout.EAST);
@@ -123,6 +145,11 @@ public class GameView2 extends BaseView {
         headerPanel.setBorder(headerBorder);
 
         frame.add(headerPanel, BorderLayout.NORTH);
+
+        ArrayList<Trash> trashList = new ArrayList<>();
+        TrashFactory trashFactory = new TrashFactory();
+        spawnTrashDefault = new SpawnTrashDefault2(countdownTimer, trashList, trashFactory);
+
     }
 
     /**
@@ -153,6 +180,18 @@ public class GameView2 extends BaseView {
      * This panel is added to the center panel of the frame.
      */
 
+    /**
+     * Timer needs a reset before running again. The .stop() does this.
+     * It is used for the animation delay, which determines how long it should render
+     * before going back...
+     */
+
+     private void isTimerRunning() {
+        if (resetTrashAnimation != null && resetTrashAnimation.isRunning()) {
+            resetTrashAnimation.stop();
+        }
+    }
+
     private void createGameViewCenterPanel(){
 
         centerPanel = new JPanel(null);
@@ -162,16 +201,215 @@ public class GameView2 extends BaseView {
         frame.add(centerPanel, BorderLayout.CENTER);
 
         /**
-        Iterates through the cans and sends them through the renderer.
+        Iterates through the boxes and sends them through the renderer.
          */
 
 
         SpawnTextboxes spawnThem = new SpawnTextboxes();
-        for (Textbox thisBox : spawnThem.createTextboxes()) {
+        ArrayList<String> descriptions = new ArrayList<>(Arrays.asList( "Example Description 1", 
+        "Example Description 2", 
+        "Example Description 3", 
+        "Example Description 4"));
+        for (Textbox thisBox : spawnThem.createTextboxes(descriptions)) {
             renderTextboxes(thisBox);
         }
 
+        spawnAndRender();
 
+                // Mouse listener to track WHERE the user clicks on the screen.
+        // This is crucial for tracking where we should animate the trash the user clicked
+
+        centerPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+
+            /**
+             * This method tracks user mouse clicks.
+             * It is necessary for rendering the selected trash in a different spot.
+             * Takes the mouse coordinates and sets the currently selected trash to them
+             */
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent z) {
+                if (curSelectedTrash != null) {
+
+                    int xMouseCoord = z.getX();
+                    int yMouseCoord = z.getY();
+
+                    curSelectedTrash.setX(xMouseCoord);
+                    curSelectedTrash.setY(yMouseCoord);
+
+
+                    // -50 on x and y vals to spawn in center of mouse
+
+                    curTrashLabel.setBounds(xMouseCoord-50, yMouseCoord-50,
+                            (int) curSelectedTrash.getWidth(),
+                            (int) curSelectedTrash.getHeight());
+
+                    // Trash picture to the front (index 0),
+                    // IF not index 0, it will end up behind the trashcans & lost
+
+                    centerPanel.setComponentZOrder(curTrashLabel, 0);
+                    centerPanel.revalidate();
+                    centerPanel.repaint();
+
+                    if (TrashSorter2.isCorrectlySorted(curSelectedTrash, textboxes)) {
+                        isTimerRunning();
+                        System.out.println("Correctly sorted");
+
+                        score.addPoints(curSelectedTrash.getPoints());
+                        scoreLabel.setText("Score: " + String.valueOf(score.getCurrentScore()));
+
+                        Trash trashToRemove = curSelectedTrash;
+                        curSelectedTrash = null;
+
+                        resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e-> {
+
+                            centerPanel.remove(curTrashLabel);
+                            centerPanel.revalidate();
+                            centerPanel.repaint();
+                            //spawnAndRender();
+                        });
+                        resetTrashAnimation.setRepeats(false);
+                        resetTrashAnimation.start();
+
+                        correctlySortedTrashCount++;
+
+                        // NEW TRASH RENDER
+                    } else {
+
+                        isTimerRunning();
+                        
+                        score.subtractPoints(curSelectedTrash.getPoints());
+                        scoreLabel.setText("Score: " + String.valueOf(score.getCurrentScore()));
+
+                        Trash trashToReset = curSelectedTrash;
+                        curSelectedTrash = null;
+
+                        // The trash animation delay can be tweaked (ANIMATION_DELAY)
+
+                        System.out.println("Not correctly sorted!");
+
+                        resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e -> {
+
+                            // Spawns the trash back to its original spawn location.
+
+                            trashToReset.setX(trashToReset.getOriginalX());
+                            trashToReset.setY(trashToReset.getOriginalY());
+
+                            curTrashLabel.setBounds((int) trashToReset.getOriginalX(), (int) trashToReset.getOriginalY(),
+                                (int) trashToReset.getWidth(),
+                                (int) trashToReset.getHeight());
+
+                            centerPanel.revalidate();
+                            centerPanel.repaint();
+                        });
+                        resetTrashAnimation.setRepeats(false);
+                        resetTrashAnimation.start();
+                    }
+
+                    if (correctlySortedTrashCount >= 2) {
+                        correctlySortedTrashCount = 0;
+                        spawnAndRender();
+                    }
+
+                    // Deselect the trash
+                    curSelectedTrash = null;
+
+
+                }
+            }
+        });
+
+    }
+
+    private ArrayList<Trash> trashList = new ArrayList<>();
+    private ArrayList<Textbox> textboxes = new ArrayList<>();
+
+    /**
+     * The spawnAndRender randomizes a new trash and then sends it through renderTrash
+     * to get a random trash spawned in the game.
+     */
+
+     public void spawnAndRender() {
+        trashList.clear();
+        textboxes.clear();
+        centerPanel.removeAll();
+
+        Trash trash1 = spawnTrashDefault.spawnRandomTrash();
+        Trash trash2 = spawnTrashDefault.spawnRandomTrash();
+
+        trashList.add(trash1);
+        trashList.add(trash2);
+
+        renderTrash(trash1);
+        renderTrash(trash2);
+
+        createAndRenderTextboxes(trash1, trash2);
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
+    /**
+    * Creates and renders textboxes for a given trash object.
+    * @param trash The trash object to create textboxes for.
+    */
+    private void createAndRenderTextboxes(Trash trash1, Trash trash2) {
+        String correctDescription1 = trash1.getDescription();        
+        ArrayList<String> exceptions1 = new ArrayList<>();
+        exceptions1.add(correctDescription1);
+        String incorrectDescription1 = trash1.generateIncorrectDescription(exceptions1);
+
+        String correctDescription2 = trash2.getDescription();
+        ArrayList<String> exceptions2 = new ArrayList<>();
+        exceptions2.add(correctDescription2);
+        String incorrectDescription2 = trash2.generateIncorrectDescription(exceptions2);
+
+        ArrayList<String> descriptions = new ArrayList<>(Arrays.asList(
+            correctDescription1, 
+            incorrectDescription1,
+            correctDescription2,
+            incorrectDescription2
+        ));
+        Collections.shuffle(descriptions); // Shuffle the order
+        SpawnTextboxes spawnTextboxes = new SpawnTextboxes();
+        ArrayList<Textbox> generatedTextboxes = spawnTextboxes.createTextboxes(descriptions);
+
+        for (Textbox textbox : generatedTextboxes) {
+            textboxes.add(textbox);
+            renderTextboxes(textbox);
+        }
+    }
+
+    /**
+     * the renderTrash renders trash in the game.
+     * An action listener is placed on the trash, to detect if the player clicks it.
+     *
+     * @param trash
+     */
+
+     public void renderTrash(Trash trash) {
+        String imagePath = trash.getImagePath();
+        ImageIcon imageIcon = new ImageIcon(imagePath);
+        JLabel trashLabel = new JLabel(imageIcon);
+
+        double y = trash.getY();
+        double x = trash.getX();
+        double width = trash.getWidth();
+        double height = trash.getHeight();
+
+        trash.setOriginalX(x);
+        trash.setOriginalY(y);
+
+        trashLabel.setBounds((int) x, (int) y, (int) width, (int) height);
+        centerPanel.add(trashLabel);
+
+        trashLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                System.out.print("Trash is clicked!");
+                curSelectedTrash = trash;
+                curTrashLabel = trashLabel;
+            }
+        });
     }
 
 
@@ -181,8 +419,12 @@ public class GameView2 extends BaseView {
      */
 
      public void renderTextboxes(Textbox textbox) {
-        JLabel jLabel = new JLabel("Placeholder");
-        jLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        String description = textbox.getDescription();
+
+        String htmlDescription = "<html><div style='text-align: center;'>" + description.replaceAll("\n", "<br>") + "</div></html>";
+
+        JLabel jLabel = new JLabel(htmlDescription);
+        jLabel.setFont(new Font("Arial", Font.BOLD, 12));
         jLabel.setHorizontalAlignment(SwingConstants.CENTER);
     
         double y = textbox.getY();
