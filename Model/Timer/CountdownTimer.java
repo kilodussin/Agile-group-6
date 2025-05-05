@@ -100,6 +100,8 @@ public class CountdownTimer {
                 mainTimer.stop();
                 timeLabel.setText("Time is up! ");
 
+                gameView.stopBackgroundMusic();
+
                 // Functionality for grabbing final score when game is over
                 // Send the new Highscores object through the sortAndWrite to sort entries and write it to file
                 // Could be broken out into a standalone function
