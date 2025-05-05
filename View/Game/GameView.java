@@ -1,21 +1,26 @@
 package View.Game;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import Model.*;
 import Model.Collision.TrashSorter;
+import Model.Score.HighscoreIO;
 import Model.Score.Score;
 import Model.Timer.CountdownTimer;
 import Model.Trash.Trash;
 import Model.Trash.TrashFactory;
+import Model.Trashcan.PlasticTrashcan;
 import Model.Trashcan.SpawnTrashcans;
 import Model.Trashcan.Trashcan;
 import View.ComponentsUtilities.BaseView;
-import Model.Score.HighscoreIO;
-import Model.Score.Highscores;
+
 
 
 /**
@@ -48,6 +53,8 @@ public class GameView extends BaseView {
     private JLabel curTrashLabel = null;
     private Timer resetTrashAnimation;
 
+    private Clip backgroundMusicClip;
+
     /**
      * Constructs the GameView and sets up all UI components.
      * <p>
@@ -64,6 +71,18 @@ public class GameView extends BaseView {
         escapeButton = new JButton("ESCAPE");
         gameOverViewPlaceholder = new JButton("Game Over View (Placeholder for navigation)");
         score = new Score();
+
+        String[] musicTracks = {
+                "Resources/Sounds/513427__mrthenoronha__cartoon-game-theme-loop-3.wav",
+                "Resources/Sounds/513667__mrthenoronha__cartoon-game-theme-loop-4.wav",
+                "Resources/Sounds/513869__mrthenoronha__cartoon-game-theme-loop-5.wav"
+        };
+
+        int randomIndex = new Random().nextInt(musicTracks.length);
+        String selectedTrack = musicTracks[randomIndex];
+
+        playBackgroundMusic(selectedTrack);
+
 
         createGameViewHeader();
         createGameViewCenterPanel();
@@ -233,9 +252,11 @@ public class GameView extends BaseView {
                     if (TrashSorter.isCorrectlySorted(curSelectedTrash, trashcans)) {
                         isTimerRunning();
                         System.out.println("Correctly sorted");
-
+                        showFeedbackIcon("Resources/Sounds/checkmark-64.gif");
                         score.addPoints(curSelectedTrash.getPoints());
                         scorePlaceholder.setText(String.valueOf(score.getCurrentScore()));
+
+
 
                         Trash trashToRemove = curSelectedTrash;
                         curSelectedTrash = null;
@@ -263,6 +284,10 @@ public class GameView extends BaseView {
 
                         System.out.println("Not correctly sorted!");
 
+                        showFeedbackIcon("Resources/Sounds/multiply-3-64.png");
+                        shakeComponent(curTrashLabel);
+                        playSound("Resources/Sounds/training-program-incorrect1-88736 (1).wav");
+
                         resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e -> {
 
                             // Spawns the trash back to its original spawn location.
@@ -271,8 +296,8 @@ public class GameView extends BaseView {
                             trashToReset.setY(spawnTrashDefault.Y_VAL);
 
                             curTrashLabel.setBounds(spawnTrashDefault.X_VAL, spawnTrashDefault.Y_VAL,
-                                (int) trashToReset.getWidth(),
-                                (int) trashToReset.getHeight());
+                                    (int) trashToReset.getWidth(),
+                                    (int) trashToReset.getHeight());
 
                             centerPanel.revalidate();
                             centerPanel.repaint();
@@ -290,17 +315,97 @@ public class GameView extends BaseView {
         });
     }
 
-
-
-
     /**
      * The spawnAndRender randomizes a new trash and then sends it through renderTrash
      * to get a random trash spawned in the game.
      */
 
+    private void playSound(String soundFilePath) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFilePath));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(+5.0f);
+
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void spawnAndRender() {
         Trash newTrash = spawnTrashDefault.spawnRandomTrash();
         renderTrash(newTrash);
+
+        playSound("Resources/Sounds/321806__lloydevans09__plunger_pop_2.wav");
+    }
+
+    private void playBackgroundMusic(String filePath) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
+            backgroundMusicClip = AudioSystem.getClip();
+            backgroundMusicClip.open(audioInputStream);
+
+            FloatControl gainControl = (FloatControl) backgroundMusicClip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(-15.0f);
+
+            backgroundMusicClip.loop(Clip.LOOP_CONTINUOUSLY);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void stopBackgroundMusic() {
+        if (backgroundMusicClip != null && backgroundMusicClip.isRunning()) {
+            backgroundMusicClip.stop();
+            backgroundMusicClip.close();
+        }
+    }
+
+    private void showFeedbackIcon(String imagePath) {
+        ImageIcon icon = new ImageIcon(imagePath);
+        JLabel iconLabel = new JLabel(icon);
+
+        int centerX = (frame.getWidth() - icon.getIconWidth()) / 2;
+        int centerY = (frame.getHeight() - icon.getIconHeight()) / 2;
+
+        iconLabel.setBounds(centerX, centerY, icon.getIconWidth(), icon.getIconHeight());
+        iconLabel.setOpaque(false);
+
+        frame.getLayeredPane().add(iconLabel, JLayeredPane.POPUP_LAYER);
+        frame.getLayeredPane().repaint();
+
+        new javax.swing.Timer(700, e -> {
+            frame.getLayeredPane().remove(iconLabel);
+            frame.getLayeredPane().repaint();
+        }).start();
+    }
+
+    private void shakeComponent(JComponent component) {
+        final int shakeDistance = 10;
+        final int shakeDuration = 30;
+        final int shakeCount = 6;
+
+        Point originalLocation = component.getLocation();
+        Timer shakeTimer = new Timer(shakeDuration, null);
+
+        final int[] count = {0};
+        shakeTimer.addActionListener(e -> {
+            int offset = (count[0] % 2 == 0) ? shakeDistance : -shakeDistance;
+            component.setLocation(originalLocation.x + offset, originalLocation.y);
+            component.repaint();
+
+            count[0]++;
+            if (count[0] >= shakeCount) {
+                component.setLocation(originalLocation); // reset position
+                ((Timer)e.getSource()).stop();
+            }
+        });
+
+        shakeTimer.start();
     }
 
     /**
@@ -358,12 +463,12 @@ public class GameView extends BaseView {
     }
 }
 
-    /**
-     * Temporary placeholder to test the view independently when working on it.
-     * <p>
-     * This main method allows the GameView to run standalone, which is useful during development, for UI testing.
-     * Uncomment to run the view standalone.
-     */
+/**
+ * Temporary placeholder to test the view independently when working on it.
+ * <p>
+ * This main method allows the GameView to run standalone, which is useful during development, for UI testing.
+ * Uncomment to run the view standalone.
+ */
 
     /* public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
