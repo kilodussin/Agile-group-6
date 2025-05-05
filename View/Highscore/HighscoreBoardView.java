@@ -34,8 +34,6 @@ public class HighscoreBoardView extends BaseView {
     private JButton nextButton;
     private JPanel highscoreGameMode2;
     private CardLayout cardLayout;
-
-    private JButton nextButton;
     private JButton backButton;
 
     public HighscoreBoardView() {
@@ -111,14 +109,14 @@ public class HighscoreBoardView extends BaseView {
         highscoreGameMode1.setLayout(new BoxLayout(highscoreGameMode1, BoxLayout.Y_AXIS));
         highscoreGameMode1.setBackground(Color.BLACK);
         highscoreGameMode1.add(createLabel("Highscores Game Mode 1"));
-        highscoreGameMode1.add(createRetroScorePanel("Resources/highscores.txt"));
+        highscoreGameMode1.add(createRetroScorePanel("Resources/Textfiles/highscores.txt"));
 
         // === Game Mode 2 ===
         highscoreGameMode2 = new JPanel();
         highscoreGameMode2.setLayout(new BoxLayout(highscoreGameMode2, BoxLayout.Y_AXIS));
         highscoreGameMode2.setBackground(Color.BLACK);
         highscoreGameMode2.add(createLabel("Highscores Game Mode 2"));
-        highscoreGameMode2.add(createRetroScorePanel("Resources/highscores2.txt"));
+        highscoreGameMode2.add(createRetroScorePanel("Resources/Textfiles/highscores2.txt"));
 
         innerCenterPanel.add(highscoreGameMode1, "Highscores Game Mode 1");
         innerCenterPanel.add(highscoreGameMode2, "Highscores Game Mode 2");
