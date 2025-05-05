@@ -41,27 +41,27 @@ public class ViewManager {
      *
      * @param view the view to display
      */
-    public void showView(BaseView view){
-        if (currentFrame != null){
+    public void showView(BaseView view) {
+        if (currentFrame != null) {
             currentFrame.setVisible(false);
             currentFrame.dispose();
         }
-        currentFrame = view.frame;
+        currentFrame = view.getFrame(); // Use getter for frame
         view.show();
     }
 
     /**
      * Shows the start menu view and sets up its actions to buttons that navigate to other views.
      */
-    public void showMainMenuView(){
-        MainMenuView MainMenuView = new MainMenuView();
+    public void showMainMenuView() {
+        MainMenuView mainMenuView = new MainMenuView();
 
-        MainMenuView.startButton.addActionListener( e -> showGameModeView());
-        MainMenuView.tutorialButton.addActionListener(e -> showTutorialSelectorView());
-        MainMenuView.highscoreButton.addActionListener(e -> showHighscoreBoardView());
-        MainMenuView.settingsButton.addActionListener(e -> showSettingsView());
+        mainMenuView.getStartButton().addActionListener(e -> showGameModeView());
+        mainMenuView.getTutorialButton().addActionListener(e -> showTutorialSelectorView());
+        mainMenuView.getHighscoreButton().addActionListener(e -> showHighscoreBoardView());
+        mainMenuView.getSettingsButton().addActionListener(e -> showSettingsView());
 
-        showView(MainMenuView);
+        showView(mainMenuView);
     }
 
     /**
@@ -69,33 +69,33 @@ public class ViewManager {
      */
     public void showTutorialSelectorView() {
         TutorialSelectorView tutorialSelectorView = new TutorialSelectorView();
-        tutorialSelectorView.escapeButton.addActionListener(e -> showMainMenuView());
-        tutorialSelectorView.tutorial1Button.addActionListener(e -> showTutorialView1());
-        tutorialSelectorView.tutorial2Button.addActionListener(e -> showTutorialView2());
-        //tutorialSelectorView.escapeButton.addActionListener(e -> showMainMenuView());
+
+        tutorialSelectorView.getEscapeButton().addActionListener(e -> showMainMenuView());
+        tutorialSelectorView.getTutorial1Button().addActionListener(e -> showTutorialView1());
+        tutorialSelectorView.getTutorial2Button().addActionListener(e -> showTutorialView2());
 
         showView(tutorialSelectorView);
     }
 
     public void showTutorialView1() {
         TutorialView tutorialView = new TutorialView();
-        tutorialView.escapeButton.addActionListener(e -> showTutorialSelectorView());
+        tutorialView.getEscapeButton().addActionListener(e -> showTutorialSelectorView());
         showView(tutorialView);
     }
 
     public void showTutorialView2() {
         TutorialView2 tutorialView2 = new TutorialView2();
-        tutorialView2.escapeButton.addActionListener(e -> showTutorialSelectorView());
+        tutorialView2.getEscapeButton().addActionListener(e -> showTutorialSelectorView());
         showView(tutorialView2);
     }
 
     /**
      * Shows the highscore board view and sets up its actions to buttons that navigate to other views.
      */
-    public void showHighscoreBoardView(){
+    public void showHighscoreBoardView() {
         HighscoreBoardView highscoreBoardView = new HighscoreBoardView();
 
-        highscoreBoardView.escapeButton.addActionListener(e -> showMainMenuView());
+        highscoreBoardView.getEscapeButton().addActionListener(e -> showMainMenuView());
 
         showView(highscoreBoardView);
     }
@@ -103,10 +103,10 @@ public class ViewManager {
     /**
      * Shows the settings view and sets up its actions to buttons that navigate to other views.
      */
-    public void showSettingsView(){
+    public void showSettingsView() {
         SettingsView settingsView = new SettingsView();
 
-        settingsView.escapeButton.addActionListener(e -> showMainMenuView());
+        settingsView.getEscapeButton().addActionListener(e -> showMainMenuView());
 
         showView(settingsView);
     }
@@ -117,12 +117,12 @@ public class ViewManager {
      * Note: GameView2 is currently connected to "medium" button, but this will most likely change in the future
      * when the GameModeView gets updated.
      */
-    public void showGameModeView(){
+    public void showGameModeView() {
         GameModeView gameModeView = new GameModeView();
 
-        gameModeView.escapeButton.addActionListener(e -> showMainMenuView());
-        gameModeView.gamemode1Button.addActionListener(e -> showGameView());
-        gameModeView.gamemode2Button.addActionListener(e -> showGameView2());
+        gameModeView.getEscapeButton().addActionListener(e -> showMainMenuView());
+        gameModeView.getGamemode1Button().addActionListener(e -> showGameView());
+        gameModeView.getGamemode2Button().addActionListener(e -> showGameView2());
 
         showView(gameModeView);
     }
@@ -133,8 +133,7 @@ public class ViewManager {
     public void showGameView(){
         GameView gameView = new GameView();
 
-        gameView.escapeButton.addActionListener(e -> showGameModeView());
-        //gameView.gameOverViewPlaceholder.addActionListener(e -> showGameOverView());
+        gameView.getEscapeButton().addActionListener(e -> showGameModeView());
 
         showView(gameView);
     }
@@ -145,7 +144,7 @@ public class ViewManager {
     public void showGameView2(){
         GameView2 gameView2 = new GameView2();
 
-        gameView2.escapeButton.addActionListener(e -> showGameModeView());
+        gameView2.getEscapeButton().addActionListener(e -> showGameModeView());
 
         showView(gameView2);
     }
@@ -153,27 +152,28 @@ public class ViewManager {
     /**
      * Shows the game over view and sets up its actions to buttons that navigate to other views.
      */
-    public void showGameOverView(double score, double highScore, ArrayList<Trash> incorrectTrash ){
-        GameOverView gameOverView = new GameOverView(score, highScore, incorrectTrash);
+    public void showGameOverView() {
+        GameOverView gameOverView = new GameOverView(1, 5, new ArrayList<>());
 
-        gameOverView.playAgainButton.addActionListener(e -> showGameView());
-        gameOverView.mainMenuButton.addActionListener(e -> showMainMenuView());
+        gameOverView.getPlayAgainButton().addActionListener(e -> showGameView());
+        gameOverView.getMainMenuButton().addActionListener(e -> showMainMenuView());
 
         showView(gameOverView);
     }
 
-  /**
-   * Displays the second game over view and sets up actions for its buttons.
-   * @param score the final score to display in the second game over view
-   */
-  public void showGameOverView2(double score){
-      GameOverView2 gameOverView2 = new GameOverView2(score);
+    /**
+     * Displays the second game over view and sets up actions for its buttons.
+     *
+     * @param score the final score to display in the second game over view
+     */
+    public void showGameOverView2(double score) {
+        GameOverView2 gameOverView2 = new GameOverView2(score);
 
-      gameOverView2.playAgainButton.addActionListener(e -> showGameView2());
-      gameOverView2.mainMenuButton.addActionListener(e -> showMainMenuView());
+        gameOverView2.getPlayAgainButton().addActionListener(e -> showGameView2());
+        gameOverView2.getMainMenuButton().addActionListener(e -> showMainMenuView());
 
-      showView(gameOverView2);
-  }
+        showView(gameOverView2);
+    }
 
     /**
      * Returns the current frame being displayed by the application.
@@ -182,28 +182,10 @@ public class ViewManager {
      * (the visible view in the application).
      * <p>
      * Useful for JUnit testing purposes.
-     * <p>
+     *
      * @return the current JFrame being displayed
      */
     public Object getCurrentFrame() {
         return currentFrame;
-    }
-
-    /**
-     * Main method to launch the application.
-     * It launches the application with StartMenuView as starting point.
-     * <p>
-     * Note: This main method is intended for temporary use during UI development, while working in a branch.
-     * The actual application should define its own entry point elsewhere (e.g., Main.java).
-     *
-     * @param args command-line arguments (not used)
-     */
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            ViewManager viewManager = ViewManager.getInstance();
-            viewManager.showMainMenuView();
-        });
-
     }
 }

@@ -42,7 +42,7 @@ public class GlassTrash extends Trash{
     public ArrayList<ImageDescriptionPair> generateAvailableImages(){
         ImageDescriptionPairFactory factory = new ImageDescriptionPairFactory();
         ArrayList<ImageDescriptionPair> availableImages = new ArrayList<ImageDescriptionPair>();
-        availableImages.add(factory.createImageDescriptionPair("One could believe styrofoam to be non-recyclable – but it actually is! It should be sorted as regular plastic waste.", "Resources/Trash/Styrofoam_Trash.png"));
+        availableImages.add(factory.createImageDescriptionPair("One could believe styrofoam to be non-recyclable – but it actually is! It should be sorted as regular plastic waste.", "Resources/Images/Trash/Styrofoam_Trash.png"));
         return availableImages;
     }
 
