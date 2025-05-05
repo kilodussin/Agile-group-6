@@ -29,6 +29,6 @@ public class FoodTrashcan extends Trashcan{
 
     @Override
     public String generateImagePath() {
-        return "Resources/crocdundee.jpg";
+        return "Resources/Images/Trashcan/Compost_RecBin.png";
     }
 }

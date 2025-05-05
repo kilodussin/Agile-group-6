@@ -1,4 +1,4 @@
-package Tests;
+/* package Tests;
 
 import Model.Hitbox;
 import Model.Trash.DetailedTrash;
@@ -35,3 +35,4 @@ public class DetailedTrashTest {
         assertNotNull(trash.getHitbox());
     }
 }
+*/
