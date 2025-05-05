@@ -22,6 +22,7 @@ public class SpawnTrashDefault {
     public final int X_VAL = 500;
     private final ArrayList<Trash> trashList;
     private final Random random;
+
     private final TrashFactory trashFactory;
 
     /**
