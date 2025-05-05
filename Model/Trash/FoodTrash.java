@@ -41,7 +41,7 @@ public class FoodTrash extends Trash {
     public ArrayList<ImageDescriptionPair> generateAvailableImages(){
         ImageDescriptionPairFactory factory = new ImageDescriptionPairFactory();
         ArrayList<ImageDescriptionPair> availableImages = new ArrayList<ImageDescriptionPair>();
-        availableImages.add(factory.createImageDescriptionPair("Most tea bags are made entirely out of biodegradable material, and should therefore be thrown into the food disposal.","Resources/Trash/Teabag_Trash.png" ));
+        availableImages.add(factory.createImageDescriptionPair("Most tea bags are made entirely out of biodegradable material, and should therefore be thrown into the food disposal.","Resources/Images/Trash/Teabag_Trash.png" ));
         return availableImages;
     }
 
