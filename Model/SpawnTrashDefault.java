@@ -1,4 +1,5 @@
 package Model;
+import Model.Timer.CountdownTimer;
 import Model.Trash.Trash;
 import Model.Trash.TrashFactory;
 import Model.Trash.TrashTypes;

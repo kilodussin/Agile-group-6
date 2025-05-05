@@ -5,6 +5,7 @@ import Model.Trash.TrashTypes;
 import java.util.Random;
 import java.util.ArrayList;
 import java.awt.*;
+import Model.Timer.CountdownTimer2;
 
 
 public class SpawnTrashDefault2 {
