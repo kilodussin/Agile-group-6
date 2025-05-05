@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class SpawnTrashDefault {
 
+
     private final CountdownTimer countdownTimer;
     final int IMAGE_WIDTH = 100;
     final int IMAGE_HEIGHT = 100;
