@@ -2,17 +2,12 @@ package Model.Timer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
 import Model.Score.HighscoreIO;
 import Model.Score.Highscores;
 
 import View.Game.GameView;
-import View.Game.GameView;
-import View.Game.GameOverView;
-import Model.Score.HighscoreIO;
-import View.ViewManager;
 
 /**
  CountdownTimer is responsible for the in-game timer.
@@ -26,8 +21,7 @@ public class CountdownTimer {
     private JLabel timeLabel;
     private Timer mainTimer;
     private GameView gameView;
-    private GameOverView gameOverView;
-    private ViewManager viewManager;
+
     private HighscoreIO highscoreIO;
 
 
@@ -45,7 +39,6 @@ public class CountdownTimer {
     public CountdownTimer(GameView gameView, HighscoreIO highscoreIO) {
         this.highscoreIO = highscoreIO;
         this.gameView = gameView;
-        this.viewManager = ViewManager.getInstance();
         timeLeft = timerInSeconds;
         buildTimerVisuals();
         startTimer();
@@ -107,11 +100,7 @@ public class CountdownTimer {
                 mainTimer.stop();
                 timeLabel.setText("Time is up! ");
 
-
-
-
                 gameView.stopBackgroundMusic();
-
 
                 // Functionality for grabbing final score when game is over
                 // Send the new Highscores object through the sortAndWrite to sort entries and write it to file
@@ -127,7 +116,7 @@ public class CountdownTimer {
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
-                viewManager.showGameOverView(score, 0.5, gameView.getIncorrectTrash());
+
             }
 
         });
