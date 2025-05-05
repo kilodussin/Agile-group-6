@@ -1,5 +1,6 @@
 package View;
 
+import Model.Trash.Trash;
 import View.ComponentsUtilities.BaseView;
 import View.Game.GameModeView;
 import View.Game.GameOverView;
@@ -29,7 +30,7 @@ public class ViewManager {
     /**
      * A private constructor to enforce singleton pattern
      */
-    private ViewManager() {}
+    private ViewManager(){}
 
     /**
      * Returns the single instance of the ViewManager
@@ -38,11 +39,11 @@ public class ViewManager {
      *
      * @return The singleton instance of the ViewManager
      */
-    public static ViewManager getInstance() {
-        if (instance == null) {
-            instance = new ViewManager(); // If there is no instance yet, it creates one
+    public static ViewManager getInstance(){
+        if (instance == null){
+            instance = new ViewManager(); //If there is no instance yet, it creates one
         }
-        return instance; // Otherwise, it returns the existing one
+        return instance; //Otherwise, it returns the existing one
     }
 
     /**
@@ -140,7 +141,7 @@ public class ViewManager {
     /**
      * Shows the game view and sets up its actions to buttons that navigate to other views.
      */
-    public void showGameView() {
+    public void showGameView(){
         GameView gameView = new GameView();
 
         gameView.getEscapeButton().addActionListener(e -> showGameModeView());
@@ -151,7 +152,7 @@ public class ViewManager {
     /**
      * Shows the second game view and sets up its actions to buttons that navigate to other views.
      */
-    public void showGameView2() {
+    public void showGameView2(){
         GameView2 gameView2 = new GameView2();
 
         gameView2.getEscapeButton().addActionListener(e -> showGameModeView());
@@ -162,8 +163,8 @@ public class ViewManager {
     /**
      * Shows the game over view and sets up its actions to buttons that navigate to other views.
      */
-    public void showGameOverView() {
-        GameOverView gameOverView = new GameOverView(1, 5, new ArrayList<>());
+    public void showGameOverView(double score, double highScore, ArrayList<Trash> incorrectTrash ){
+        GameOverView gameOverView = new GameOverView(score, highScore, incorrectTrash);
 
         gameOverView.getPlayAgainButton().addActionListener(e -> showGameView());
         gameOverView.getMainMenuButton().addActionListener(e -> showMainMenuView());

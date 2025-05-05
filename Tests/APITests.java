@@ -7,4 +7,7 @@ public class APITests {
     void APITest(){
         System.out.println(API.getFunFact(2));
     }
-} */
+
+}
+*/
+

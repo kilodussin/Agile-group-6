@@ -53,7 +53,11 @@ public class GameView extends BaseView {
     private JLabel curTrashLabel = null;
     private Timer resetTrashAnimation;
 
+
+    private ArrayList<Trash> incorrectTrash;
+
     private Clip backgroundMusicClip;
+
 
     /**
      * Constructs the GameView and sets up all UI components.
@@ -71,6 +75,7 @@ public class GameView extends BaseView {
         escapeButton = new JButton("ESCAPE");
         gameOverViewPlaceholder = new JButton("Game Over View (Placeholder for navigation)");
         score = new Score();
+        incorrectTrash = new ArrayList<>();
 
         String[] musicTracks = {
                 "Resources/Sounds/513427__mrthenoronha__cartoon-game-theme-loop-3.wav",
@@ -300,12 +305,36 @@ public class GameView extends BaseView {
                             isTimerRunning();
 
 
+
+
+                        //Adds trash to list for game over view
+                        boolean isDuplicate = false;
+                        if (!incorrectTrash.isEmpty()) {
+                            for (Trash trash : incorrectTrash) {
+                                if (trash.getDescription().equals(trashToReset.getDescription())) {
+                                    isDuplicate = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!isDuplicate) {incorrectTrash.add(trashToReset);}
+
+
+
+
+                        // The trash animation delay can be tweaked (ANIMATION_DELAY)
+
                             Trash trashToReset = curSelectedTrash;
                             curSelectedTrash = null;
 
                             // The trash animation delay can be tweaked (ANIMATION_DELAY)
 
+
+
+                        resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e -> {
+
                             System.out.println("Not correctly sorted!");
+
 
                             showFeedbackIcon("Resources/Sounds/multiply-3-64.png");
                             //shakeComponent(curTrashLabel);
@@ -331,6 +360,10 @@ public class GameView extends BaseView {
             }
         });
     }
+
+
+    public ArrayList<Trash> getIncorrectTrash() {
+        return incorrectTrash;
 
     public static void animateTrash(Point fromHereA, Point toHereB, JPanel parentPanel, JLabel curTrashLabel, int totalTime) {
 
@@ -392,6 +425,7 @@ public class GameView extends BaseView {
 
         // Start timer again
         timer.start();
+
     }
 
     /**
