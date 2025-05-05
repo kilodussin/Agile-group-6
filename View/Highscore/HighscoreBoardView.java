@@ -7,7 +7,7 @@ import View.ComponentsUtilities.BaseView;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -33,16 +33,9 @@ public class HighscoreBoardView extends BaseView {
     private JTextArea highscoreTextArea;
     private JButton nextButton;
     private JPanel highscoreGameMode2;
-    private JTextArea highscoreTextArea2;
-    private JLabel gameMode2Label;
-    private JButton backButton;
     private CardLayout cardLayout;
+    private JButton backButton;
 
-    /**
-     * Constructs the HighscoreBoardView and sets up all UI components.
-     * <p>
-     * This includes initializing buttons and calling methods to create each panel.
-     */
     public HighscoreBoardView() {
         super("Highscore Board", "/Resources/Images/Backgrounds/Background1.png");
 
@@ -102,110 +95,140 @@ public class HighscoreBoardView extends BaseView {
         frame.add(headerPanel, BorderLayout.NORTH);
     }
 
-    /**
-     * Creates and displays the center panel for the Highscore view with a CardLayout to switch between two game modes.
-     * <p>
-     * This method utilizes two nested panels:
-     * - The outer panel provides layout spacing and is used to hold the inner panel with the CardLayout.
-     * - The inner panel, which employs a `CardLayout`, contains two cards that represent two different game modes.
-     *   - The first card (Game Mode 1) contains a label and a button to navigate to the second card (Game Mode 2)
-     *     and a `JTextArea` displaying the high scores loaded from the `highscores1.txt` file.
-     *   - The second card (Game Mode 2) contains a label, a back button to return to the first card,
-     *     and a `JTextArea` displaying the high scores loaded from the `highscores2.txt` file.
-     * <p>
-     * The outer panel is made transparent by setting its `opaque` property to `false`, which allows the background image to show through.
-     * <p>
-     * This panel is added to the center container of the frame.
-     */
     private void createHighscoreCenterPanel() {
         outerCenterPanel = new JPanel(new BorderLayout());
         outerCenterPanel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+        outerCenterPanel.setOpaque(false);
 
         cardLayout = new CardLayout();
         innerCenterPanel = new JPanel(cardLayout);
         innerCenterPanel.setBackground(Color.WHITE);
 
-        highscoreGameMode1 = new JPanel(new BorderLayout());
-        highscoreGameMode1.setBackground(Color.WHITE);
-        gameMode1Label = new JLabel("Highscores Game Mode 1", SwingConstants.CENTER);
-        gameMode1Label.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-        gameMode1Label.setFont(new Font("Arial", Font.BOLD, 20));
-        highscoreGameMode1.add(gameMode1Label, BorderLayout.NORTH);
-        nextButton = new JButton("→");
-        nextButton.addActionListener((ActionEvent e) -> cardLayout.show(innerCenterPanel, "Highscores Game Mode 2"));
-        highscoreGameMode1.add(nextButton, BorderLayout.EAST);
+        // === Game Mode 1 ===
+        highscoreGameMode1 = new JPanel();
+        highscoreGameMode1.setLayout(new BoxLayout(highscoreGameMode1, BoxLayout.Y_AXIS));
+        highscoreGameMode1.setBackground(Color.BLACK);
+        highscoreGameMode1.add(createLabel("Highscores Game Mode 1"));
+        highscoreGameMode1.add(createRetroScorePanel("Resources/Textfiles/highscores.txt"));
 
-        highscoreTextArea = new JTextArea(10, 30);
-        highscoreTextArea.setEditable(false);
-        highscoreTextArea.setFont(new Font("Arial", Font.PLAIN, 20));
-        highscoreTextArea.setText(getHighscoresFromFile("Resources/Textfiles/highscores.txt"));
-        highscoreTextArea.setBorder(BorderFactory.createEmptyBorder(10, 315, 10, 10));
-
-        highscoreGameMode1.add(highscoreTextArea, BorderLayout.CENTER);
-
-        highscoreGameMode2 = new JPanel(new BorderLayout());
-        highscoreGameMode2.setBackground(Color.WHITE);
-        gameMode2Label = new JLabel("Highscores Game Mode 2", SwingConstants.CENTER);
-        gameMode2Label.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-        gameMode2Label.setFont(new Font("Arial", Font.BOLD, 20));
-        highscoreGameMode2.add(gameMode2Label, BorderLayout.NORTH);
-
-        backButton = new JButton("←");
-        backButton.addActionListener((ActionEvent e) -> cardLayout.show(innerCenterPanel, "Highscores Game Mode 1"));
-        highscoreGameMode2.add(backButton, BorderLayout.WEST);
-
-        highscoreTextArea2 = new JTextArea(10, 30);
-        highscoreTextArea2.setEditable(false);
-        highscoreTextArea2.setFont(new Font("Arial", Font.PLAIN, 20));
-        highscoreTextArea2.setText(getHighscoresFromFile("Resources/Textfiles/highscores2.txt"));
-        highscoreTextArea2.setBorder(BorderFactory.createEmptyBorder(10, 240, 10, 10));
-
-        highscoreGameMode2.add(highscoreTextArea2, BorderLayout.CENTER);
+        // === Game Mode 2 ===
+        highscoreGameMode2 = new JPanel();
+        highscoreGameMode2.setLayout(new BoxLayout(highscoreGameMode2, BoxLayout.Y_AXIS));
+        highscoreGameMode2.setBackground(Color.BLACK);
+        highscoreGameMode2.add(createLabel("Highscores Game Mode 2"));
+        highscoreGameMode2.add(createRetroScorePanel("Resources/Textfiles/highscores2.txt"));
 
         innerCenterPanel.add(highscoreGameMode1, "Highscores Game Mode 1");
         innerCenterPanel.add(highscoreGameMode2, "Highscores Game Mode 2");
 
+        JPanel leftPanel = createArrowPanel("←", e -> showCard("Highscores Game Mode 1"));
+        JPanel rightPanel = createArrowPanel("→", e -> showCard("Highscores Game Mode 2"));
+
+        outerCenterPanel.add(leftPanel, BorderLayout.WEST);
         outerCenterPanel.add(innerCenterPanel, BorderLayout.CENTER);
-        outerCenterPanel.setOpaque(false);
+        outerCenterPanel.add(rightPanel, BorderLayout.EAST);
 
         frame.add(outerCenterPanel, BorderLayout.CENTER);
+
+        showCard("Highscores Game Mode 1");
     }
 
-    /**
-     * Gets the high scores from the given file path and formats them into a string.
-     *
-     * @param filePath the path to the high score file
-     * @return a string representing the high scores
-     */
-  private String getHighscoresFromFile(String filePath) {
-      StringBuilder highscoreString = new StringBuilder();
+    private JLabel createLabel(String title) {
+        JLabel label = new JLabel(title, SwingConstants.CENTER);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+        label.setForeground(Color.GREEN);
 
-      try {
-          HighscoreIO highscoreIO = new HighscoreIO();
-          ArrayList<Highscores> highscores = highscoreIO.readFile(filePath);
+        try {
+            Font retroFont = Font.createFont(Font.TRUETYPE_FONT,
+                            getClass().getResourceAsStream("/Resources/Font/PressStart2P-Regular.ttf"))
+                    .deriveFont(24f);
+            label.setFont(retroFont);
+        } catch (Exception e) {
+            label.setFont(new Font("Monospaced", Font.BOLD, 18));
+        }
 
-          for (Highscores hs : highscores) {
-              highscoreString.append(hs.getPlayerName())
-                      .append(" - Time: ").append(hs.getTime())
-                      .append(", Score: ").append(hs.getScore())
-                      .append("\n");
-          }
-      } catch (FileNotFoundException e) {
-          highscoreString.append("Error loading high scores from file.");
-      }
-      return highscoreString.toString();
-  }
+        label.setBorder(BorderFactory.createEmptyBorder(30, 0, 10, 0));
 
-    /**
-     * Temporary placeholder to test the view independently when working on it.
-     * <p>
-     * This main method allows the HighscoreBoardView to run standalone, which is useful during development, for UI testing.
-     * Uncomment to run the view standalone.
-     */
-    /* public static void main(String[] args) {
+        return label;
+    }
+
+
+    private JPanel createRetroScorePanel (String filePath) {
+        ArrayList<Highscores> highscores = new ArrayList<>();
+        try {
+            HighscoreIO highscoreIO = new HighscoreIO();
+            highscores = highscoreIO.readFile(filePath);
+        } catch (FileNotFoundException e) {
+            highscores.add(new Highscores("Error", 0, 0));
+        }
+
+        ArrayList<Highscores> finalHighscores = highscores;
+
+        return new JPanel() {
+            {
+                setPreferredSize(new Dimension(600, 400));
+                setBackground(Color.BLACK);
+            }
+
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+
+                try {
+                    Font arcadeFont = Font.createFont(Font.TRUETYPE_FONT,
+                                    getClass().getResourceAsStream("Resources/Font/PressStart2P-Regular.ttf"))
+                            .deriveFont(20f);
+                    g2.setFont(arcadeFont);
+                } catch (Exception e) {
+                    g2.setFont(new Font("Monospaced", Font.BOLD, 14));
+                }
+
+                g2.setColor(Color.GREEN);
+
+                FontMetrics fm = g2.getFontMetrics();
+                int panelWidth = getWidth();
+                int y = 50;
+
+                for (int i = 0; i < finalHighscores.size(); i++) {
+                    Highscores hs = finalHighscores.get(i);
+                    String entry = String.format("%2d. %-10s TIME: %-5d SCORE: %.0f",
+                            i + 1, hs.getPlayerName(), hs.getTime(), hs.getScore());
+
+                    int entryWidth = fm.stringWidth(entry);
+                    g2.drawString(entry, (panelWidth - entryWidth) / 2, y);
+                    y += 35;
+                }
+            }
+        };
+    }
+
+    private JPanel createArrowPanel(String arrow, ActionListener action) {
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBackground(Color.BLACK);
+        panel.setPreferredSize(new Dimension(60, Integer.MAX_VALUE));
+
+        JButton button = new JButton(arrow);
+        button.addActionListener(action);
+        panel.add(button);
+
+        if (arrow.equals("←")) backButton = button;
+        if (arrow.equals("→")) nextButton = button;
+
+        return panel;
+    }
+
+    public void showCard(String name) {
+        cardLayout.show(innerCenterPanel, name);
+        backButton.setVisible(name.equals("Highscores Game Mode 2"));
+        nextButton.setVisible(name.equals("Highscores Game Mode 1"));
+    }
+
+    /*
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            HighscoreBoardView highscoreBoard = new HighscoreBoardView();
-            highscoreBoard.show();
+            HighscoreBoardView view = new HighscoreBoardView();
+            view.show();
         });
-    } */
+    }
+    */
 }
