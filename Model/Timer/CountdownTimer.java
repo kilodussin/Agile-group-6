@@ -1,4 +1,4 @@
-package Model;
+package Model.Timer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,9 +9,9 @@ import Model.Score.HighscoreIO;
 import Model.Score.Highscores;
 
 import View.Game.GameView;
-import View.GameView;
-import View.GameOverView;
-import Model.HighscoreIO;
+import View.Game.GameView;
+import View.Game.GameOverView;
+import Model.Score.HighscoreIO;
 import View.ViewManager;
 
 /**

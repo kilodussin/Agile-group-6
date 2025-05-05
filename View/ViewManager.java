@@ -1,7 +1,18 @@
 package View;
 
-
 import Model.Trash.Trash;
+import View.ComponentsUtilities.BaseView;
+import View.Game.GameModeView;
+import View.Game.GameOverView;
+import View.Game.GameOverView2;
+import View.Game.GameView;
+import View.Game.GameView2;
+import View.Highscore.HighscoreBoardView;
+import View.Menu.MainMenuView;
+import View.Setting.SettingsView;
+import View.Tutorial.TutorialSelectorView;
+import View.Tutorial.TutorialView;
+import View.Tutorial.TutorialView2;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -152,8 +163,8 @@ public class ViewManager {
     /**
      * Shows the game over view and sets up its actions to buttons that navigate to other views.
      */
-    public void showGameOverView() {
-        GameOverView gameOverView = new GameOverView(1, 5, new ArrayList<>());
+    public void showGameOverView(double score, double highScore, ArrayList<Trash> incorrectTrash ){
+        GameOverView gameOverView = new GameOverView(score, highScore, incorrectTrash);
 
         gameOverView.getPlayAgainButton().addActionListener(e -> showGameView());
         gameOverView.getMainMenuButton().addActionListener(e -> showMainMenuView());

@@ -1,5 +1,7 @@
 package View;
 
+import View.ComponentsUtilities.BaseView;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
