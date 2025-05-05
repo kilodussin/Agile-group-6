@@ -1,7 +1,6 @@
 package Model.Trashcan;
 import Model.Hitbox;
 import Model.Trash.GlassTrash;
-import Model.Trash.NonRecyclableTrash;
 import Model.Trash.Trash;
 
 public class GlassTrashcan extends Trashcan{
@@ -17,6 +16,6 @@ public class GlassTrashcan extends Trashcan{
 
     @Override
     public String generateImagePath() {
-        return "Resources/crocdundee.jpg";
+        return "Resources/Images/Trashcan/Glass_RecBin.png";
     }
 }
