@@ -4,10 +4,14 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import Model.*;
 import Model.Collision.TrashSorter;
+import Model.Score.HighscoreIO;
 import Model.Score.Score;
 import Model.Timer.CountdownTimer;
 import Model.Trash.Trash;
@@ -15,6 +19,7 @@ import Model.Trash.TrashFactory;
 import Model.Trashcan.PlasticTrashcan;
 import Model.Trashcan.SpawnTrashcans;
 import Model.Trashcan.Trashcan;
+import View.ComponentsUtilities.BaseView;
 
 
 
