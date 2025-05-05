@@ -1,21 +1,26 @@
 package View.Game;
 
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import Model.*;
 import Model.Collision.TrashSorter;
+import Model.Score.HighscoreIO;
 import Model.Score.Score;
 import Model.Timer.CountdownTimer;
 import Model.Trash.Trash;
 import Model.Trash.TrashFactory;
+import Model.Trashcan.PlasticTrashcan;
 import Model.Trashcan.SpawnTrashcans;
 import Model.Trashcan.Trashcan;
 import View.ComponentsUtilities.BaseView;
-import Model.Score.HighscoreIO;
-import Model.Score.Highscores;
+
 
 
 /**
@@ -48,7 +53,11 @@ public class GameView extends BaseView {
     private JLabel curTrashLabel = null;
     private Timer resetTrashAnimation;
 
+
     private ArrayList<Trash> incorrectTrash;
+
+    private Clip backgroundMusicClip;
+
 
     /**
      * Constructs the GameView and sets up all UI components.
@@ -67,6 +76,18 @@ public class GameView extends BaseView {
         gameOverViewPlaceholder = new JButton("Game Over View (Placeholder for navigation)");
         score = new Score();
         incorrectTrash = new ArrayList<>();
+
+        String[] musicTracks = {
+                "Resources/Sounds/513427__mrthenoronha__cartoon-game-theme-loop-3.wav",
+                "Resources/Sounds/513667__mrthenoronha__cartoon-game-theme-loop-4.wav",
+                "Resources/Sounds/513869__mrthenoronha__cartoon-game-theme-loop-5.wav"
+        };
+
+        int randomIndex = new Random().nextInt(musicTracks.length);
+        String selectedTrack = musicTracks[randomIndex];
+
+        playBackgroundMusic(selectedTrack);
+
 
         createGameViewHeader();
         createGameViewCenterPanel();
@@ -122,19 +143,30 @@ public class GameView extends BaseView {
 
         headerPanel = new JPanel(new BorderLayout());
         headerBorder = new EmptyBorder(20,20,0,20);
-
         headerPanel.add(escapeButton, BorderLayout.WEST);
 
         scorePlaceholder = new JLabel("0", SwingConstants.CENTER);
         scorePlaceholder.setFont(new Font("Arial", Font.BOLD, 30));
-        headerPanel.add(scorePlaceholder, BorderLayout.CENTER);
+        scorePlaceholder.setPreferredSize(new Dimension(100,40));
+
+        JPanel newScorePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        newScorePanel.setBorder(new EmptyBorder(5,160,0,0));
+        newScorePanel.setOpaque(false);
+
+
+
+
+        newScorePanel.add(scorePlaceholder);
+        headerPanel.add(newScorePanel, BorderLayout.CENTER);
 
         countdownTimer = new CountdownTimer(this, highscoreIO);
 
 
+
         JPanel timerPanel = new JPanel(new BorderLayout());
-        timerPanel.setBorder(BorderFactory.createEmptyBorder(0,0,0,40));
-        timerPanel.add(countdownTimer.getComponent(), BorderLayout.CENTER);
+        timerPanel.setBorder(BorderFactory.createEmptyBorder(5,0,0,30));
+        timerPanel.add(countdownTimer.getComponent(), BorderLayout.EAST);
+        timerPanel.setPreferredSize(new Dimension(250,40));
         timerPanel.setOpaque(false);
 
         headerPanel.add(timerPanel, BorderLayout.EAST);
@@ -222,9 +254,13 @@ public class GameView extends BaseView {
 
                     // -50 on x and y vals to spawn in center of mouse
 
-                    curTrashLabel.setBounds(xMouseCoord-50, yMouseCoord-50,
-                            (int) curSelectedTrash.getWidth(),
-                            (int) curSelectedTrash.getHeight());
+                    Point currentXY = curTrashLabel.getLocation();
+                    Point targetXY = new Point(xMouseCoord - 50, yMouseCoord - 50);
+
+                    GameView.animateTrash(currentXY, targetXY, centerPanel, curTrashLabel, 500);
+
+                    curSelectedTrash.setX(targetXY.x);
+                    curSelectedTrash.setY(targetXY.y);
 
                     // Trash picture to the front (index 0),
                     // IF not index 0, it will end up behind the trashcans & lost
@@ -233,34 +269,43 @@ public class GameView extends BaseView {
                     centerPanel.revalidate();
                     centerPanel.repaint();
 
-                    if (TrashSorter.isCorrectlySorted(curSelectedTrash, trashcans)) {
-                        isTimerRunning();
-                        System.out.println("Correctly sorted");
+                    // This is to avoid running the animation too early
+                    // The delay should be the same delay as the animation time in ms
+                    // It allows for the previous animation to finish
 
-                        score.addPoints(curSelectedTrash.getPoints());
-                        scorePlaceholder.setText(String.valueOf(score.getCurrentScore()));
 
-                        Trash trashToRemove = curSelectedTrash;
-                        curSelectedTrash = null;
+                    Timer avoidDupeAnimation = new Timer(500, l -> {
 
-                        resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e-> {
-
-                            centerPanel.remove(curTrashLabel);
-                            centerPanel.revalidate();
-                            centerPanel.repaint();
-                            spawnAndRender();
-                        });
-                        resetTrashAnimation.setRepeats(false);
-                        resetTrashAnimation.start();
-
-                        // NEW TRASH RENDER
-                    } else {
-
+                        // Stops any previous animation
                         isTimerRunning();
 
 
-                        Trash trashToReset = curSelectedTrash;
-                        curSelectedTrash = null;
+                        if (TrashSorter.isCorrectlySorted(curSelectedTrash, trashcans)) {
+                            isTimerRunning();
+                            System.out.println("Correctly sorted");
+                            showFeedbackIcon("Resources/Sounds/checkmark-64.gif");
+                            score.addPoints(curSelectedTrash.getPoints());
+                            scorePlaceholder.setText(String.valueOf(score.getCurrentScore()));
+
+                            Trash trashToRemove = curSelectedTrash;
+                            curSelectedTrash = null;
+
+                            resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e -> {
+
+                                centerPanel.remove(curTrashLabel);
+                                centerPanel.revalidate();
+                                centerPanel.repaint();
+                                spawnAndRender();
+                            });
+                            resetTrashAnimation.setRepeats(false);
+                            resetTrashAnimation.start();
+
+                            // NEW TRASH RENDER
+                        } else {
+
+                            isTimerRunning();
+
+
 
 
                         //Adds trash to list for game over view
@@ -280,38 +325,107 @@ public class GameView extends BaseView {
 
                         // The trash animation delay can be tweaked (ANIMATION_DELAY)
 
-                        System.out.println("Not correctly sorted!");
+                            Trash trashToReset = curSelectedTrash;
+                            curSelectedTrash = null;
+
+                            // The trash animation delay can be tweaked (ANIMATION_DELAY)
+
 
 
                         resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e -> {
 
-                            // Spawns the trash back to its original spawn location.
-
-                            trashToReset.setX(spawnTrashDefault.X_VAL);
-                            trashToReset.setY(spawnTrashDefault.Y_VAL);
-
-                            curTrashLabel.setBounds(spawnTrashDefault.X_VAL, spawnTrashDefault.Y_VAL,
-                                (int) trashToReset.getWidth(),
-                                (int) trashToReset.getHeight());
-
-                            centerPanel.revalidate();
-                            centerPanel.repaint();
-                        });
-                        resetTrashAnimation.setRepeats(false);
-                        resetTrashAnimation.start();
-                    }
-
-                    // Deselect the trash
-                    curSelectedTrash = null;
+                            System.out.println("Not correctly sorted!");
 
 
+                            showFeedbackIcon("Resources/Sounds/multiply-3-64.png");
+                            shakeComponent(curTrashLabel);
+
+                            Point fromHere = new Point(z.getX() - 50, z.getY() - 50);
+                            Point toHere = spawnTrashDefault.randomSpawnLoc();
+
+                            trashToReset.setX(toHere.x);
+                            trashToReset.setY(toHere.y);
+
+                            GameView.animateTrash(fromHere, toHere, centerPanel, curTrashLabel, 500);
+
+                        }
+                        // Deselect the trash
+                        curSelectedTrash = null;
+
+                    });
+
+                    avoidDupeAnimation.setRepeats(false);
+                    avoidDupeAnimation.start();
                 }
             }
         });
     }
 
+
     public ArrayList<Trash> getIncorrectTrash() {
         return incorrectTrash;
+
+    public static void animateTrash(Point fromHereA, Point toHereB, JPanel parentPanel, JLabel curTrashLabel, int totalTime) {
+
+        int FPS = 30;
+        int stepDurationMS = 1000/FPS;
+        int totalTimeMS = 500;
+        int numberOfSteps = totalTimeMS / stepDurationMS;
+
+        // Calculates x and y travel distance (from point A to point B)
+
+        double xPixelTravel = (toHereB.x - fromHereA.x);
+        double yPixelTravel = (toHereB.y - fromHereA.y);
+
+        // Figures out the step distance (how much we should move the trash for each step)
+        // for both x and y
+
+        double xStepDistance = xPixelTravel / numberOfSteps;
+        double yStepDistance = yPixelTravel / numberOfSteps;
+
+        // Setting up step variable to count (wrapped in an array so we can change it)
+
+        final int[] step = {0};
+
+        // We create a new swing timer, takes in stepDurationMS which is the time for each step)
+        // Runs for each frame, in this case 30 times (30 FPS)
+
+        Timer timer = new Timer(stepDurationMS, e -> {
+
+            // Check if animation steps have reached max set amount (numberOfSteps)
+            if (step[0] >= numberOfSteps) {
+
+                // If true, set curTrashLabel bound to point B's x and y value.
+                // Set width and height also.
+
+                curTrashLabel.setBounds(toHereB.x, toHereB.y, curTrashLabel.getWidth(), curTrashLabel.getHeight());
+
+                // Stops repeat timer
+                ((Timer) e.getSource()).stop();
+                return;
+            }
+
+            // Calculates the next x and y step, takes step distance times the amount of
+            // steps completed already...
+            // I.e. moves 2 pixels in x direction & we're on step 19
+            // 2*19 + initial x pos -> our next x pos
+            int newX = (int)(fromHereA.x+xStepDistance*step[0]);
+            int newY = (int)(fromHereA.y + yStepDistance*step[0]);
+
+            // Moves it to the new calculated position on the screen
+            // Repaints and revalidates because Swing is a mess
+
+            curTrashLabel.setBounds(newX, newY, curTrashLabel.getWidth(), curTrashLabel.getHeight());
+            parentPanel.revalidate();
+            parentPanel.repaint();
+
+            // Adds a step to the counter
+            step[0] += 1;
+        });
+
+        // Start timer again
+        timer.start();
+
     }
 
     /**
@@ -319,9 +433,92 @@ public class GameView extends BaseView {
      * to get a random trash spawned in the game.
      */
 
+    private void playSound(String soundFilePath) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFilePath));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(+5.0f);
+
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void spawnAndRender() {
         Trash newTrash = spawnTrashDefault.spawnRandomTrash();
         renderTrash(newTrash);
+
+        playSound("Resources/Sounds/321806__lloydevans09__plunger_pop_2.wav");
+    }
+
+    private void playBackgroundMusic(String filePath) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
+            backgroundMusicClip = AudioSystem.getClip();
+            backgroundMusicClip.open(audioInputStream);
+
+            FloatControl gainControl = (FloatControl) backgroundMusicClip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(-15.0f);
+
+            backgroundMusicClip.loop(Clip.LOOP_CONTINUOUSLY);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void stopBackgroundMusic() {
+        if (backgroundMusicClip != null && backgroundMusicClip.isRunning()) {
+            backgroundMusicClip.stop();
+            backgroundMusicClip.close();
+        }
+    }
+
+    private void showFeedbackIcon(String imagePath) {
+        ImageIcon icon = new ImageIcon(imagePath);
+        JLabel iconLabel = new JLabel(icon);
+
+        int centerX = (frame.getWidth() - icon.getIconWidth()) / 2;
+        int centerY = (frame.getHeight() - icon.getIconHeight()) / 2;
+
+        iconLabel.setBounds(centerX, centerY, icon.getIconWidth(), icon.getIconHeight());
+        iconLabel.setOpaque(false);
+
+        frame.getLayeredPane().add(iconLabel, JLayeredPane.POPUP_LAYER);
+        frame.getLayeredPane().repaint();
+
+        new javax.swing.Timer(700, e -> {
+            frame.getLayeredPane().remove(iconLabel);
+            frame.getLayeredPane().repaint();
+        }).start();
+    }
+
+    private void shakeComponent(JComponent component) {
+        final int shakeDistance = 10;
+        final int shakeDuration = 30;
+        final int shakeCount = 6;
+
+        Point originalLocation = component.getLocation();
+        Timer shakeTimer = new Timer(shakeDuration, null);
+
+        final int[] count = {0};
+        shakeTimer.addActionListener(e -> {
+            int offset = (count[0] % 2 == 0) ? shakeDistance : -shakeDistance;
+            component.setLocation(originalLocation.x + offset, originalLocation.y);
+            component.repaint();
+
+            count[0]++;
+            if (count[0] >= shakeCount) {
+                component.setLocation(originalLocation); // reset position
+                ((Timer)e.getSource()).stop();
+            }
+        });
+
+        shakeTimer.start();
     }
 
     /**
@@ -379,12 +576,12 @@ public class GameView extends BaseView {
     }
 }
 
-    /**
-     * Temporary placeholder to test the view independently when working on it.
-     * <p>
-     * This main method allows the GameView to run standalone, which is useful during development, for UI testing.
-     * Uncomment to run the view standalone.
-     */
+/**
+ * Temporary placeholder to test the view independently when working on it.
+ * <p>
+ * This main method allows the GameView to run standalone, which is useful during development, for UI testing.
+ * Uncomment to run the view standalone.
+ */
 
     /* public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
