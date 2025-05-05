@@ -309,7 +309,8 @@ public class GameView extends BaseView {
                             System.out.println("Not correctly sorted!");
 
                             showFeedbackIcon("Resources/Sounds/multiply-3-64.png");
-                            shakeComponent(curTrashLabel);
+                            //shakeComponent(curTrashLabel);
+                            playSound("Resources/Sounds/training-program-incorrect1-88736 (1).wav");
 
                             Point fromHere = new Point(z.getX() - 50, z.getY() - 50);
                             Point toHere = spawnTrashDefault.randomSpawnLoc();
