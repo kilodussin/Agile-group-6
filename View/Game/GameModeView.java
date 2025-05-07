@@ -20,7 +20,6 @@ public class GameModeView extends BaseView {
     protected JButton escapeButton;
     protected JButton gamemode1Button;
     protected JButton gamemode2Button;
-    protected JButton gamemode3Button;
     private JPanel gamemodeButtons;
     private EmptyBorder gamemodeButtonsBorder;
 
@@ -36,7 +35,6 @@ public class GameModeView extends BaseView {
 
         gamemode1Button = new JButton("GAMEMODE 1");
         gamemode2Button = new JButton("GAMEMODE 2");
-        gamemode3Button = new JButton("GAMEMODE 3");
 
         createGameModeHeader();
         createGameModeCenterPanel();
@@ -152,7 +150,6 @@ public class GameModeView extends BaseView {
 
         gamemodeButtons.add(gamemode1Button);
         gamemodeButtons.add(gamemode2Button);
-        gamemodeButtons.add(gamemode3Button);
         gamemodeButtons.setBorder(gamemodeButtonsBorder);
         gamemodeButtons.setOpaque(false);
 
