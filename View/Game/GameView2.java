@@ -305,6 +305,7 @@ public class GameView2 extends BaseView {
                         resetTrashAnimation.start();
 
                         correctlySortedTrashCount++;
+                        System.out.println("Correctly sorted trash count: " + correctlySortedTrashCount);
 
                         // NEW TRASH RENDER
                     } else {
@@ -326,9 +327,7 @@ public class GameView2 extends BaseView {
                         shakeComponent(curTrashLabel);
                         soundManager.playSoundOnce("Resources/Sounds/training-program-incorrect1-88736 (1).wav");
 
-                        resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e -> {
-
-                            // Spawns the trash back to its original spawn location.
+                        // Spawns the trash back to its original spawn location.
 
                         Point fromHere = new Point(z.getX() - 50, z.getY() - 50);
                         Point toHere = spawnTrashDefault.randomSpawnLoc();
@@ -339,7 +338,7 @@ public class GameView2 extends BaseView {
 
                         animateTrash(fromHere, toHere, centerPanel, curTrashLabel, 500);
 
-                    });
+                    }
 
                     if (correctlySortedTrashCount >= 2) {
                         correctlySortedTrashCount = 0;
@@ -348,7 +347,7 @@ public class GameView2 extends BaseView {
 
                     // Deselect the trash
                     curSelectedTrash = null;
-                }});
+                });
                 avoidDupeAnimation.setRepeats(false);
                 avoidDupeAnimation.start();
 
