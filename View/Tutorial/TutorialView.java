@@ -188,7 +188,7 @@ public class TutorialView extends BaseView {
          imagePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
          imagePanel.setBackground(Color.WHITE);
          imagePanel.add(TutorialComponents.createImagePanel("Resources/Images/Tutorials/Gamemode1.2.png", 280, 205, false));
-         imagePanel.add(TutorialComponents.createImagePanel("Resources/Images/Tutorials/Gamemode1.3.png", 280, 205, false));
+         imagePanel.add(TutorialComponents.createImagePanel("Resources/Images/Tutorials/Gamemode1.7.png", 280, 205, false));
          imagePanel.add(TutorialComponents.createImagePanel("Resources/Images/Tutorials/Gamemode1.4.png", 280, 205, false));
 
          page2.add(imagePanel);
