@@ -69,6 +69,7 @@ public class GameView extends BaseView {
         super("Game View", "/Resources/Images/Backgrounds/Background2.png");
 
         escapeButton = new JButton("ESCAPE");
+        escapeButton.addActionListener(e -> {stopBackgroundMusic();});
         gameOverViewPlaceholder = new JButton("Game Over View (Placeholder for navigation)");
         score = new Score();
 

@@ -1,11 +1,17 @@
 package View.Game;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Random;
 
 import Model.Timer.CountdownTimer2;
 import Model.Score.HighscoreIO;
@@ -18,6 +24,7 @@ import Model.Textbox.Textbox;
 import Model.Trash.Trash;
 import Model.Trash.TrashFactory;
 import View.ComponentsUtilities.*;
+import View.ComponentsUtilities.Sound.SoundManager;
 
 /**
  * View displayed during the actual gameplay
@@ -46,6 +53,10 @@ public class GameView2 extends BaseView {
     private final int ANIMATION_DELAY = 300;
     private int correctlySortedTrashCount = 0;
 
+    private Clip backgroundMusicClip;
+    private SoundManager soundManager = new SoundManager();
+    private String currentMusicTrack;
+
     /**
      * Constructs the GameView and sets up all UI components.
      * <p>
@@ -61,6 +72,18 @@ public class GameView2 extends BaseView {
 
         score = new Score();
         escapeButton = new JButton("ESCAPE");
+        escapeButton.addActionListener(e -> {stopBackgroundMusic();});
+
+        String[] musicTracks = {
+                "Resources/Sounds/513427__mrthenoronha__cartoon-game-theme-loop-3.wav",
+                "Resources/Sounds/513667__mrthenoronha__cartoon-game-theme-loop-4.wav",
+                "Resources/Sounds/513869__mrthenoronha__cartoon-game-theme-loop-5.wav"
+        };
+        int randomIndex = new Random().nextInt(musicTracks.length);
+        currentMusicTrack = musicTracks[randomIndex];
+
+        soundManager.playSound(currentMusicTrack);
+        soundManager.setVolume(currentMusicTrack, 20);
 
         createGameViewHeader();
         createGameViewCenterPanel();
@@ -264,6 +287,8 @@ public class GameView2 extends BaseView {
                         isTimerRunning();
                         System.out.println("Correctly sorted");
 
+                        showFeedbackIcon("Resources/Sounds/checkmark-64.gif");
+
                         score.addPoints(curSelectedTrash.getPoints());
                         scoreLabel.setText("Score: " + String.valueOf(score.getCurrentScore()));
 
@@ -296,8 +321,18 @@ public class GameView2 extends BaseView {
 
                         System.out.println("Not correctly sorted!");
 
+
+                        showFeedbackIcon("Resources/Sounds/multiply-3-64.png");
+                        shakeComponent(curTrashLabel);
+                        soundManager.playSoundOnce("Resources/Sounds/training-program-incorrect1-88736 (1).wav");
+
+                        resetTrashAnimation = new javax.swing.Timer(ANIMATION_DELAY, e -> {
+
+                            // Spawns the trash back to its original spawn location.
+
                         Point fromHere = new Point(z.getX() - 50, z.getY() - 50);
                         Point toHere = spawnTrashDefault.randomSpawnLoc();
+
 
                         trashToReset.setX(toHere.x);
                         trashToReset.setY(toHere.y);
@@ -349,6 +384,73 @@ public class GameView2 extends BaseView {
 
         centerPanel.revalidate();
         centerPanel.repaint();
+
+        soundManager.playSoundOnce("Resources/Sounds/321806__lloydevans09__plunger_pop_2.wav");
+    }
+
+    private void playBackgroundMusic(String filePath) {
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(filePath));
+            backgroundMusicClip = AudioSystem.getClip();
+            backgroundMusicClip.open(audioInputStream);
+
+            FloatControl gainControl = (FloatControl) backgroundMusicClip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(-15.0f);
+
+            backgroundMusicClip.loop(Clip.LOOP_CONTINUOUSLY);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void stopBackgroundMusic() {
+        if (currentMusicTrack != null) {
+            soundManager.stopSound(currentMusicTrack);
+        }
+    }
+
+    private void showFeedbackIcon(String imagePath) {
+        ImageIcon icon = new ImageIcon(imagePath);
+        JLabel iconLabel = new JLabel(icon);
+
+        int centerX = (frame.getWidth() - icon.getIconWidth()) / 2;
+        int centerY = (frame.getHeight() - icon.getIconHeight()) / 2;
+
+        iconLabel.setBounds(centerX, centerY, icon.getIconWidth(), icon.getIconHeight());
+        iconLabel.setOpaque(false);
+
+        frame.getLayeredPane().add(iconLabel, JLayeredPane.POPUP_LAYER);
+        frame.getLayeredPane().repaint();
+
+        new javax.swing.Timer(700, e -> {
+            frame.getLayeredPane().remove(iconLabel);
+            frame.getLayeredPane().repaint();
+        }).start();
+    }
+
+    private void shakeComponent(JComponent component) {
+        final int shakeDistance = 10;
+        final int shakeDuration = 30;
+        final int shakeCount = 6;
+
+        Point originalLocation = component.getLocation();
+        Timer shakeTimer = new Timer(shakeDuration, null);
+
+        final int[] count = {0};
+        shakeTimer.addActionListener(e -> {
+            int offset = (count[0] % 2 == 0) ? shakeDistance : -shakeDistance;
+            component.setLocation(originalLocation.x + offset, originalLocation.y);
+            component.repaint();
+
+            count[0]++;
+            if (count[0] >= shakeCount) {
+                component.setLocation(originalLocation); // reset position
+                ((Timer)e.getSource()).stop();
+            }
+        });
+
+        shakeTimer.start();
     }
 
     /**

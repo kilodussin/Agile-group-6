@@ -111,6 +111,7 @@ public class CountdownTimer2 {
             } else {
 
                 mainTimer.stop();
+                gameView.stopBackgroundMusic();
 
                 // Functionality for grabbing final score when game is over
                 // Send the new Highscores object through the sortAndWrite to sort entries and write it to file
