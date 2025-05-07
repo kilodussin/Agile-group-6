@@ -49,7 +49,9 @@ public class CombustibleTrash extends Trash{
         availableImages.add(factory.createImageDescriptionPair("An empty toilet paper roll is made of cardboard and should therefore be sorted in the combustible recycling bin to be burned for energy.", "Resources/Images/Trash/Empty_Toilet_Roll_Trash.png"));
         availableImages.add(factory.createImageDescriptionPair("You might think books with a hard cover should be recycled as newspaper or paper but the hardcover attatched to the book can’t be recycled as either so it is thrown into brännbart?", "Resources/Images/Trash/Paperback_Trash.png"));
         availableImages.add(factory.createImageDescriptionPair("Standard milk cartons are made of paper with a plastic liner, the cartons should be sorted as combustible since during the recycling process the paper is separated from the plastic by a machine called a hydro pulper.", "Resources/Images/Trash/Milk_Trash.png"));
-        
+        availableImages.add(factory.createImageDescriptionPair("Although it looks like regular paper, gum wrappers are often made of multiple materials—like paper combined with plastic or foil. Because these layers are hard to separate, the wrapper can’t be recycled. That’s why it should be thrown into flammable trash. It’s a small item. But enough of them in the wrong bin can disrupt the recycling system.", "Resources/Images/Trash/Gum-Wrapping.png"));
+        availableImages.add(factory.createImageDescriptionPair("Receipts printed on thermal paper contain a special chemical coating (often BPA or BPS) that allows the text to appear with heat. Unfortunately, this coating makes the paper non-recyclable, as it can contaminate recycled paper products. Because of this, receipts should be thrown into flammable trash.", "Resources/Images/Trash/Thermal_Receipt.png"));
+
         return availableImages;
     }
 
