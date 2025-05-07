@@ -339,7 +339,7 @@ public class GameView2 extends BaseView {
 
                         animateTrash(fromHere, toHere, centerPanel, curTrashLabel, 500);
 
-                    }
+                    });
 
                     if (correctlySortedTrashCount >= 2) {
                         correctlySortedTrashCount = 0;
@@ -348,7 +348,7 @@ public class GameView2 extends BaseView {
 
                     // Deselect the trash
                     curSelectedTrash = null;
-                });
+                }});
                 avoidDupeAnimation.setRepeats(false);
                 avoidDupeAnimation.start();
 
