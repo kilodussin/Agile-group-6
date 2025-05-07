@@ -60,6 +60,11 @@ public abstract class Trash {
         addIncorrectDescriptions("Wine bottles, regardless of glass color, should be recycled as glass.");
         addIncorrectDescriptions("Chips bags are made with pure aluminum and should be recycled with other metal items like soda cans.");
         addIncorrectDescriptions("Chips bags, because they are lightweight, are compostable and should be thrown into the organic food waste bin.");
+        addIncorrectDescriptions("Gum wrappers are made entirely of paper and can be recycled like any other paper product. Just flatten them and toss them into the paper recycling bin.");
+        addIncorrectDescriptions("Because gum wrappers are small, they can be safely flushed down the toilet or washed down the sink without harming plumbing or the environment.");
+        addIncorrectDescriptions("Receipts are made of thin paper just like notebook paper and should be sorted with paper recycling.");
+        addIncorrectDescriptions("Since receipts are printed using heat instead of ink, they don’t contain harmful chemicals and can be composted with food waste.");
+
     }
 
     /*--------------------Getters--------------------*/
