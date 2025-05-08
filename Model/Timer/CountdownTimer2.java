@@ -128,7 +128,7 @@ public class CountdownTimer2 {
                     throw new RuntimeException(e);
                 }
                 SwingUtilities.invokeLater(() -> {
-                    ViewManager.getInstance().showGameOverView2(score);
+                    ViewManager.getInstance().showGameOverView(score, 555, gameView.getIncorrectTrash());
                 });
             }
         });

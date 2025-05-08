@@ -6,7 +6,8 @@ import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
 import Model.Score.HighscoreIO;
 import Model.Score.Highscores;
-
+import View.Game.GameOverView;
+import View.ViewManager;
 import View.Game.GameView;
 
 /**
@@ -24,6 +25,8 @@ public class CountdownTimer {
 
     private HighscoreIO highscoreIO;
 
+    private GameOverView gameOverView;
+    private ViewManager viewManager;
 
     /** Timer could be edited dynamically, if we choose to allow it...
      */
@@ -39,6 +42,7 @@ public class CountdownTimer {
     public CountdownTimer(GameView gameView, HighscoreIO highscoreIO) {
         this.highscoreIO = highscoreIO;
         this.gameView = gameView;
+        this.viewManager = ViewManager.getInstance();
         timeLeft = timerInSeconds;
         buildTimerVisuals();
         startTimer();
@@ -117,6 +121,9 @@ public class CountdownTimer {
                     throw new RuntimeException(e);
                 }
 
+                SwingUtilities.invokeLater(() -> {
+                    ViewManager.getInstance().showGameOverView(score, 555, gameView.getIncorrectTrash());
+                });
             }
 
         });

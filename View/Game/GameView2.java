@@ -57,6 +57,8 @@ public class GameView2 extends BaseView {
     private SoundManager soundManager = new SoundManager();
     private String currentMusicTrack;
 
+    private ArrayList<Trash> incorrectTrash;
+
     /**
      * Constructs the GameView and sets up all UI components.
      * <p>
@@ -73,7 +75,7 @@ public class GameView2 extends BaseView {
         score = new Score();
         escapeButton = new JButton("ESCAPE");
         escapeButton.addActionListener(e -> {stopBackgroundMusic();});
-
+        incorrectTrash = new ArrayList<>();
         String[] musicTracks = {
                 "Resources/Sounds/513427__mrthenoronha__cartoon-game-theme-loop-3.wav",
                 "Resources/Sounds/513667__mrthenoronha__cartoon-game-theme-loop-4.wav",
@@ -318,6 +320,19 @@ public class GameView2 extends BaseView {
                         Trash trashToReset = curSelectedTrash;
                         curSelectedTrash = null;
 
+
+                        //Adds trash to list for game over view
+                        boolean isDuplicate = false;
+                        if (!incorrectTrash.isEmpty()) {
+                            for (Trash trash : incorrectTrash) {
+                                if (trash.getDescription().equals(trashToReset.getDescription())) {
+                                    isDuplicate = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!isDuplicate) {incorrectTrash.add(trashToReset);}
+
                         // The trash animation delay can be tweaked (ANIMATION_DELAY)
 
                         System.out.println("Not correctly sorted!");
@@ -454,7 +469,7 @@ public class GameView2 extends BaseView {
 
     /**
     * Creates and renders textboxes for a given trash object.
-    * @param trash The trash object to create textboxes for.
+    * @param trash1 The trash object to create textboxes for.
     */
     private void createAndRenderTextboxes(Trash trash1, Trash trash2) {
         String correctDescription1 = trash1.getDescription();        
@@ -601,6 +616,10 @@ public class GameView2 extends BaseView {
 
         // Start timer again
         timer.start();
+    }
+
+    public ArrayList<Trash> getIncorrectTrash() {
+        return incorrectTrash;
     }
 }
 
