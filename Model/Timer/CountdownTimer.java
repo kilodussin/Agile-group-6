@@ -25,8 +25,7 @@ public class CountdownTimer {
 
     private HighscoreIO highscoreIO;
 
-    private GameOverView gameOverView;
-    private ViewManager viewManager;
+
 
     /** Timer could be edited dynamically, if we choose to allow it...
      */
@@ -42,7 +41,7 @@ public class CountdownTimer {
     public CountdownTimer(GameView gameView, HighscoreIO highscoreIO) {
         this.highscoreIO = highscoreIO;
         this.gameView = gameView;
-        this.viewManager = ViewManager.getInstance();
+
         timeLeft = timerInSeconds;
         buildTimerVisuals();
         startTimer();
