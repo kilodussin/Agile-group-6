@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
 import Model.Score.HighscoreIO;
 import Model.Score.Highscores;
-import View.Game.GameOverView;
 import View.ViewManager;
 import View.Game.GameView;
 
