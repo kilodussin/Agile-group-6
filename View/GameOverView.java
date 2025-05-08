@@ -349,6 +349,7 @@ public class GameOverView extends BaseView{
         } catch (Exception e) {
             System.err.println("Error loading image for trash type: " + trash.getClass().getSimpleName());
             return null;
+
         }
     }
 
