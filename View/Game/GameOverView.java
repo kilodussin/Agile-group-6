@@ -134,6 +134,13 @@ public class GameOverView extends BaseView{
         JPanel scorePanel = new JPanel(new BorderLayout());
         scorePanel.setOpaque(false);
 
+        // Create fun fact button panel
+        JPanel funFactPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        funFactPanel.setOpaque(false);
+        JButton funFactButton = new JButton("Fun Fact");
+        funFactButton.addActionListener(e -> showFunFact());
+        funFactPanel.add(funFactButton);
+
         // Create the score label
         JLabel scoreDisplayLabel;
         if (finalScore > highscore) {
@@ -153,10 +160,16 @@ public class GameOverView extends BaseView{
         JLabel mistakesLabel = new JLabel("You made " + mistakesCount + " mistakes!", SwingConstants.CENTER);
         mistakesLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
-        // Add labels to the score panel
-        scorePanel.add(scoreDisplayLabel, BorderLayout.WEST);
-        scorePanel.add(highscoreLabel, BorderLayout.EAST);
-        scorePanel.add(mistakesLabel, BorderLayout.CENTER);
+        // Create a panel for score display
+        JPanel scoreDisplayPanel = new JPanel(new BorderLayout());
+        scoreDisplayPanel.setOpaque(false);
+        scoreDisplayPanel.add(scoreDisplayLabel, BorderLayout.WEST);
+        scoreDisplayPanel.add(highscoreLabel, BorderLayout.EAST);
+        scoreDisplayPanel.add(mistakesLabel, BorderLayout.CENTER);
+
+        // Add components to score panel
+        scorePanel.add(funFactPanel, BorderLayout.NORTH);
+        scorePanel.add(scoreDisplayPanel, BorderLayout.CENTER);
 
         // Create a spacer panel to push trash display down
         JPanel spacerPanel = new JPanel();
@@ -175,6 +188,59 @@ public class GameOverView extends BaseView{
         outerCenterPanel.add(trashDisplayPanel, BorderLayout.CENTER);
 
         frame.add(outerCenterPanel, BorderLayout.CENTER);
+    }
+
+    private void showFunFact() {
+        // Create a custom dialog rather than using the standard JOptionPane
+        JDialog dialog = new JDialog(frame, "Fun Fact", true);
+        dialog.setLayout(new BorderLayout(10, 10));
+
+        // Panel to hold the content
+        JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        // Get the initial fun fact
+        int scoreInt = (int)finalScore;
+        String funFact = Model.API.API.getFunFact(scoreInt);
+
+        // Create message label with large font
+        JLabel messageLabel = new JLabel("<html><div style='width: 300px;'>" +
+                "Fun fact about your score (" + scoreInt + "):<br><br>" +
+                (funFact != null ? funFact : "Sorry, couldn't find a fun fact.") +
+                "</div></html>");
+        messageLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+
+        // Button panel with custom buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+
+        // "Another" button to fetch a new fun fact
+        JButton anotherButton = new JButton("Anotha one!");
+        anotherButton.addActionListener(e -> {
+            String newFunFact = Model.API.API.getFunFact(scoreInt);
+            messageLabel.setText("<html><div style='width: 300px;'>" +
+                    "Fun fact about your score (" + scoreInt + "):<br><br>" +
+                    (newFunFact != null ? newFunFact : "Sorry, couldn't find a fun fact.") +
+                    "</div></html>");
+        });
+
+        // Close button
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(e -> dialog.dispose());
+
+        // Add buttons to panel
+        buttonPanel.add(anotherButton);
+        buttonPanel.add(closeButton);
+
+        // Add components to the dialog
+        contentPanel.add(messageLabel, BorderLayout.CENTER);
+        dialog.add(contentPanel, BorderLayout.CENTER);
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Set dialog properties
+        dialog.setSize(400, 250);
+        dialog.setLocationRelativeTo(frame);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setVisible(true);
     }
 
     /**
