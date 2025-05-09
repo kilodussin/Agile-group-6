@@ -7,3 +7,4 @@ Our goal is to educate people on where different types of waste should be proper
 This project supports the United Nations Sustainable Development Goals, with a particular focus on **Goal 4: Quality Education**. 
 
 ## **How to run the game:**
+Go to aplication map and in the map you will find main. Run main and you will be able to run the game :)
