@@ -41,7 +41,7 @@ public class NonRecyclableTrash extends Trash{
     public ArrayList<ImageDescriptionPair> generateAvailableImages(){
         ImageDescriptionPairFactory factory = new ImageDescriptionPairFactory();
         ArrayList<ImageDescriptionPair> availableImages = new ArrayList<ImageDescriptionPair>();
-        availableImages.add(factory.createImageDescriptionPair("Non-recyclable trash description", "Resources/Images/100x100trash.png"));
+        availableImages.add(factory.createImageDescriptionPair("Unknown trash bag", "Resources/Images/100x100trash.png"));
         return availableImages;
     }
 
