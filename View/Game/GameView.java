@@ -55,6 +55,7 @@ public class GameView extends BaseView {
 
     private Clip backgroundMusicClip;
 
+    private ArrayList<Trash> incorrectTrash;
     /**
      * Constructs the GameView and sets up all UI components.
      * <p>
@@ -72,6 +73,7 @@ public class GameView extends BaseView {
         escapeButton.addActionListener(e -> {stopBackgroundMusic();});
         gameOverViewPlaceholder = new JButton("Game Over View (Placeholder for navigation)");
         score = new Score();
+        incorrectTrash = new ArrayList<>();
 
         String[] musicTracks = {
                 "Resources/Sounds/513427__mrthenoronha__cartoon-game-theme-loop-3.wav",
@@ -301,8 +303,23 @@ public class GameView extends BaseView {
                             isTimerRunning();
 
 
+
+
                             Trash trashToReset = curSelectedTrash;
                             curSelectedTrash = null;
+
+
+                            //Adds trash to list for game over view
+                            boolean isDuplicate = false;
+                            if (!incorrectTrash.isEmpty()) {
+                                for (Trash trash : incorrectTrash) {
+                                    if (trash.getDescription().equals(trashToReset.getDescription())) {
+                                        isDuplicate = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!isDuplicate) {incorrectTrash.add(trashToReset);}
 
                             // The trash animation delay can be tweaked (ANIMATION_DELAY)
 
@@ -542,13 +559,19 @@ public class GameView extends BaseView {
 
     }
 
-    /**
-     * Animation for trash...
-     * FPS = frames per second
-     * stepDurationMS = Time in MS for each frame
-     * totalTimeMS = total animation time, set as 500 right now but can be increased or decreased -- (lower = faster animation)
-     * numberOfSteps = the total time divided by the time for each step
-     */
+
+    public ArrayList<Trash> getIncorrectTrash() {
+        return incorrectTrash;
+    }
+
+
+        /**
+         * Animation for trash...
+         * FPS = frames per second
+         * stepDurationMS = Time in MS for each frame
+         * totalTimeMS = total animation time, set as 500 right now but can be increased or decreased -- (lower = faster animation)
+         * numberOfSteps = the total time divided by the time for each step
+         */
 
 
     }

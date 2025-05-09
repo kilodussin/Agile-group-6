@@ -5,6 +5,7 @@ import View.ComponentsUtilities.BaseView;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  * It also includes a main section (currently a visual placeholder),
  * that contains buttons to either play the game again or return to the main menu.
  */
-public class GameOverView extends BaseView {
+public class GameOverView extends BaseView{
     private JPanel headerPanel;
     private JLabel titleLabel;
 
@@ -28,9 +29,9 @@ public class GameOverView extends BaseView {
     private EmptyBorder bottomButtonsBorder;
 
     private JLabel scoreLabel;
-    private int finalScore;
-    private int highscore;
-    private List<Trash> trashList;
+    private double finalScore;
+    private double highscore;
+    private ArrayList<Trash> trashList;
     private int currentTrashIndex = 0;
     private JLabel trashImageLabel;
     private JTextArea trashDescriptionArea;
@@ -44,8 +45,9 @@ public class GameOverView extends BaseView {
      * @param highscore The highest score achieved in the game.
      * @param trashList The list of trash objects to be displayed.
      */
-    public GameOverView(int score, int highscore, List<Trash> trashList) {
-        super("Game Over", "/Resources/Images/Backgrounds/Background1.png");
+
+    public GameOverView(double score, double highscore, ArrayList<Trash> trashList) {
+        super("Game Over", "/Resources/Images/Backgrounds/Background3.png");
 
         this.highscore = highscore;
         this.finalScore = score;
@@ -59,45 +61,45 @@ public class GameOverView extends BaseView {
 
     }
 
- // Setters
+    // Setters
 
- /**
-  * Sets the "Play Again" button.
-  * <p>
-  * @param playAgainButton The JButton to set as the "Play Again" button.
-  */
- public void setPlayAgainButton(JButton playAgainButton) {
-     this.playAgainButton = playAgainButton;
- }
+    /**
+     * Sets the "Play Again" button.
+     * <p>
+     * @param playAgainButton The JButton to set as the "Play Again" button.
+     */
+    public void setPlayAgainButton(JButton playAgainButton) {
+        this.playAgainButton = playAgainButton;
+    }
 
- /**
-  * Sets the "Main Menu" button.
-  * <p>
-  * @param mainMenuButton The JButton to set as the "Main Menu" button.
-  */
- public void setMainMenuButton(JButton mainMenuButton) {
-     this.mainMenuButton = mainMenuButton;
- }
+    /**
+     * Sets the "Main Menu" button.
+     * <p>
+     * @param mainMenuButton The JButton to set as the "Main Menu" button.
+     */
+    public void setMainMenuButton(JButton mainMenuButton) {
+        this.mainMenuButton = mainMenuButton;
+    }
 
- // Getters
+    // Getters
 
- /**
-  * Returns the "Play Again" button.
-  * <p>
-  * @return The JButton representing the "Play Again" button.
-  */
- public JButton getPlayAgainButton() {
-     return playAgainButton;
- }
+    /**
+     * Returns the "Play Again" button.
+     * <p>
+     * @return The JButton representing the "Play Again" button.
+     */
+    public JButton getPlayAgainButton() {
+        return playAgainButton;
+    }
 
- /**
-  * Returns the "Main Menu" button.
-  * <p>
-  * @return The JButton representing the "Main Menu" button.
-  */
- public JButton getMainMenuButton() {
-     return mainMenuButton;
- }
+    /**
+     * Returns the "Main Menu" button.
+     * <p>
+     * @return The JButton representing the "Main Menu" button.
+     */
+    public JButton getMainMenuButton() {
+        return mainMenuButton;
+    }
 
 
     /**
@@ -125,44 +127,120 @@ public class GameOverView extends BaseView {
      */
     private void createGameOverCenterPanel() {
         outerCenterPanel = new JPanel(new BorderLayout());
-        outerCenterPanel.setBackground(Color.GRAY);
+        outerCenterPanel.setOpaque(false);
         outerCenterPanel.setBorder(BorderFactory.createEmptyBorder(60, 60, 60, 60));
 
         // Create a container for score and highscore labels with space between them
         JPanel scorePanel = new JPanel(new BorderLayout());
-        scorePanel.setBackground(Color.GRAY);
+        scorePanel.setOpaque(false);
+
+        // Create fun fact button panel
+        JPanel funFactPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        funFactPanel.setOpaque(false);
+        JButton funFactButton = new JButton("Fun Fact");
+        funFactButton.addActionListener(e -> showFunFact());
+        funFactPanel.add(funFactButton);
 
         // Create the score label
-
         JLabel scoreDisplayLabel;
         if (finalScore > highscore) {
             scoreDisplayLabel = new JLabel("NEW HIGHSCORE!: " + finalScore);
         } else {
             scoreDisplayLabel = new JLabel("Score: " + finalScore);
         }
-        scoreDisplayLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        scoreDisplayLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
         // Create highscore label
         JLabel highscoreLabel = new JLabel("Highscore: " + highscore);
-        highscoreLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        highscoreLabel.setFont(new Font("Arial", Font.BOLD, 24));
         highscoreLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
         // Create the mistakes label
         int mistakesCount = (trashList != null) ? trashList.size() : 0;
         JLabel mistakesLabel = new JLabel("You made " + mistakesCount + " mistakes!", SwingConstants.CENTER);
-        mistakesLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        mistakesLabel.setFont(new Font("Arial", Font.BOLD, 24));
 
-        // Add labels to the score panel
-        scorePanel.add(scoreDisplayLabel, BorderLayout.WEST);
-        scorePanel.add(highscoreLabel, BorderLayout.EAST);
-        scorePanel.add(mistakesLabel, BorderLayout.CENTER);
+        // Create a panel for score display
+        JPanel scoreDisplayPanel = new JPanel(new BorderLayout());
+        scoreDisplayPanel.setOpaque(false);
+        scoreDisplayPanel.add(scoreDisplayLabel, BorderLayout.WEST);
+        scoreDisplayPanel.add(highscoreLabel, BorderLayout.EAST);
+        scoreDisplayPanel.add(mistakesLabel, BorderLayout.CENTER);
 
-        outerCenterPanel.add(scorePanel, BorderLayout.NORTH);
+        // Add components to score panel
+        scorePanel.add(funFactPanel, BorderLayout.NORTH);
+        scorePanel.add(scoreDisplayPanel, BorderLayout.CENTER);
+
+        // Create a spacer panel to push trash display down
+        JPanel spacerPanel = new JPanel();
+        spacerPanel.setOpaque(false);
+        spacerPanel.setPreferredSize(new Dimension(1, 40)); // Adjust height as needed
+
+        // Create wrapper panel for score panel and spacer
+        JPanel topWrapper = new JPanel(new BorderLayout());
+        topWrapper.setOpaque(false);
+        topWrapper.add(scorePanel, BorderLayout.NORTH);
+        topWrapper.add(spacerPanel, BorderLayout.CENTER);
+
+        outerCenterPanel.add(topWrapper, BorderLayout.NORTH);
 
         JPanel trashDisplayPanel = createTrashDisplayPanel();
         outerCenterPanel.add(trashDisplayPanel, BorderLayout.CENTER);
 
         frame.add(outerCenterPanel, BorderLayout.CENTER);
+    }
+
+    private void showFunFact() {
+        // Create a custom dialog rather than using the standard JOptionPane
+        JDialog dialog = new JDialog(frame, "Fun Fact", true);
+        dialog.setLayout(new BorderLayout(10, 10));
+
+        // Panel to hold the content
+        JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        // Get the initial fun fact
+        int scoreInt = (int)finalScore;
+        String funFact = Model.API.API.getFunFact(scoreInt);
+
+        // Create message label with large font
+        JLabel messageLabel = new JLabel("<html><div style='width: 300px;'>" +
+                "Fun fact about your score (" + scoreInt + "):<br><br>" +
+                (funFact != null ? funFact : "Sorry, couldn't find a fun fact.") +
+                "</div></html>");
+        messageLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+
+        // Button panel with custom buttons
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+
+        // "Another" button to fetch a new fun fact
+        JButton anotherButton = new JButton("Anotha one!");
+        anotherButton.addActionListener(e -> {
+            String newFunFact = Model.API.API.getFunFact(scoreInt);
+            messageLabel.setText("<html><div style='width: 300px;'>" +
+                    "Fun fact about your score (" + scoreInt + "):<br><br>" +
+                    (newFunFact != null ? newFunFact : "Sorry, couldn't find a fun fact.") +
+                    "</div></html>");
+        });
+
+        // Close button
+        JButton closeButton = new JButton("Close");
+        closeButton.addActionListener(e -> dialog.dispose());
+
+        // Add buttons to panel
+        buttonPanel.add(anotherButton);
+        buttonPanel.add(closeButton);
+
+        // Add components to the dialog
+        contentPanel.add(messageLabel, BorderLayout.CENTER);
+        dialog.add(contentPanel, BorderLayout.CENTER);
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Set dialog properties
+        dialog.setSize(400, 250);
+        dialog.setLocationRelativeTo(frame);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setVisible(true);
     }
 
     /**
@@ -193,34 +271,54 @@ public class GameOverView extends BaseView {
      */
     private JPanel createTrashDisplayPanel() {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
-        panel.setBackground(Color.WHITE);
+        panel.setOpaque(false);
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Create the image display in the center
         trashImageLabel = new JLabel("", SwingConstants.CENTER);
         trashImageLabel.setPreferredSize(new Dimension(300, 200));
+        trashImageLabel.setOpaque(false);
 
         // Create text description panel
         JPanel descriptionPanel = new JPanel(new BorderLayout());
+        descriptionPanel.setOpaque(false);
+
         trashDescriptionArea = new JTextArea(3, 20);
         trashDescriptionArea.setEditable(false);
         trashDescriptionArea.setLineWrap(true);
         trashDescriptionArea.setWrapStyleWord(true);
         trashDescriptionArea.setFont(new Font("Arial", Font.PLAIN, 20));
 
-        // Create scroll pane
-        JScrollPane scrollPane = new JScrollPane(trashDescriptionArea);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        descriptionPanel.add(scrollPane, BorderLayout.CENTER);
+        // Full transparency for text area
+        trashDescriptionArea.setOpaque(false);
+        trashDescriptionArea.setBackground(new Color(0, 0, 0, 0));
+        trashDescriptionArea.setForeground(Color.BLACK); // Set text color
 
-        // Create central content panel to hold image and description, makes it easier to manage layout
+        // Create a completely transparent scroll pane
+        JScrollPane scrollPane = new JScrollPane(trashDescriptionArea);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.setBackground(new Color(0, 0, 0, 0));
+        scrollPane.getViewport().setBackground(new Color(0, 0, 0, 0));
+
+        // These components also need to be transparent
+        scrollPane.getHorizontalScrollBar().setOpaque(false);
+        scrollPane.getVerticalScrollBar().setOpaque(false);
+
+        descriptionPanel.add(scrollPane, BorderLayout.CENTER);
+        descriptionPanel.setBackground(new Color(0, 0, 0, 0));
+
+        // Create central content panel to hold image and description
         JPanel centralContent = new JPanel(new BorderLayout(10, 10));
-        centralContent.setBackground(Color.WHITE);
+        centralContent.setOpaque(false);
+        centralContent.setBackground(new Color(0, 0, 0, 0));
         centralContent.add(trashImageLabel, BorderLayout.CENTER);
         centralContent.add(descriptionPanel, BorderLayout.SOUTH);
 
         // Create navigation panel with buttons
         JPanel navigationPanel = createNavigationPanel();
+        navigationPanel.setOpaque(false);
 
         // Set up layout
         panel.add(centralContent, BorderLayout.CENTER);
@@ -246,16 +344,16 @@ public class GameOverView extends BaseView {
      */
     private JPanel createNavigationPanel() {
         JPanel navigationPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
-        navigationPanel.setBackground(Color.WHITE);
+        navigationPanel.setOpaque(false);
 
         // Create previous button with image
-        ImageIcon prevIcon = new ImageIcon("resources/next_normal.png");
+        ImageIcon prevIcon = new ImageIcon("Resources/Images/next_normal.png");
         Image prevImg = prevIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
         JLabel prevButton = new JLabel(new ImageIcon(prevImg));
         prevButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         // Create next button with image
-        ImageIcon nextIcon = new ImageIcon("resources/prev_normal.png");
+        ImageIcon nextIcon = new ImageIcon("Resources/Images/prev_normal.png");
         Image nextImg = nextIcon.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
         JLabel nextButton = new JLabel(new ImageIcon(nextImg));
         nextButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -351,12 +449,12 @@ public class GameOverView extends BaseView {
             ImageIcon icon = new ImageIcon(trash.getImagePath());
 
             // Resize the image to fit the display area if needed
-            if (icon.getIconWidth() > 400 || icon.getIconHeight() > 300) {
-                Image img = icon.getImage();
-                Image resizedImg = img.getScaledInstance(400, 300, Image.SCALE_SMOOTH);
-                return new ImageIcon(resizedImg);
-            }
-            return icon;
+
+            Image img = icon.getImage();
+            Image resizedImg = img.getScaledInstance(130, 130, Image.SCALE_SMOOTH);
+            return new ImageIcon(resizedImg);
+
+            //return icon;
         } catch (Exception e) {
             System.err.println("Error loading image for trash type: " + trash.getClass().getSimpleName());
             return null;
